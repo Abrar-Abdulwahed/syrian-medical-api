@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 
+use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -25,7 +26,7 @@ class RegisterController extends Controller
         try{
             $user = $this->createNewUserAction->create($request->validated());
             $user->assignRole('patient');
-            return $this->returnJSON(new UserResource($user), 'Your data saved successfully');
+            return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully');
         }catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -36,6 +37,10 @@ class RegisterController extends Controller
         DB::beginTransaction();
         try{
             $user = $this->createNewUserAction->create($request->validated());
+            $user->forceFill([
+                'activated' => 0,
+            ])->save();
+
             if($request->hasFile('evidence'))
                 $fileName = $this->uploadFile($request->file('evidence'), $user->attachment_path);
 
@@ -47,7 +52,7 @@ class RegisterController extends Controller
             ]);
             $user->assignRole('service-provider');
             DB::commit();
-            return $this->returnJSON(new UserResource($user), 'Your data saved successfully');
+            return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully');
         }catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
