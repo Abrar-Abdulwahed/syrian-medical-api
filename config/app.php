@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use App\Providers\FortifyServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
 
 return [
 
@@ -159,6 +161,8 @@ return [
         /*
          * Package Service Providers...
          */
+        FortifyServiceProvider::class,
+        PermissionServiceProvider::class,
 
         /*
          * Application Service Providers...
