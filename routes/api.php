@@ -19,8 +19,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register/patient', [RegisterController::class, 'storePatient'])
-    ->middleware(['guest']);
-Route::post('/register/service-provider', [RegisterController::class, 'storeServiceProvider'])
-    ->middleware(['guest']);
+
+Route::middleware(['guest'])->group(function () {
+    // Register Patient
+    Route::post('/register/patient', [RegisterController::class, 'storePatient']);
+
+    // Register Service Provider
+    Route::post('/register/service-provider', [RegisterController::class, 'storeServiceProvider']);
+});
 
