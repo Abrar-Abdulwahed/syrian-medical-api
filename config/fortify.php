@@ -131,7 +131,7 @@ return [
     |
     */
 
-    'views' => true,
+    'views' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -144,10 +144,14 @@ return [
     |
     */
 
+    'actions' => [
+        'createPatientUser' => [App\Actions\Fortify\CreatePatientUser::class, 'create'],
+    ],
+
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        // Features::emailVerification(),
+        Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([
