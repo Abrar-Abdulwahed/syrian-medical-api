@@ -19,6 +19,9 @@ return new class extends Migration
             $table->boolean('activated')->default(1); //0: no 1: yes
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('verification_code')->nullable();
+            $table->timestamp('last_code_sent_at')->nullable();
+            $table->integer('login_attempts')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
