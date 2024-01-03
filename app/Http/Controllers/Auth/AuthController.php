@@ -65,13 +65,13 @@ class AuthController extends Controller
                 }
 
                 if (Hash::check($request->password, $user->password)) {
-                    $token = $user->createToken('auth-token')->plainTextToken;
-                    return $this->returnJSON(new UserResource($user), 'You have logged in successfully');
+                    $token = $user->createToken('auth')->plainTextToken;
+                    return $this->returnJSON($token, 'You have logged in successfully');
                 } else {
                     return $this->returnWrong('Incorrect password');
                 }
             }
-            return $this->returnWrong('Email doesn\'t exist.');
+            return $this->returnWrong('Email doesn\'t exist.', 401);
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
