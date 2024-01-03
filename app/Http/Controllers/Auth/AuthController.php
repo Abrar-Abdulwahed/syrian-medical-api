@@ -95,7 +95,7 @@ class AuthController extends Controller
 
     private function isThirtyMinutesPassed($timestamp)
     {
-        return now()->subMinutes(1)->gt($timestamp);
+        return now()->subMinutes(30)->gt($timestamp);
     }
 
 
