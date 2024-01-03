@@ -44,7 +44,7 @@ trait ApiResponseTrait
             'code'    => '204',
             'status'  => 'success',
             'message' => $message,
-        ], 204);
+        ], 200);
     }
 
     public function returnWrong(
