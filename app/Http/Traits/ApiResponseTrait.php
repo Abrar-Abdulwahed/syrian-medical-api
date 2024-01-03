@@ -49,8 +49,8 @@ trait ApiResponseTrait
 
     public function returnWrong(
         $message = 'Your Request Is Invalid',
-        $errors  = [],
         $code    = JsonResponse::HTTP_BAD_REQUEST,
+        $errors  = [],
     ) {
         if ($errors === []) {
             return response()->json([

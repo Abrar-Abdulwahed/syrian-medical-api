@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +14,13 @@ use App\Http\Controllers\Auth\RegisterController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware(['guest'])->group(function () {
-    Route::controller(RegisterController::class)->prefix('register')->group(function () {
-        Route::post('/patient', 'storePatient');
-        Route::post('/service-provider', 'storeServiceProvider');
+Route::middleware('guest')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::prefix('register')->group(function () {
+            Route::post('/patient', 'storePatient');
+            Route::post('/service-provider', 'storeServiceProvider');
+        });
+        Route::post('login', 'login');
     });
 });
 

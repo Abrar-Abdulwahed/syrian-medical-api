@@ -6,12 +6,15 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\PatientAccountRequest;
 use App\Http\Requests\ServiceProviderAccountRequest;
 
-class RegisterController extends Controller
+class AuthController extends Controller
 {
     use FileTrait;
 
@@ -49,6 +52,27 @@ class RegisterController extends Controller
             return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully');
         }catch (\Exception $e) {
             DB::rollBack();
+            return $this->returnWrong($e->getMessage());
+        }
+    }
+
+    public function login(LoginRequest $request){
+        try {
+            $user = User::where('email', $request->email)->first();
+            if (!is_null($user)) {
+                if ($user->activated === 0) {
+                    return $this->returnWrong('You\'re not activated', 401);
+                }
+
+                if (Hash::check($request->password, $user->password)) {
+                    $token = $user->createToken('auth-token')->plainTextToken;
+                    return $this->returnJSON(new UserResource($user), 'You have logged in successfully');
+                } else {
+                    return $this->returnWrong('Incorrect password');
+                }
+            }
+            return $this->returnWrong('Email doesn\'t exist.');
+        } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
     }
