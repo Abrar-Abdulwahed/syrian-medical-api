@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,16 @@ use App\Http\Controllers\Auth\AuthController;
 Route::middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::prefix('register')->group(function () {
-            Route::post('/patient', 'storePatient');
-            Route::post('/service-provider', 'storeServiceProvider');
+            Route::post('patient', 'storePatient');
+            Route::post('service-provider', 'storeServiceProvider');
         });
         Route::post('login', 'login');
         Route::post('verify', 'verify2FA');
+    });
+
+    Route::controller(ForgotPasswordController::class)->group(function () {
+        Route::post('forgot-password', 'forgotPassword');
+        Route::post('reset-password/{token}', 'resetPassword');
     });
 });
 
