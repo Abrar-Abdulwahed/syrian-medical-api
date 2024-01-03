@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
@@ -73,14 +72,14 @@ class AuthController extends Controller
             if (!Hash::check($request->password, $user->password))
                 return $this->returnWrong('Incorrect password');
 
-            if (!$user->last_code_sent_at || $this->isThirtyMinutesPassed($user->last_code_sent_at)) {
+            if (!$user->last_code_sent_at || isTimePassed(30, $user->last_code_sent_at)) {
                 // Generate and send the code to the user's email
-                $code = $this->generateAndSendCode();
+                $code = generateRandomNumber(4);
                 //TODO: Send code to user email
 
                 $user->forceFill([
                     'verification_code' => $code,
-                    'last_code_sent_at' => Carbon::now(),
+                    'last_code_sent_at' => now(),
                     'login_attempts' => 0,
                 ])->save();
 
@@ -91,17 +90,6 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
-    }
-
-    private function isThirtyMinutesPassed($timestamp)
-    {
-        return now()->subMinutes(30)->gt($timestamp);
-    }
-
-
-    private function generateAndSendCode()
-    {
-        return rand(1000, 9999);
     }
 
     public function verify2FA(VerificationRequest $request)
