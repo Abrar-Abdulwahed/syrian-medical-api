@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\VerificationRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\ForgotPasswordRequest;
 
@@ -16,36 +17,46 @@ class ForgotPasswordController extends Controller
     public function forgotPassword(ForgotPasswordRequest $request)
     {
         $user = User::where('email', $request->email)->first();
-
         if (!$user) {
             return $this->returnWrong('User not found', 404);
         }
 
-        $token = Str::random(60);
+        $code = generateRandomNumber(4);
 
         DB::table('password_resets')->updateOrInsert(
             ['email' => $user->email],
-            ['token' => $token, 'created_at' => now()]
+            ['code' => $code, 'created_at' => now()]
         );
 
-        //TODO: send token to user
+        //TODO: send code to user
 
-        //TODO: remove token from the return 
-        return $this->returnJson($token, 'Password reset link sent to your email');
+        //TODO: remove code from the return
+        return $this->returnJson($code, 'Enter the code that you received on your email.');
     }
 
-    public function resetPassword(ResetPasswordRequest $request, $token)
-    {
-        $passwordReset = DB::table('password_resets')->where('token', $token)->first();
-
-        if (!$passwordReset || now()->subHours(2)->gt($passwordReset->created_at)) {
-            return response()->json(['message' => 'Invalid or expired token'], 400);
+    public function verify(VerificationRequest $request){
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return $this->returnWrong('User not found', 404);
         }
 
-        $user = User::where('email', $passwordReset->email)->first();
+        $passwordReset = DB::table('password_resets')->where(['code' => $request->verification_code, 'email' => $request->email ])->first();
+
+        if (!$passwordReset || now()->subHours(2)->gt($passwordReset->created_at)) {
+            return $this->returnWrong('Invalid or Expired  Code. Try Again!', 400);
+        }
+        return $this->returnJson($request->email, 'Verification code is valid!');
+    }
+
+    public function resetPassword(ResetPasswordRequest $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return $this->returnWrong('User not found', 404);
+        }
         $user->update(['password' => Hash::make($request->password)]);
 
-        DB::table('password_resets')->where('email', $passwordReset->email)->delete();
+        DB::table('password_resets')->where('email', $user->email)->delete();
 
         return $this->returnSuccess('Password reset successfully');
     }

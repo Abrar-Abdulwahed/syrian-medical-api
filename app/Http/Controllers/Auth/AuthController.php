@@ -83,7 +83,7 @@ class AuthController extends Controller
                     'login_attempts' => 0,
                 ])->save();
 
-                return $this->returnJSON([], 'code sent to your email');
+                return $this->returnSuccess('code sent to your email');
             } else {
                 return $this->returnWrong('Wait for 30 minutes before requesting a new code.', 422);
             }
