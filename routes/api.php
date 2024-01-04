@@ -22,7 +22,7 @@ Route::middleware('guest')->group(function () {
             Route::post('service-provider', 'storeServiceProvider');
         });
         Route::post('login', 'login');
-        Route::post('verify', 'verify2FA');
+        Route::post('login/verify', 'verify2FA');
     });
 
     Route::controller(ForgotPasswordController::class)->group(function () {
@@ -31,7 +31,10 @@ Route::middleware('guest')->group(function () {
         Route::post('reset-password', 'resetPassword');
     });
 });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
 
+});
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

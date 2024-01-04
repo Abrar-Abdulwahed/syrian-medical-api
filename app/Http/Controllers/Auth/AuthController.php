@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\VerificationRequest;
 use App\Http\Requests\PatientAccountRequest;
 use App\Http\Requests\ServiceProviderAccountRequest;
@@ -60,7 +61,6 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
         try {
             $user = User::where('email', $request->email)->first();
-
             if (is_null($user)) {
                 return $this->returnWrong('Email doesn\'t exist.', 401);
             }
@@ -75,6 +75,7 @@ class AuthController extends Controller
             if (!$user->last_code_sent_at || isTimePassed(30, $user->last_code_sent_at)) {
                 // Generate and send the code to the user's email
                 $code = generateRandomNumber(4);
+                Cache::put($user->id, $request->remember_me, 1000); // 10 minutes
                 //TODO: Send code to user email
 
                 $user->forceFill([
@@ -112,8 +113,19 @@ class AuthController extends Controller
             'last_code_sent_at' => null,
             'login_attempts' => 0,
         ])->save();
+        $isRemember = Cache::get($user->id);
 
-        $token = $user->createToken('auth')->plainTextToken;
+        if ($isRemember) {
+            $token = $user->createToken('auth', ['remember'])->plainTextToken;
+
+        }else{
+            $token = $user->createToken('auth', ['*'], now()->addYear())->plainTextToken;
+        }
         return $this->returnJSON($token, 'You have logged in successfully');
+    }
+
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+        return $this->returnJson([], 'logged out successfully', 'success', 201);
     }
 }
