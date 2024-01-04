@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User;
+use Laravel\Sanctum\Sanctum;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class SanctumTokensCommand extends Command
+class PruneExpired extends Command
 {
     /**
      * The name and signature of the console command.
@@ -28,6 +28,6 @@ class SanctumTokensCommand extends Command
      */
     public function handle()
     {
-        $tokenModel = User::find(1)->tokens()->getModel();
-        DB::table($tokenModel->getTable())->where('expires_at', '<', now())->delete();    }
+        $model = Sanctum::$personalAccessTokenModel;
+        $model::where('expires_at', '<', now())->delete();    }
 }
