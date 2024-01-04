@@ -125,11 +125,7 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        if ($request->user()->tokens()->count() > 0) {
-            $request->user()->tokens()->delete();
-        }
+        $request->user()->tokens()->delete();
         return $this->returnJson([], 'logged out successfully', 'success', 201);
     }
-
-            // $schedule->command('sanctum:prune-expired --hours=24')->daily();
 }
