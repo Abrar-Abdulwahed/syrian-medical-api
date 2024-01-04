@@ -32,8 +32,10 @@ Route::middleware('guest')->group(function () {
     });
 });
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('change-password', [AuthController::class, 'logout']);
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('logout', 'logout');
+        Route::post('change-password', 'changePassword');
+    });
 
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
