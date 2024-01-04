@@ -22,7 +22,7 @@ Route::middleware('guest')->group(function () {
             Route::post('service-provider', 'storeServiceProvider');
         });
         Route::post('login', 'login');
-        Route::post('verify', 'verify2FA');
+        Route::post('login/verify', 'verify2FA');
     });
 
     Route::controller(ForgotPasswordController::class)->group(function () {
