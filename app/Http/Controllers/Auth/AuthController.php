@@ -24,6 +24,7 @@ class AuthController extends Controller
     {
         try{
             $user = User::create($request->validated());
+            $user->forceFill(['ip' => $request->ip()])->save();
             $user->assignRole('patient');
             return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully');
         }catch (\Exception $e) {
@@ -37,6 +38,7 @@ class AuthController extends Controller
         try{
             $user = User::create($request->validated());
             $user->forceFill([
+                'ip' => $request->ip(),
                 'activated' => 0,
             ])->save();
 
@@ -73,9 +75,10 @@ class AuthController extends Controller
                 return $this->returnWrong('Incorrect password');
 
             if (!$user->last_code_sent_at || isTimePassed(30, $user->last_code_sent_at)) {
+
                 // Generate and send the code to the user's email
                 $code = generateRandomNumber(4);
-                Cache::put($user->id, $request->remember_me, 1000); // 10 minutes
+                Cache::put($user->ip, $request->remember_me, 1000); // 2 minutes
                 //TODO: Send code to user email
 
                 $user->forceFill([
@@ -95,33 +98,44 @@ class AuthController extends Controller
 
     public function verify2FA(VerificationRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
-        if (!$user || $user->verification_code !== $request->verification_code) {
-            $user->login_attempts += 1;
-            $user->save();
+        // $user = User::where('ip', $request->ip())->first();
+        // return $this->returnWrong(Cache::get($user->ip), 404);
+        try{
+            $user = User::where('ip', $request->ip())->first();
+            if (!$user)
+                return $this->returnWrong('User not found', 404);
+            if (!$user || $user->verification_code !== $request->verification_code) {
+                $user->forceFill(['login_attempts' => $user->login_attempts+1])->save();
 
-            if ($user->login_attempts > 3) {
-                return $this->returnWrong('Verification code expired', 422);
+                if ($user->login_attempts > 3) {
+                    $this->reset2FA($user);
+                    return $this->returnWrong('Verification code expired', 422);
+                }
+
+                return $this->returnWrong('Invalid verification code', 422);
             }
+            //Reset 2FA on success verification
+            $this->reset2FA($user);
 
-            return $this->returnWrong('Invalid verification code', 422);
+            $isRemember = Cache::get($user->ip);
+            if ($isRemember) {
+                $token = $user->createToken('auth', ['remember'])->plainTextToken;
+
+            }else{
+                $token = $user->createToken('auth', ['*'], now()->addYear())->plainTextToken;
+            }
+            return $this->returnJSON($token, 'You have logged in successfully');
+        }catch(\Exception $e){
+            return $this->returnWrong($e->getMessage());
         }
+    }
 
-        // Reset 2FA on successful verification
+    private function reset2FA($user){
         $user->forceFill([
             'verification_code' => null,
             'last_code_sent_at' => null,
             'login_attempts' => 0,
         ])->save();
-        $isRemember = Cache::get($user->id);
-
-        if ($isRemember) {
-            $token = $user->createToken('auth', ['remember'])->plainTextToken;
-
-        }else{
-            $token = $user->createToken('auth', ['*'], now()->addYear())->plainTextToken;
-        }
-        return $this->returnJSON($token, 'You have logged in successfully');
     }
 
     public function logout(Request $request){

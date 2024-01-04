@@ -22,7 +22,6 @@ class VerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'             => 'required', // come from frontend side
             'verification_code' => 'required',
         ];
     }

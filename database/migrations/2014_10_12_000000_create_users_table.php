@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
+            $table->string('ip')->nullable();
             $table->string('email')->unique();
             $table->boolean('activated')->default(1); //0: no 1: yes
             $table->timestamp('email_verified_at')->nullable();
