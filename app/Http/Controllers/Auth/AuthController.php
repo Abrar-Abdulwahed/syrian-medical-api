@@ -61,14 +61,6 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
         try {
             $user = User::where('email', $request->email)->first();
-            // $values = [
-            //     'ip' => $request->ip(),
-            //     'code' => '343',
-            //     'isRemember' =>  $request->remember_me,
-            // ];
-            // Cache::put('remember_2fa', $values);
-            // $Remember = Cache::get('remember_2fa');
-            // return $this->returnWrong($Remember['code'], 401);
             if (is_null($user)) {
                 return $this->returnWrong('Email doesn\'t exist.', 401);
             }
@@ -83,13 +75,7 @@ class AuthController extends Controller
             if (!$user->last_code_sent_at || isTimePassed(30, $user->last_code_sent_at)) {
                 // Generate and send the code to the user's email
                 $code = generateRandomNumber(4);
-                $values = [
-                    'ip' => $request->ip(),
-                    'code' => $code,
-                    'isRemember' =>  $request->remember_me,
-                ];
-                Cache::put('remember_2fa', $values, 1000); // 10 minutes
-                $isRemember = Cache::get('remember_2fa');
+                Cache::put($user->id, $request->remember_me, 1000); // 10 minutes
                 //TODO: Send code to user email
 
                 $user->forceFill([
@@ -127,14 +113,14 @@ class AuthController extends Controller
             'last_code_sent_at' => null,
             'login_attempts' => 0,
         ])->save();
-        $abilities = ['*'];
-        $remember2FA = Cache::get('remember_2fa');
+        $isRemember = Cache::get($user->id);
 
-        if ($remember2FA && $remember2FA['isRemember'] == 1) {
-            $abilities = ['remember'];
+        if ($isRemember) {
+            $token = $user->createToken('auth', ['remember'])->plainTextToken;
+
+        }else{
+            $token = $user->createToken('auth', ['*'], now()->addYear())->plainTextToken;
         }
-        $token = $user->createToken('auth', $abilities, now()->addWeek())->plainTextToken;
-
         return $this->returnJSON($token, 'You have logged in successfully');
     }
 }
