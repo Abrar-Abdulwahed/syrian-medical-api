@@ -11,7 +11,7 @@ class ChangePasswordRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class ChangePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'old_password' => 'current_password:api',
+            'new_password' => 'required|string|confirmed|min:8',
         ];
     }
 }

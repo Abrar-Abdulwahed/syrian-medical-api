@@ -6,13 +6,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\VerificationRequest;
+use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\PatientAccountRequest;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
 
@@ -98,8 +99,6 @@ class AuthController extends Controller
 
     public function verify2FA(VerificationRequest $request)
     {
-        // $user = User::where('ip', $request->ip())->first();
-        // return $this->returnWrong(Cache::get($user->ip), 404);
         try{
             $user = User::where('ip', $request->ip())->first();
             if (!$user)
@@ -136,6 +135,20 @@ class AuthController extends Controller
             'last_code_sent_at' => null,
             'login_attempts' => 0,
         ])->save();
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        //! this task doesn't have mobile UI
+        try{
+            $user = $request->user();
+            $user->update([
+                'password'  => Hash::make($request->new_password)
+            ]);
+            return $this->returnWrong('Password Changed Successfully');
+        }catch(\Exception $e){
+            return $this->returnWrong($e->getMessage());
+        }
     }
 
     public function logout(Request $request){
