@@ -123,4 +123,13 @@ class AuthController extends Controller
         }
         return $this->returnJSON($token, 'You have logged in successfully');
     }
+
+    public function logout(Request $request){
+        if ($request->user()->tokens()->count() > 0) {
+            $request->user()->tokens()->delete();
+        }
+        return $this->returnJson([], 'logged out successfully', 'success', 201);
+    }
+
+            // $schedule->command('sanctum:prune-expired --hours=24')->daily();
 }
