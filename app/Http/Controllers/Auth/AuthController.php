@@ -78,7 +78,7 @@ class AuthController extends Controller
 
                 // Generate and send the code to the user's email
                 $code = generateRandomNumber(4);
-                Cache::put($user->ip, $request->remember_me, 1000); // 2 minutes
+                Cache::put($user->ip, $request->remember_me, 200); // 2 minutes
                 //TODO: Send code to user email
 
                 $user->forceFill([
