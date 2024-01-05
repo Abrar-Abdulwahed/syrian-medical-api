@@ -43,7 +43,11 @@ Route::middleware('guest')->group(function () {
         Route::post('change-password', 'changePassword');
     });
 
-    Route::resource('admin/user-management', UserManagementController::class);
+    Route::controller(UserManagementController::class)->prefix('admin/user-management')->group(function () {
+        Route::get('users', 'index');
+        Route::get('patients', 'patients');
+        Route::get('service-providers', 'serviceProviders');
+    });
 // });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
