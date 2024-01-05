@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\UserType;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -19,9 +21,8 @@ class UserResource extends JsonResource
         // Remove 'password' attribute from being returned
         unset($attributes['password']);
 
-        // Include role in the response and return
         return array_merge($attributes, [
-            'role' => $this->roles[0]->name,
+            'profile' => $this->when($this->isServiceProvider(), new ProfileResource($this->whenLoaded('serviceProviderProfile'))),
         ]);
     }
 }

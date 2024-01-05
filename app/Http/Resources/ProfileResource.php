@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileResource extends JsonResource
@@ -14,9 +15,9 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $attributes = $this->resource->getAttributes();
+        $attributes =  $this->resource->getAttributes();
         return array_merge($attributes, [
-            'role'       => $this->roles[0]->name,
+            'user' => new UserResource($this->whenLoaded('user'))
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\UserType;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -44,17 +45,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'activated'=> 'boolean'
     ];
 
-    public function serviceProviderProfile()
-    {
-        return $this->hasOne(ServiceProviderProfile::class);
-    }
-
+    // Accessor
     protected function attachmentPath(): Attribute
     {
         return Attribute::make(
             get: fn() => '/profiles'. '/' . $this->id,
         );
+    }
+
+    // Relations
+    public function serviceProviderProfile()
+    {
+        return $this->hasOne(ServiceProviderProfile::class);
+    }
+
+    //scopes
+    public function isPatient(){
+        return $this->type === UserType::PATIENT->value;
+    }
+
+    public function isServiceProvider(){
+        return $this->type === UserType::SERVICE_PROVIDER->value;
     }
 }

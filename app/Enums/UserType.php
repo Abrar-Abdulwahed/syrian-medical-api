@@ -2,8 +2,7 @@
 
 namespace App\Enums;
 
-enum UserRole: string{
-    case SUPER_ADMIN = "super-admin";
+enum UserType: string{
     case ADMIN = "admin";
     case PATIENT = "patient";
     case SERVICE_PROVIDER = "service-provider";

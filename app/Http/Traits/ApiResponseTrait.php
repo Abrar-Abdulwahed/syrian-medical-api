@@ -8,18 +8,20 @@ trait ApiResponseTrait
 {
 
     public function returnAllDataJSON(
-        $data    = [],
-        $collection,
+        $data      = [],
+        $meta      = [],
+        $links     = [],
         $message   = '',
         $status    = 'success',
         $code      = '200',
     ) {
         return response()->json([
+            'data'       => $data,
+            'meta'       => $meta,
+            'links'      => $links,
             'code'       => $code,
             'status'     => $status,
             'message'    => $message,
-            'data'       => $data,
-            'pagination' => $collection,
         ], $code);
     }
 
