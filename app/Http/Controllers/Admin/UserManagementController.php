@@ -13,7 +13,7 @@ class UserManagementController extends Controller
     public function index(Request $request)
     {
         $pageSize = $request->page_size ?? 10;
-        $users = User::with('serviceProviderProfile')->paginate($pageSize);
+        $users = User::with(['patientProfile', 'serviceProviderProfile'])->paginate($pageSize);
         $meta = [
             'path'  => $users->path(),
             'current_page' => $users->currentPage(),

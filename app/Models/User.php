@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserType;
+use App\Models\PatientProfile;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -60,6 +61,11 @@ class User extends Authenticatable
     public function serviceProviderProfile()
     {
         return $this->hasOne(ServiceProviderProfile::class);
+    }
+
+    public function patientProfile()
+    {
+        return $this->hasOne(PatientProfile::class);
     }
 
     //scopes

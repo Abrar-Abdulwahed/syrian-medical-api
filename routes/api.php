@@ -32,7 +32,7 @@ Route::middleware('guest')->group(function () {
         Route::post('reset-password', 'resetPassword');
     });
 });
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');
@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::resource('admin/user-management', UserManagementController::class);
-});
+// });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

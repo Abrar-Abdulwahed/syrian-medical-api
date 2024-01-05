@@ -41,13 +41,16 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
-            if($user->type === UserType::SERVICE_PROVIDER->value)
+            if($user->isServiceProvider())
                 $user->serviceProviderProfile()->create([
-                    'user_id' => $user->id,
                     'bank_name' => '',
                     'iban_number' => '',
                     'swift_code' => '',
                ]);
+            else if($user->isPatient())
+                $user->patientProfile()->create([
+                    'welcome' => $user->id,
+            ]);
         });
     }
     // public function configure()

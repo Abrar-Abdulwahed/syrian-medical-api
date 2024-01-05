@@ -18,11 +18,23 @@ class UserResource extends JsonResource
     {
         $attributes = $this->resource->getAttributes();
 
+        $profile = null;
+
+        if ($this->isPatient()) {
+            $profile = new ProfileResource($this->whenLoaded('patientProfile'));
+        }
+        elseif ($this->isServiceProvider()) {
+            $profile = new ProfileResource($this->whenLoaded('serviceProviderProfile'));
+        }
+
         // Remove 'password' attribute from being returned
         unset($attributes['password']);
 
         return array_merge($attributes, [
-            'profile' => $this->when($this->isServiceProvider(), new ProfileResource($this->whenLoaded('serviceProviderProfile'))),
+            'profile' =>  $profile,
+
+            //! donsn't work as chaining when()
+            //$this->when('serviceProviderProfile', new ProfileResource($this->whenLoaded('serviceProviderProfile')))->when($this->isPatient(), new ProfileResource($this->whenLoaded('patientProfile'))),
         ]);
     }
 }

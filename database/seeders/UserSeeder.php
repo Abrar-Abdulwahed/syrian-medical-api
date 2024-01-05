@@ -13,19 +13,19 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // $adminInfo = [
-        //     'firstname' => 'Admin',
-        //     'lastname'  => 'Alkhorasani',
-        //     'email'     => 'admin@admin.com',
-        //     'password'  => '12345678',
-        //     'activated' => 1,
-        //     'ip'        => '127.0.0.1',
-        //     'type'      => 'admin',
-        // ];
+        $adminInfo = [
+            'firstname' => 'Admin',
+            'lastname'  => 'Alkhorasani',
+            'email'     => 'admin@admin.com',
+            'password'  => '12345678',
+            'activated' => 1,
+            'ip'        => '127.0.0.1',
+            'type'      => 'admin',
+        ];
 
-        // $admin = User::create($adminInfo);
-        // $admin->assignRole('super-admin');
+        $admin = User::create($adminInfo);
+        $admin->assignRole('super-admin');
 
-        // User::factory()->count(50)->create();
+        User::factory()->count(50)->create();
     }
 }
