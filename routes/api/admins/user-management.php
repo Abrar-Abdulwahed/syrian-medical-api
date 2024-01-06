@@ -1,9 +1,8 @@
+
 <?php
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Admin\UserManagementController;
 
 /*
@@ -16,6 +15,13 @@ use App\Http\Controllers\Admin\UserManagementController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-include __DIR__.'./api/users/auth.php';
-include __DIR__.'./api/admins/auth.php';
-include __DIR__.'./api/admins/user-management.php';
+Route::middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
+    Route::controller(UserManagementController::class)->prefix('admin/user-management')->group(function () {
+        Route::get('users', 'index');
+        Route::get('patients', 'patients');
+        Route::get('service-providers', 'serviceProviders');
+    });
+});
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});

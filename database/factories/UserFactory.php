@@ -34,7 +34,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'activated' => random_int(0, 1),
             'ip' => '127.0.0.1',
-            'type'=> $this->faker->randomElement([UserType::ADMIN->value, UserType::PATIENT->value, UserType::SERVICE_PROVIDER->value])
+            'type'=> $this->faker->randomElement([UserType::PATIENT->value, UserType::SERVICE_PROVIDER->value])
         ];
     }
 

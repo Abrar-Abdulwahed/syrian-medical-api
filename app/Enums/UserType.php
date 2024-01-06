@@ -3,7 +3,6 @@
 namespace App\Enums;
 
 enum UserType: string{
-    case ADMIN = "admin";
     case PATIENT = "patient";
     case SERVICE_PROVIDER = "service-provider";
 
