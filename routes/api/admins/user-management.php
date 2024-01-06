@@ -20,6 +20,7 @@ Route::middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
         Route::get('users', 'index');
         Route::get('patients', 'patients');
         Route::get('service-providers', 'serviceProviders');
+        Route::get('user/{user}', 'show');
     });
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

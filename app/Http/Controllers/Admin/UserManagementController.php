@@ -29,9 +29,9 @@ class UserManagementController extends Controller
         return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
     }
 
-    public function show()
+    public function show(User $user)
     {
-        
+        return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
     }
 
     public function serviceProviderActivation(Request $request)
