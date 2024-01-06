@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User\Auth;
 use App\Models\User;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
+use App\Events\RegisterEvent;
 use App\Http\Traits\FileTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\VerificationRequest;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\PatientAccountRequest;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
+use App\Notifications\RegistrationConfirmationNotification;
 
 class AuthController extends Controller
 {
@@ -27,6 +30,7 @@ class AuthController extends Controller
         try{
             $user = User::create($request->validated());
             $user->forceFill(['type' => UserType::PATIENT->value, 'ip' => $request->ip()])->save();
+            event(new RegisterEvent($user, generateRandomNumber(8)));
             return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully');
         }catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
@@ -53,6 +57,7 @@ class AuthController extends Controller
                 'swift_code' => $request->swift_code,
                 'evidence' => $fileName,
             ]);
+            event(new RegisterEvent($user, generateRandomNumber(8)));
             DB::commit();
             return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully');
         }catch (\Exception $e) {
