@@ -2,9 +2,11 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Enums\UserType;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -24,13 +26,39 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'firstname' => fake()->name(),
+            'lastname' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
+            'password' => Hash::make('12345678'),
             'remember_token' => Str::random(10),
+            'activated' => random_int(0, 1),
+            'ip' => '127.0.0.1',
+            'type'=> $this->faker->randomElement([UserType::ADMIN->value, UserType::PATIENT->value, UserType::SERVICE_PROVIDER->value])
         ];
     }
+
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            if($user->isServiceProvider())
+                $user->serviceProviderProfile()->create([
+                    'bank_name' => '',
+                    'iban_number' => '',
+                    'swift_code' => '',
+               ]);
+            else if($user->isPatient())
+                $user->patientProfile()->create([
+                    'welcome' => $user->id,
+            ]);
+        });
+    }
+    // public function configure()
+    // {
+    //     return $this->afterCreating(function (User $user) {
+    //         $user->assignRole($this->faker->randomElement(['patient', 'service-provider']));
+    //     });
+    // }
 
     /**
      * Indicate that the model's email address should be unverified.

@@ -46,7 +46,7 @@ class ForgotPasswordController extends Controller
             if (!$passwordReset || now()->subHours(2)->gt($passwordReset->created_at)) {
                 return $this->returnWrong('Invalid or Expired  Code. Try Again!', 400);
             }
-            return $this->returnJson($user->email, 'Verification code is valid!');
+            return $this->returnSuccess('Verification code is valid!');
         }catch(\Exception $e){
             return $this->returnWrong($e->getMessage());
         }

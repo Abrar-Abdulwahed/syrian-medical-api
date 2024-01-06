@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +32,23 @@ Route::middleware('guest')->group(function () {
         Route::post('reset-password', 'resetPassword');
     });
 });
-Route::middleware('auth:sanctum')->group(function () {
+// Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');
     });
 
-});
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('logout', 'logout');
+        Route::post('change-password', 'changePassword');
+    });
+
+    Route::controller(UserManagementController::class)->prefix('admin/user-management')->group(function () {
+        Route::get('users', 'index');
+        Route::get('patients', 'patients');
+        Route::get('service-providers', 'serviceProviders');
+    });
+// });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

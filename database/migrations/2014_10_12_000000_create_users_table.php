@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('ip')->nullable();
             $table->string('email')->unique();
+            $table->string('type')->default(UserType::PATIENT->value);
             $table->boolean('activated')->default(1); //0: no 1: yes
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
