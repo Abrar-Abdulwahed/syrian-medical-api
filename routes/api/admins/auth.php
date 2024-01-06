@@ -2,9 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Auth\{
-    AuthController,
-};
+use App\Http\Controllers\Admin\Auth\AuthController;
 
 
 /*
@@ -18,7 +16,7 @@ use App\Http\Controllers\Admin\Auth\{
 |
 */
 Route::middleware('guest')->group(function () {
-    Route::controller(AuthController::class)->group(function () {
+    Route::controller(AuthController::class)->prefix('admin')->group(function () {
         Route::post('login', 'login');
     });
 });

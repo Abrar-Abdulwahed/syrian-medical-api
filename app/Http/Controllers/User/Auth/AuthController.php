@@ -70,7 +70,7 @@ class AuthController extends Controller
         try {
             $user = User::where('email', $request->email)->first();
             if (is_null($user)) {
-                return $this->returnWrong('Email doesn\'t exist.', 401);
+                return $this->returnWrong($request->email, 401);
             }
 
             if ($user->activated === 0) {
