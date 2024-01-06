@@ -36,6 +36,6 @@ class GetUsersDataAction
             'next' => $users->nextPageUrl(),
         ];
 
-        return $this->returnAllDataJSON(UserResource::collection($users), $meta, $links, 'Data retrieve successfully');
+        return $this->returnAllDataJSON(UserResource::collection($users), $meta, $links, 'Data retrieved successfully');
     }
 }

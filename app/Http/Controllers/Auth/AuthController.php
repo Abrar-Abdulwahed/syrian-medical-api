@@ -79,7 +79,7 @@ class AuthController extends Controller
 
                 // Generate and send the code to the user's email
                 $code = generateRandomNumber(4);
-                Cache::put($user->ip, $request->remember_me, 200); // 2 minutes
+                Cache::put($user->ip, $request->remember_me, 120); // 2 minutes
                 //TODO: Send code to user email
 
                 $user->forceFill([
@@ -116,8 +116,7 @@ class AuthController extends Controller
             //Reset 2FA on success verification
             $this->reset2FA($user);
 
-            $isRemember = Cache::get($user->ip);
-            if ($isRemember) {
+            if (Cache::has($user->ip) && Cache::get($user->ip)) {
                 $token = $user->createToken('auth', ['remember'])->plainTextToken;
 
             }else{
