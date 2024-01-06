@@ -32,13 +32,21 @@ class UserManagementController extends Controller
 
     public function show(User $user)
     {
+        if (!$user)
+            return $this->returnWrong('Email doesn\'t exist.', 401);
         return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
     }
 
-    public function ServiceProviderActivation(UserActivationRequest $request, User $user)
+    public function ServiceProviderAccept(UserActivationRequest $request, User $user)
     {
-        $user->forceFill(['activated' => $request->activated])->save();
+        $user->forceFill(['activated' => 1])->save();
         $msg = $request->activated ? 'Service Provider has been activated!' : 'Service Provider has been deactivated!';
-        return $this->returnSuccess($msg);
+        return $this->returnSuccess('Service Provider has been activated!');
+    }
+
+    public function ServiceProviderRefuse(UserActivationRequest $request, User $user)
+    {
+        $user->delete();
+        return $this->returnSuccess('Service Provider has been deleted from database!');
     }
 }

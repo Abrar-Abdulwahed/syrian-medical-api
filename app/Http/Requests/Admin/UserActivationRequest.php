@@ -25,7 +25,7 @@ class UserActivationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'activated' => 'required|boolean'
+            'activated' => 'sometimes|boolean'
         ];
     }
 
