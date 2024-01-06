@@ -9,6 +9,7 @@ use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Requests\Admin\UserActivationRequest;
 
 class UserManagementController extends Controller
 {
@@ -34,8 +35,10 @@ class UserManagementController extends Controller
         return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
     }
 
-    public function serviceProviderActivation(Request $request)
+    public function ServiceProviderActivation(UserActivationRequest $request, User $user)
     {
-        return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
+        $user->forceFill(['activated' => $request->activated])->save();
+        $msg = $request->activated ? 'Service Provider has been activated!' : 'Service Provider has been deactivated!';
+        return $this->returnSuccess($msg);
     }
 }

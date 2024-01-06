@@ -21,6 +21,7 @@ Route::middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
         Route::get('patients', 'patients');
         Route::get('service-providers', 'serviceProviders');
         Route::get('user/{user}', 'show');
+        Route::post('user/{user}/activation', 'ServiceProviderActivation');
     });
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
