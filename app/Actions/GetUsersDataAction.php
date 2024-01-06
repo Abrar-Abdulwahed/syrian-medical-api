@@ -10,7 +10,7 @@ use App\Http\Traits\ApiResponseTrait;
 class GetUsersDataAction
 {
     use ApiResponseTrait;
-    public function __invoke(Request $request, array $withRelations, ?string $userType){
+    public function __invoke(Request $request, array $withRelations, $userType = null){
         $pageSize = $request->page_size ?? 10;
         $query = User::query();
 

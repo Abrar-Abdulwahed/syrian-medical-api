@@ -28,4 +28,14 @@ class UserManagementController extends Controller
     {
         return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
     }
+
+    public function show()
+    {
+        
+    }
+
+    public function serviceProviderActivation(Request $request)
+    {
+        return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
+    }
 }
