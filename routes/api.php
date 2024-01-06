@@ -16,39 +16,6 @@ use App\Http\Controllers\Admin\UserManagementController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('guest')->group(function () {
-    Route::controller(AuthController::class)->group(function () {
-        Route::prefix('register')->group(function () {
-            Route::post('patient', 'storePatient');
-            Route::post('service-provider', 'storeServiceProvider');
-        });
-        Route::post('login', 'login');
-        Route::post('login/verify', 'verify2FA');
-    });
-
-    Route::controller(ForgotPasswordController::class)->group(function () {
-        Route::post('forgot-password', 'forgotPassword');
-        Route::post('forgot-password/verify', 'verify');
-        Route::post('reset-password', 'resetPassword');
-    });
-});
-// Route::middleware('auth:sanctum')->group(function () {
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('logout', 'logout');
-        Route::post('change-password', 'changePassword');
-    });
-
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('logout', 'logout');
-        Route::post('change-password', 'changePassword');
-    });
-
-    Route::controller(UserManagementController::class)->prefix('admin/user-management')->group(function () {
-        Route::get('users', 'index');
-        Route::get('patients', 'patients');
-        Route::get('service-providers', 'serviceProviders');
-    });
-// });
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+include __DIR__.'./api/users/auth.php';
+include __DIR__.'./api/admins/auth.php';
+include __DIR__.'./api/admins/user-management.php';
