@@ -100,7 +100,7 @@ class AuthController extends Controller
                 $decayRate = 1800, // 30 minutes
             );
             if (!$executed) {
-                return $this->returnWrong('You may try again in '. ceil(RateLimiter::availableIn($key)/60).' minutes.', 422);
+                return $this->returnWrong('You may wait '. ceil(RateLimiter::availableIn($key)/60).' minutes before re-send new code', 422);
             }else{
                 Cache::put($user->ip, $request->remember_me, 120); // 2 minutes
                 return $this->returnSuccess('code sent to your email');
@@ -128,6 +128,7 @@ class AuthController extends Controller
             }
             //Reset 2FA on success verification
             $this->reset2FA($user);
+            RateLimiter::clear('2FA_verify' . $user->id);
 
             if (Cache::has($user->ip) && Cache::get($user->ip)) {
                 $token = $user->createToken('auth', ['remember'])->plainTextToken;
