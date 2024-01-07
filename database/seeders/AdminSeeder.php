@@ -19,6 +19,7 @@ class AdminSeeder extends Seeder
             'email'     => 'admin@admin.com',
             'password'  => '12345678',
             'activated' => 1,
+            'email_verified_at' => now(),
             'ip'        => '127.0.0.1',
         ];
 

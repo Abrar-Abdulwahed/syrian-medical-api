@@ -8,15 +8,17 @@ trait FileTrait
 {
     protected function uploadFile($newFile, $path, $oldFile = null, $fileName = null)
     {
-        if (!empty($newFile) && !is_null($newFile)) {
-            $this->removeFile('public/' . $path . '/' . $oldFile);
+        if ($newFile) {
+            $this->removeFile($path . '/' . $oldFile);
             if (empty($fileName)) {
                 $fileName = time() . '_' . $newFile->hashName();
             } else {
                 $fileName = "{$fileName}.{$newFile->extension()}";
             }
 
-            $newFile->storeAs("public/$path", $fileName);
+            Storage::disk('public')->putFileAs($path, $newFile, $fileName);
+
+            // $newFile->storeAs("public/$path", $fileName);
 
             return $fileName;
         }
@@ -26,8 +28,14 @@ trait FileTrait
 
     protected function removeFile($path)
     {
-        if (!empty($path) && Storage::disk('local')->exists($path)) {
-            Storage::disk('local')->delete($path);
+        if (!empty($path) && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+    }
+
+    protected function removeDirectory($path){
+        if (!empty($path) && Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->deleteDirectory($path);
         }
     }
 }

@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
+use App\Http\Traits\FileTrait;
 use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\Admin\UserActivationRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserManagementController extends Controller
 {
+    use FileTrait;
     public function __construct(protected GetUsersDataAction $getUsersAction){}
 
     public function index(Request $request)
@@ -30,23 +33,36 @@ class UserManagementController extends Controller
         return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
     }
 
-    public function show(User $user)
+    public function show($id)
     {
-        if (!$user)
-            return $this->returnWrong('Email doesn\'t exist.', 401);
-        return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
+        try{
+            $user = User::findOrFail($id);
+            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
+        } catch (\Exception $e) {
+            return $this->returnWrong($e->getMessage());
+        }
     }
 
-    public function ServiceProviderAccept(UserActivationRequest $request, User $user)
+    public function ServiceProviderAccept(UserActivationRequest $request, $id)
     {
-        $user->forceFill(['activated' => 1])->save();
-        $msg = $request->activated ? 'Service Provider has been activated!' : 'Service Provider has been deactivated!';
-        return $this->returnSuccess('Service Provider has been activated!');
+        try{
+            $user = User::findOrFail($id);
+            $user->forceFill(['activated' => 1])->save();
+            return $this->returnSuccess('Service Provider has been activated!');
+        } catch (\Exception $e) {
+            return $this->returnWrong($e->getMessage());
+        }
     }
 
-    public function ServiceProviderRefuse(UserActivationRequest $request, User $user)
+    public function ServiceProviderRefuse(UserActivationRequest $request, $id)
     {
-        $user->delete();
-        return $this->returnSuccess('Service Provider has been deleted from database!');
+        try{
+            $user = User::findOrFail($id);
+            $this->removeDirectory($user->attachment_path);
+            $user->delete();
+            return $this->returnSuccess('Service Provider has been deleted from database!');
+        } catch (\Exception $e) {
+            return $this->returnWrong($e->getMessage());
+        }
     }
 }
