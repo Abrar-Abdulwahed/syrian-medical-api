@@ -27,7 +27,7 @@ class RegisterNotification
         $code = $event->code;
         try{
             $mail = new RegisterMail($user, $code);
-            Mail::to($user->email)->send($mail);
+            Mail::to($user->email)->later(10, $mail);
         }catch(\Exception $e){
             return;
         }
