@@ -17,6 +17,9 @@ class AuthController extends Controller
                 return $this->returnWrong('Email doesn\'t exist.', 401);
             }
 
+            if(!$user->hasVerifiedEmail())
+                return $this->returnWrong('Your Email is not verified', 401);
+
             if ($user->activated === 0) {
                 return $this->returnWrong('You\'re not activated', 401);
             }

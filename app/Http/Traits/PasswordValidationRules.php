@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Http\Traits;
+
+use Illuminate\Validation\Rules\Password;
+
+trait PasswordValidationRules
+{
+    /**
+     * Get the validation rules used to validate passwords.
+     *
+     * @return array<int, \Illuminate\Contracts\Validation\Rule|array|string>
+     */
+    protected function passwordRules()
+    {
+        return Password::min(8)->mixedCase()->numbers()->symbols();
+    }
+}

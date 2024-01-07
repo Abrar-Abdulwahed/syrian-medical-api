@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class ChangePasswordRequest extends FormRequest
+class ChangePasswordRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class ChangePasswordRequest extends FormRequest
     {
         return [
             'old_password' => 'current_password',
-            'new_password' => 'required|string|min:8',
+            'new_password' => ['required', $this->passwordRules(), 'max:25', 'confirmed'],
         ];
     }
 }

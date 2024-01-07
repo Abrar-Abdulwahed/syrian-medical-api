@@ -2,9 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Auth\{
-    AuthController,
-};
+use App\Http\Controllers\Admin\Auth\AuthController;
 
 
 /*
@@ -17,12 +15,12 @@ use App\Http\Controllers\Admin\Auth\{
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('guest')->group(function () {
+Route::middleware('guest')->prefix('admin')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
     });
 });
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');

@@ -16,6 +16,6 @@ use App\Http\Controllers\Admin\UserManagementController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-include __DIR__.'./api/users/auth.php';
-include __DIR__.'./api/admins/auth.php';
-include __DIR__.'./api/admins/user-management.php';
+include __DIR__.'/api/users/auth.php';
+include __DIR__.'/api/admins/auth.php';
+include __DIR__.'/api/admins/user-management.php';

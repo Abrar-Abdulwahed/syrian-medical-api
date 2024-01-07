@@ -20,6 +20,7 @@ use App\Http\Controllers\User\Auth\{
 Route::middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::prefix('register')->group(function () {
+            Route::post('email/verify', 'EmailVerify')->name('verification.verify');
             Route::post('patient', 'storePatient');
             Route::post('service-provider', 'storeServiceProvider');
         });
@@ -33,7 +34,7 @@ Route::middleware('guest')->group(function () {
         Route::post('reset-password', 'resetPassword');
     });
 });
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');

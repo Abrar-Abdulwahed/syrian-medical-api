@@ -24,6 +24,8 @@ class UserActivationRequest extends FormRequest
      */
     public function rules(): array
     {
+        // I will need it when I activate/deactivate
+        // but when accept/refuse it don not want this activated
         return [
             'activated' => 'sometimes|boolean'
         ];
@@ -31,7 +33,8 @@ class UserActivationRequest extends FormRequest
 
     public function after(): array
     {
-        $user = $this->route('user');
+        $id = $this->route('id');
+        $user = User::findOrFail($id);
         return [
             function (Validator $validator) use($user) {
                 if (!$user || $user->type === UserType::PATIENT->value) {
