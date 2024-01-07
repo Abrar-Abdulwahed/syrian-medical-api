@@ -23,7 +23,7 @@ class ChangePasswordRequest extends BaseRequest
     {
         return [
             'old_password' => 'current_password',
-            'new_password' => 'required|string|min:8',
+            'new_password' => ['required', $this->passwordRules(), 'max:25', 'confirmed'],
         ];
     }
 }

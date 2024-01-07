@@ -23,7 +23,7 @@ class ResetPasswordRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'password' => 'required|string|confirmed|min:8',
+            'password' => ['required', $this->passwordRules(), 'max:25', 'confirmed'],
         ];
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Traits\PasswordValidationRules;
 
 class BaseRequest extends FormRequest
 {
+    use PasswordValidationRules;
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
     {
         $errors = $validator->errors()->all();
