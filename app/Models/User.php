@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserType;
 use App\Events\RegisterEvent;
 use App\Models\PatientProfile;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
     protected $guard_name = 'api';
@@ -77,4 +77,9 @@ class User extends Authenticatable
     public function isServiceProvider(){
         return $this->type === UserType::SERVICE_PROVIDER->value;
     }
+
+    // Events
+    // protected $dispatchesEvents = [
+    //     'created' => RegisterEvent::class,
+    // ];
 }

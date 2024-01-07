@@ -15,12 +15,12 @@ use App\Http\Controllers\Admin\Auth\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('guest')->group(function () {
-    Route::controller(AuthController::class)->prefix('admin')->group(function () {
+Route::middleware('guest')->prefix('admin')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
     });
 });
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');

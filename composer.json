@@ -28,8 +28,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/generateRandomNumber.php",
-            "app/Helpers/isTimePassed.php"
+            "app/Helpers/generateRandomNumber.php"
         ]
     },
     "autoload-dev": {
