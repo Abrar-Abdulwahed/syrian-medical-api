@@ -84,7 +84,7 @@ class AuthController extends Controller
             $key = '2FA_verify' . $user->id;
             $executed = RateLimiter::attempt(
                 $key,
-                $perTwoMinutes = 1,
+                $perMinutes = 1,
                 function() use($user, $key) {
                     $code = generateRandomNumber(4);
                     // TODO: Send code to user email
