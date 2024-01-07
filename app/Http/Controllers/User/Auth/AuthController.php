@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\VerificationRequest;
 use App\Http\Requests\Auth\ChangePasswordRequest;
@@ -80,22 +81,29 @@ class AuthController extends Controller
             if (!Hash::check($request->password, $user->password))
                 return $this->returnWrong('Incorrect password');
 
-            if (!$user->last_code_sent_at || isTimePassed(30, $user->last_code_sent_at)) {
+            $key = '2FA_verify' . $user->id;
+            $executed = RateLimiter::attempt(
+                $key,
+                $perTwoMinutes = 1,
+                function() use($user, $key) {
+                    $code = generateRandomNumber(4);
+                    // TODO: Send code to user email
 
-                // Generate and send the code to the user's email
-                $code = generateRandomNumber(4);
+                    // Update user details and reset login attempts
+                    $user->forceFill([
+                        'verification_code' => $code,
+                        'last_code_sent_at' => now(),
+                        'login_attempts' => 0,
+                    ])->save();
+                    RateLimiter::clear($key);
+                },
+                $decayRate = 1800, // 30 minutes
+            );
+            if (!$executed) {
+                return $this->returnWrong('You may try again in '. ceil(RateLimiter::availableIn($key)/60).' minutes.', 422);
+            }else{
                 Cache::put($user->ip, $request->remember_me, 120); // 2 minutes
-                //TODO: Send code to user email
-
-                $user->forceFill([
-                    'verification_code' => $code,
-                    'last_code_sent_at' => now(),
-                    'login_attempts' => 0,
-                ])->save();
-
                 return $this->returnSuccess('code sent to your email');
-            } else {
-                return $this->returnWrong('Wait for 30 minutes before requesting a new code.', 422);
             }
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
