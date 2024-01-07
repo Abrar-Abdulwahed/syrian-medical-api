@@ -15,8 +15,8 @@ use App\Http\Controllers\Admin\UserManagementController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
-    Route::controller(UserManagementController::class)->prefix('admin/user-management')->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
+    Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
         Route::get('users', 'index');
         Route::get('patients', 'patients');
         Route::get('service-providers', 'serviceProviders');
@@ -24,7 +24,4 @@ Route::middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
         Route::post('user/{id}/accept', 'ServiceProviderAccept');
         Route::post('user/{id}/refuse', 'ServiceProviderRefuse');
     });
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
 });
