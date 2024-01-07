@@ -97,7 +97,7 @@ class AuthController extends Controller
                     ])->save();
                     RateLimiter::clear($key);
                 },
-                $decayRate = 1800, // 30 minutes
+                // $decayRate = 1800, // 30 minutes
             );
             if (!$executed) {
                 return $this->returnWrong('You may wait '. ceil(RateLimiter::availableIn($key)/60).' minutes before re-send new code', 422);
