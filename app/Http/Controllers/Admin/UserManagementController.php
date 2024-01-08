@@ -21,18 +21,26 @@ class UserManagementController extends Controller
     public function index(Request $request)
     {
         $type = $request->query('type');
+        $query = User::query();
 
-        if($type === UserType::PATIENT->value)
+        if($type === UserType::PATIENT->value){
+            $query = $query->where('type', $type);
             return $this->getUsersAction->__invoke($request, ['patientProfile'], UserType::PATIENT->value);
+        }
 
-        else if($type === UserType::SERVICE_PROVIDER->value)
+        else if($type === UserType::SERVICE_PROVIDER->value){
+            $query = $query->where('type', $type);
             return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
-        return $this->getUsersAction->__invoke($request, ['patientProfile', 'serviceProviderProfile']);
+        }
+
+        // users in general
+        return $this->getUsersAction->__invoke($request, ['patientProfile', 'serviceProviderProfile'], $query);
     }
 
-    public function fetchUsersByType(Request $request)
+    public function listApplicant(Request $request)
     {
-
+        $applicantsQuery = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0]);
+        return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], $applicantsQuery);
     }
 
     public function show($id)

@@ -21,5 +21,6 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'can:is-super-admin'])->grou
         Route::get('user/{id}', 'show');
         Route::post('user/{id}/accept', 'ServiceProviderAccept');
         Route::post('user/{id}/refuse', 'ServiceProviderRefuse');
+        Route::get('applicants', 'listApplicant');
     });
 });
