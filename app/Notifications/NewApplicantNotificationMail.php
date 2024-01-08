@@ -34,8 +34,8 @@ class NewApplicantNotificationMail extends Notification
     {
         return (new MailMessage)
                     ->subject('New Applicant')
-                    ->action('Review the application', route('show.user', $this->id))
-                    ->line('Thank you for using our application!');
+                    ->line('A new applicant arrived to your site, review it by click the button below:')
+                    ->action('Review the applicant', route('show.user', $this->id));
     }
 
     /**
