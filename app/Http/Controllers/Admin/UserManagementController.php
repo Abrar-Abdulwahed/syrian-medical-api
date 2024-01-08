@@ -20,17 +20,27 @@ class UserManagementController extends Controller
 
     public function index(Request $request)
     {
-        return $this->getUsersAction->__invoke($request, ['patientProfile', 'serviceProviderProfile']);
+        $type = $request->query('type');
+        $query = User::query();
+
+        if($type === UserType::PATIENT->value){
+            $query = $query->where('type', $type);
+            return $this->getUsersAction->__invoke($request, ['patientProfile'], UserType::PATIENT->value);
+        }
+
+        else if($type === UserType::SERVICE_PROVIDER->value){
+            $query = $query->where('type', $type);
+            return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
+        }
+
+        // users in general
+        return $this->getUsersAction->__invoke($request, ['patientProfile', 'serviceProviderProfile'], $query);
     }
 
-    public function patients(Request $request)
+    public function listApplicant(Request $request)
     {
-        return $this->getUsersAction->__invoke($request, ['patientProfile'], UserType::PATIENT->value);
-    }
-
-    public function serviceProviders(Request $request)
-    {
-        return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
+        $applicantsQuery = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0]);
+        return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], $applicantsQuery);
     }
 
     public function show($id)
@@ -48,6 +58,7 @@ class UserManagementController extends Controller
         try{
             $user = User::findOrFail($id);
             $user->forceFill(['activated' => 1])->save();
+            
             return $this->returnSuccess('Service Provider has been activated!');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());

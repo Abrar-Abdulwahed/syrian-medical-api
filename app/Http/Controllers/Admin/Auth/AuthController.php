@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request){
         try {
             $user = Admin::where('email', $request->email)->first();
-            if (is_null($user)) {
+            if (!$user) {
                 return $this->returnWrong('Email doesn\'t exist.', 401);
             }
 

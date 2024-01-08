@@ -2,7 +2,6 @@
 
 namespace App\Actions;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\ApiResponseTrait;
@@ -10,13 +9,8 @@ use App\Http\Traits\ApiResponseTrait;
 class GetUsersDataAction
 {
     use ApiResponseTrait;
-    public function __invoke(Request $request, array $withRelations, $userType = null){
-        $pageSize = $request->page_size ?? 10;
-        $query = User::query();
-
-        if ($userType) {
-            $query->where('type', $userType);
-        }
+    public function __invoke(Request $request, array $withRelations, $query){
+        $pageSize = $request->per_page ?? 10;
         $users = $query->with($withRelations)->paginate($pageSize);
 
         $meta = [
