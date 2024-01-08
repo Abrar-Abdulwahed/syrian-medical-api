@@ -10,7 +10,9 @@ use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Admin\UserActivationRequest;
+use App\Notifications\AdminReviewNotificationMail;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserManagementController extends Controller
@@ -25,12 +27,12 @@ class UserManagementController extends Controller
 
         if($type === UserType::PATIENT->value){
             $query = $query->where('type', $type);
-            return $this->getUsersAction->__invoke($request, ['patientProfile'], UserType::PATIENT->value);
+            return $this->getUsersAction->__invoke($request, ['patientProfile'], $query);
         }
 
         else if($type === UserType::SERVICE_PROVIDER->value){
             $query = $query->where('type', $type);
-            return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], UserType::SERVICE_PROVIDER->value);
+            return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], $query);
         }
 
         // users in general
@@ -58,7 +60,9 @@ class UserManagementController extends Controller
         try{
             $user = User::findOrFail($id);
             $user->forceFill(['activated' => 1])->save();
-            
+
+            // Notify service provider
+            Notification::send($user, new AdminReviewNotificationMail(true));
             return $this->returnSuccess('Service Provider has been activated!');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
@@ -69,6 +73,8 @@ class UserManagementController extends Controller
     {
         try{
             $user = User::findOrFail($id);
+            // Notify service provider
+            Notification::send($user, new AdminReviewNotificationMail(false));
             $this->removeDirectory($user->attachment_path);
             $user->delete();
             return $this->returnSuccess('Service Provider has been deleted from database!');
