@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Requests\Auth\VerificationRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
@@ -18,19 +20,14 @@ class ForgotPasswordController extends Controller
     {
         try{
             $user = User::where('email', $request->email)->first();
-            if (!$user)
-                return $this->returnWrong('User not found', 404);
-
-            $code = generateRandomNumber(4);
-            DB::table('password_resets')->updateOrInsert(
-                ['email' => $user->email],
-                ['code' => $code, 'created_at' => now()]
+            $status = Password::sendResetLink(
+                $request->only('email')
             );
 
-            //TODO: send code to user
+            return $status === Password::RESET_LINK_SENT
+                        ? $this->returnSuccess('We have emailed you a code to enter.')
+                        : $this->returnWrong(__($status));
 
-            //TODO: remove code from the return
-            return $this->returnJson($code, 'Enter the code that you received on your email.');
         }catch(\Exception $e){
             return $this->returnWrong($e->getMessage());
         }

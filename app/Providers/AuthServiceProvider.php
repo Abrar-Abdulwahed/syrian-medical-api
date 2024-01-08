@@ -8,6 +8,7 @@ use App\Policies\SuperAdminPolicy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -30,9 +31,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('is-super-admin', [SuperAdminPolicy::class, 'isSuperAdmin']);
 
         // customize email verification
-        VerifyEmail::toMailUsing(function (object $notifiable, $user) {
+        VerifyEmail::toMailUsing(function (object $notifiable) {
             $code = generateRandomNumber(8);
-            DB::table('email_verify_codes')->insert([
+            DB::table('email_verify_codes')->updateOrInsert([
                 'email' => $notifiable->email,
                 'code'  => $code,
                 'created_at' => now(),
@@ -41,6 +42,20 @@ class AuthServiceProvider extends ServiceProvider
                 ->subject('Verify Email Address')
                 ->line('This is your code: '. $code)
                 ->line('If you did not create an account, no further action is required');
+        });
+
+        // customize reset password
+        ResetPassword::toMailUsing(function (object $notifiable) {
+            $code = generateRandomNumber(4);
+            DB::table('password_resets')->updateOrInsert(
+                ['email' => $notifiable->email],
+                ['code' => $code, 'created_at' => now()]
+            );
+            return (new MailMessage)
+            ->subject('Reset Password Notification')
+            ->line('You are receiving this email because we received a password reset request for your account.')
+            ->line('This is your code: '. $code)
+            ->line('If you did not request a password reset, no further action is required.');
         });
     }
 }
