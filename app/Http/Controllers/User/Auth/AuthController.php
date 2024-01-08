@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Auth;
 
 use App\Models\User;
+use App\Models\Admin;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
@@ -17,10 +18,10 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\VerificationRequest;
+use App\Notifications\NewApplicantNotificationMail;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\PatientAccountRequest;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
-use App\Notifications\RegistrationConfirmationNotification;
 
 class AuthController extends Controller
 {
@@ -58,6 +59,7 @@ class AuthController extends Controller
                 'evidence' => $fileName,
             ]);
             event(new Registered($user));
+            Notification::send(Admin::findOrFail(1), new NewApplicantNotificationMail($user->id));
             DB::commit();
             return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully, review your email');
         }catch (\Exception $e) {

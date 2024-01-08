@@ -58,6 +58,7 @@ class UserManagementController extends Controller
         try{
             $user = User::findOrFail($id);
             $user->forceFill(['activated' => 1])->save();
+            
             return $this->returnSuccess('Service Provider has been activated!');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());

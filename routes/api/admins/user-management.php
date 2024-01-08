@@ -18,7 +18,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 Route::prefix('admin')->middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
     Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
         Route::get('users', 'index'); // all users, + fetch by type
-        Route::get('user/{id}', 'show');
+        Route::get('user/{id}', 'show')->name('show.user');
         Route::post('user/{id}/accept', 'ServiceProviderAccept');
         Route::post('user/{id}/refuse', 'ServiceProviderRefuse');
         Route::get('applicants', 'listApplicant');
