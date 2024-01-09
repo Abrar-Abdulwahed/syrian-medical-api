@@ -39,11 +39,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');
     });
-
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('logout', 'logout');
-        Route::post('change-password', 'changePassword');
-    });
 });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
