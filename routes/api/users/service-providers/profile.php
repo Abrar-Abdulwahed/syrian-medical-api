@@ -17,6 +17,7 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 Route::prefix('service-providers')->middleware(['auth:sanctum', 'verified', 'activated'])->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('profile-details', 'showDetails');
+        Route::post('profile-details', 'updateDetails');
     });
 });
 
