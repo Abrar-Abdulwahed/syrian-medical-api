@@ -2,9 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\User\ServiceProvider\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +14,9 @@ use App\Http\Controllers\Admin\UserManagementController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-include __DIR__.'/api/users/auth.php';
-include __DIR__.'/api/users/service-providers/profile.php';
-include __DIR__.'/api/admins/auth.php';
-include __DIR__.'/api/admins/user-management.php';
+Route::prefix('service-providers')->middleware(['auth:sanctum', 'verified', 'activated'])->group(function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('profile-details', 'showDetails');
+    });
+});
+

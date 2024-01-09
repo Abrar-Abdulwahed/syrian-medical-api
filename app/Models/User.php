@@ -58,6 +58,13 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->firstname.' '.$this->lastname,
+        );
+    }
+
     // Relations
     public function serviceProviderProfile()
     {

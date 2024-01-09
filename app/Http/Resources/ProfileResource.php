@@ -16,6 +16,7 @@ class ProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         $attributes =  $this->resource->getAttributes();
+
         return array_merge($attributes, [
             'user' => new UserResource($this->whenLoaded('user'))
         ]);

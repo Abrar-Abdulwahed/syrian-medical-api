@@ -16,7 +16,14 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $attributes = $this->resource->getAttributes();
+        $attributes = [
+            "fullName" => $this->fullName,
+            // "ip" => $this->ip,
+            "email" =>  $this->email,
+            "type" => $this->type,
+            "activated"  =>  $this->activated,
+            "joined_at" => $this->created_at->format('Y-m-d H:i:s'),
+        ];
 
         $profile = null;
 
@@ -27,14 +34,8 @@ class UserResource extends JsonResource
             $profile = new ProfileResource($this->whenLoaded('serviceProviderProfile'));
         }
 
-        // Remove 'password' attribute from being returned
-        unset($attributes['password']);
-
         return array_merge($attributes, [
             'profile' =>  $profile,
-
-            //! donsn't work as chaining when()
-            //$this->when('serviceProviderProfile', new ProfileResource($this->whenLoaded('serviceProviderProfile')))->when($this->isPatient(), new ProfileResource($this->whenLoaded('patientProfile'))),
         ]);
     }
 }

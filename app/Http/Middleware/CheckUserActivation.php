@@ -18,12 +18,13 @@ class CheckUserActivation
      */
     public function handle(Request $request, Closure $next): Response
     {
+            return $next($request);
             $user = $request->user();
 
-            if ($user && $user->activated === 1) {
+            if ($user && $user->activated == 1) {
                 return $next($request);
             }
 
-            return $this->returnWrong('You\'re not activated');
+            return $this->returnWrong('You can NOT go forward, you\'re not activated');
     }
 }
