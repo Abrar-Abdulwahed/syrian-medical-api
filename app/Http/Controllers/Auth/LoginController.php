@@ -14,7 +14,7 @@ use App\Http\Requests\Auth\VerificationRequest;
 
 class LoginController extends Controller
 {
-    public function __construct(protected Authenticator $authenticatorAction)
+    public function __construct()
     {
         $this->middleware('guest')->except(['logout', 'admin.logout']);
         $this->middleware(['auth:sanctum'])->only(['logout', 'admin.logout']);
@@ -22,7 +22,7 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request){
         try {
-            $result = $this->authenticatorAction->authenticate(
+            $result = Authenticator::authenticate(
                 $request->email,
                 $request->password,
                 $request->route()->getName() === 'admin.login'
