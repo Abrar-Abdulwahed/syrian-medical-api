@@ -5,19 +5,24 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use App\Actions\Authenticator;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Http\Requests\Auth\VerificationRequest;
-use App\Http\Controllers\Auth\BaseLoginController;
 
-class LoginController extends BaseLoginController
+class LoginController extends Controller
 {
+    public function __construct(protected Authenticator $authenticatorAction)
+    {
+        $this->middleware('guest')->except(['logout', 'admin.logout']);
+        $this->middleware(['auth:sanctum'])->only(['logout', 'admin.logout']);
+    }
+
     public function login(LoginRequest $request){
         try {
-            $result = $this->authenticate(
+            $result = $this->authenticatorAction->authenticate(
                 $request->email,
                 $request->password,
                 $request->route()->getName() === 'admin.login'
@@ -100,5 +105,10 @@ class LoginController extends BaseLoginController
             'verification_code' => null,
             'login_attempts' => 0,
         ])->save();
+    }
+
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+        return $this->returnSuccess('logged out successfully', 'success', 201);
     }
 }
