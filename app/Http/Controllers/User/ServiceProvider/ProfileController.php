@@ -11,6 +11,11 @@ use App\Http\Requests\Auth\ServiceProviderAccountRequest;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+    }
+
     public function showDetails(Request $request)
     {
         try{

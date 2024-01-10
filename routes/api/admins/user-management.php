@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('admin')->middleware(['auth:sanctum', 'can:is-super-admin'])->group(function () {
+Route::prefix('admin')->group(function () {
     Route::controller(UserManagementController::class)->prefix('user-management')->group(function () {
         Route::get('users', 'index'); // all users, + fetch by type
         Route::get('user/{id}', 'show')->name('show.user');
