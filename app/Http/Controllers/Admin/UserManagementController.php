@@ -18,7 +18,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class UserManagementController extends Controller
 {
     use FileTrait;
-    public function __construct(protected GetUsersDataAction $getUsersAction){}
+    public function __construct(protected GetUsersDataAction $getUsersAction){
+        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
+    }
 
     public function index(Request $request)
     {

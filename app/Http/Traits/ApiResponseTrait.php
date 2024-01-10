@@ -43,7 +43,7 @@ trait ApiResponseTrait
         $message = 'Your request done successfully'
     ) {
         return response()->json([
-            'code'    => '204',
+            'code'    => 200,
             'status'  => 'success',
             'message' => $message,
         ], 200);

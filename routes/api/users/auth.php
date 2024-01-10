@@ -2,9 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\Auth\{
-    AuthController,
-    ForgotPasswordController,
+use App\Http\Controllers\Auth\{
+    RegisterController,
+    LoginController,
+    ChangePasswordController,
+    ForgotPasswordController
 };
 
 /*
@@ -17,29 +19,21 @@ use App\Http\Controllers\User\Auth\{
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('guest')->group(function () {
-    Route::controller(AuthController::class)->group(function () {
-        Route::prefix('register')->group(function () {
-            Route::post('email/verify', 'EmailVerify')->name('verification.verify');
-            Route::post('patient', 'storePatient');
-            Route::post('service-provider', 'storeServiceProvider');
-        });
-        Route::post('login', 'login');
-        Route::post('login/verify', 'verify2FA');
-    });
 
-    Route::controller(ForgotPasswordController::class)->group(function () {
-        Route::post('forgot-password', 'forgotPassword')->name('password.reset');
-        Route::post('forgot-password/verify', 'verify');
-        Route::post('reset-password', 'resetPassword');
-    });
+Route::controller(RegisterController::class)->prefix('register')->group(function () {
+        Route::post('email/verify', 'EmailVerify')->name('verification.verify');
+        Route::post('patient', 'storePatient');
+        Route::post('service-provider', 'storeServiceProvider');
 });
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('logout', 'logout');
-        Route::post('change-password', 'changePassword');
-    });
+Route::controller(LoginController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('login/verify', 'verify2FA');
+    Route::post('logout', 'logout')->name('logout');
 });
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::controller(ForgotPasswordController::class)->group(function () {
+    Route::post('forgot-password', 'forgotPassword')->name('password.reset');
+    Route::post('forgot-password/verify', 'verify');
+    Route::post('reset-password', 'resetPassword');
+});
+Route::post('change-password', [ChangePasswordController::class, 'changePassword']);
+
