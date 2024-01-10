@@ -38,6 +38,34 @@ class LoginController extends BaseLoginController
         }
     }
 
+    private function handleSending2FA(LoginRequest $request, User $user)
+    {
+        $key = '2FA_verify' . $user->id;
+        $executed = RateLimiter::attempt(
+            $key,
+            $perMinutes = 1,
+            function () use ($user, $key) {
+                $code = generateRandomNumber(4);
+                // TODO: Send code to user email
+
+                // Update user details and reset login attempts
+                $user->forceFill([
+                    'verification_code' => $code,
+                    'login_attempts' => 0,
+                ])->save();
+                RateLimiter::clear($key);
+            },
+            $decayRate = 1800 // 30 minutes
+        );
+
+        if (!$executed) {
+            return $this->returnWrong('You may wait ' . ceil(RateLimiter::availableIn($key) / 60) . ' minutes before re-send new code', 422);
+        } else {
+            Cache::put($user->ip, $request->remember_me, 120); // 2 minutes
+            return $this->returnSuccess('code sent to your email');
+        }
+    }
+
     public function verify2FA(VerificationRequest $request)
     {
         try{
@@ -75,33 +103,5 @@ class LoginController extends BaseLoginController
             'verification_code' => null,
             'login_attempts' => 0,
         ])->save();
-    }
-
-    private function handleSending2FA(LoginRequest $request, User $user)
-    {
-        $key = '2FA_verify' . $user->id;
-        $executed = RateLimiter::attempt(
-            $key,
-            $perMinutes = 1,
-            function () use ($user, $key) {
-                $code = generateRandomNumber(4);
-                // TODO: Send code to user email
-
-                // Update user details and reset login attempts
-                $user->forceFill([
-                    'verification_code' => $code,
-                    'login_attempts' => 0,
-                ])->save();
-                RateLimiter::clear($key);
-            },
-            $decayRate = 1800 // 30 minutes
-        );
-
-        if (!$executed) {
-            return $this->returnWrong('You may wait ' . ceil(RateLimiter::availableIn($key) / 60) . ' minutes before re-send new code', 422);
-        } else {
-            Cache::put($user->ip, $request->remember_me, 120); // 2 minutes
-            return $this->returnSuccess('code sent to your email');
-        }
     }
 }
