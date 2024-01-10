@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Auth\AuthController;
+use App\Http\Controllers\Auth\LoginController;
 
 
 /*
@@ -15,9 +15,9 @@ use App\Http\Controllers\Admin\Auth\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('admin')->middleware('guest')->group(function () {
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('login', 'login');
+Route::prefix('admin')->group(function () {
+    Route::controller(LoginController::class)->group(function () {
+        Route::post('login', 'login')->name('admin.login');
     });
 });
 
