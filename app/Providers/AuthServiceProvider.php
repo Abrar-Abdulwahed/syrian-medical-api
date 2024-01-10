@@ -4,7 +4,6 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\User;
-use App\Contracts\Authenticator;
 use App\Policies\SuperAdminPolicy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -30,7 +29,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(Authenticator::class, BaseLoginController::class);
         Gate::define('is-super-admin', [SuperAdminPolicy::class, 'isSuperAdmin']);
 
         // customize email verification
