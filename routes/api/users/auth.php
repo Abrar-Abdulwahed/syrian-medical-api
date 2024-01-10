@@ -29,15 +29,16 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('login/verify', 'verify2FA');
+    Route::post('logout', 'logout')->name('logout');
 });
 Route::controller(ForgotPasswordController::class)->group(function () {
     Route::post('forgot-password', 'forgotPassword')->name('password.reset');
     Route::post('forgot-password/verify', 'verify');
     Route::post('reset-password', 'resetPassword');
 });
+
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::controller(AuthController::class)->group(function () {
-        Route::post('logout', 'logout');
         Route::post('change-password', 'changePassword');
     });
 });

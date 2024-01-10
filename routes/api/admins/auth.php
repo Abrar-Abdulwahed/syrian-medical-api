@@ -18,6 +18,6 @@ use App\Http\Controllers\Auth\LoginController;
 Route::prefix('admin')->group(function () {
     Route::controller(LoginController::class)->group(function () {
         Route::post('login', 'login')->name('admin.login');
+        Route::post('logout', 'logout')->name('admin.logout');
     });
 });
-

@@ -13,8 +13,10 @@ class BaseLoginController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except(['logout', 'admin.logout']);
+        $this->middleware(['auth:sanctum'])->only(['logout', 'admin.logout']);
     }
+
     public function authenticate($email, $password, $isAdmin)
     {
         $model = $isAdmin ? Admin::class : User::class;
@@ -37,5 +39,10 @@ class BaseLoginController extends Controller
         }
 
         return $user;
+    }
+
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+        return $this->returnSuccess('logged out successfully', 'success', 201);
     }
 }

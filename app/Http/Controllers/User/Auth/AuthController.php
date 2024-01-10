@@ -107,9 +107,4 @@ class AuthController extends Controller
             return $this->returnWrong($e->getMessage());
         }
     }
-
-    public function logout(Request $request){
-        $request->user()->tokens()->delete();
-        return $this->returnJson([], 'logged out successfully', 'success', 201);
-    }
 }
