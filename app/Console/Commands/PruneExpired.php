@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class PruneExpired extends Command
@@ -29,5 +28,6 @@ class PruneExpired extends Command
     public function handle()
     {
         $model = Sanctum::$personalAccessTokenModel;
-        $model::where('expires_at', '<', now())->delete();    }
+        $model::whereDate('expires_at', '<', now())->delete();
+    }
 }
