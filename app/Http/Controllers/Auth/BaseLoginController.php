@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
-class BaseLoginController extends Controller implements Authenticator
+class BaseLoginController extends Controller
 {
     public function __construct()
     {

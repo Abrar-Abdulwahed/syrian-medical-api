@@ -16,11 +16,9 @@ use App\Http\Controllers\Auth\BaseLoginController;
 
 class LoginController extends BaseLoginController
 {
-    public function __construct(protected Authenticator $authenticator){}
-
     public function login(LoginRequest $request){
         try {
-            $result = $this->authenticator->authenticate(
+            $result = $this->authenticate(
                 $request->email,
                 $request->password,
                 $request->route()->getName() === 'admin.login'
