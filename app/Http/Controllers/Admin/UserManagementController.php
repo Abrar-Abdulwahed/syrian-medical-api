@@ -10,6 +10,7 @@ use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\PendingUpdateProfileRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Admin\UserActivationRequest;
 use App\Notifications\AdminReviewNotificationMail;
@@ -41,7 +42,7 @@ class UserManagementController extends Controller
         return $this->getUsersAction->__invoke($request, ['patientProfile', 'serviceProviderProfile'], $query);
     }
 
-    public function listApplicant(Request $request)
+    public function showRegistrationRequests(Request $request)
     {
         $applicantsQuery = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0]);
         return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], $applicantsQuery);
@@ -57,7 +58,7 @@ class UserManagementController extends Controller
         }
     }
 
-    public function ServiceProviderAccept(UserActivationRequest $request, $id)
+    public function accept(UserActivationRequest $request, $id)
     {
         try{
             $user = User::findOrFail($id);
@@ -71,7 +72,7 @@ class UserManagementController extends Controller
         }
     }
 
-    public function ServiceProviderRefuse(UserActivationRequest $request, $id)
+    public function refuse(UserActivationRequest $request, $id)
     {
         try{
             $user = User::findOrFail($id);
@@ -83,5 +84,32 @@ class UserManagementController extends Controller
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
+    }
+
+    public function showUserProfileUpdateRequests()
+    {
+        try {
+            $pendingUpdates = PendingUpdateProfileRequest::all();
+
+            if ($pendingUpdates->isEmpty()) {
+                return $this->returnSuccess('No pending updates found', 200);
+            }
+
+            $updates = $pendingUpdates->map(function ($pendingUpdate) {
+                return [
+                    'user_id' => $pendingUpdate->user_id,
+                    'updates' => json_decode($pendingUpdate->updates, true)
+                ];
+            });
+
+            return $this->returnJSON($updates, 'All pending updates');
+        } catch (\Exception $e) {
+            return $this->returnWrong($e->getMessage());
+        }
+    }
+
+    public function acceptUserProfileUpdateRequests()
+    {
+
     }
 }
