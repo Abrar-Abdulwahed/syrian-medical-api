@@ -53,9 +53,7 @@ class AuthController extends Controller
                 $fileName = $this->uploadFile($request->file('evidence'), $user->attachment_path);
 
             $user->serviceProviderProfile()->create([
-                'bank_name' => $request->bank_name,
-                'iban_number' => $request->iban_number,
-                'swift_code' => $request->swift_code,
+                $request->only('bank_name', 'iban_number', 'swift_code'),
                 'evidence' => $fileName,
             ]);
             event(new Registered($user));
