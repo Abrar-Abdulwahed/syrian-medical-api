@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\User\Auth\{
-    AuthController,
-    ForgotPasswordController,
+use App\Http\Controllers\Auth\{
+    RegisterController,
+    LoginController,
+    ChangePasswordController,
+    ForgotPasswordController
 };
 
 /*
@@ -19,12 +20,10 @@ use App\Http\Controllers\User\Auth\{
 |
 */
 
-Route::controller(AuthController::class)->group(function () {
-    Route::prefix('register')->group(function () {
+Route::controller(RegisterController::class)->prefix('register')->group(function () {
         Route::post('email/verify', 'EmailVerify')->name('verification.verify');
         Route::post('patient', 'storePatient');
         Route::post('service-provider', 'storeServiceProvider');
-    });
 });
 Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'login');
@@ -36,12 +35,5 @@ Route::controller(ForgotPasswordController::class)->group(function () {
     Route::post('forgot-password/verify', 'verify');
     Route::post('reset-password', 'resetPassword');
 });
+Route::post('change-password', [ChangePasswordController::class, 'changePassword']);
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::controller(AuthController::class)->group(function () {
-        Route::post('change-password', 'changePassword');
-    });
-});
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });

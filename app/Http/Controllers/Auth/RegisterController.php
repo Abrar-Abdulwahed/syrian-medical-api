@@ -1,39 +1,36 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Models\Admin;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
+use App\Services\UserService;
 use App\Http\Traits\FileTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Auth\Events\Registered;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\VerificationRequest;
-use App\Notifications\NewApplicantNotificationMail;
-use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Http\Requests\Auth\PatientAccountRequest;
+use App\Notifications\NewApplicantNotificationMail;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
 
-class AuthController extends Controller
+class RegisterController extends Controller
 {
     use FileTrait;
+    public function __construct(protected UserService $userService)
+    {
+        $this->middleware('guest');
+    }
 
     public function storePatient(PatientAccountRequest $request)
     {
         try{
-            $user = User::create($request->validated());
-            $user->forceFill(['type' => UserType::PATIENT->value, 'ip' => $request->ip()])->save();
+            $user = $this->userService->createUser($request->validated(), UserType::PATIENT->value, $request->ip(), true);
             event(new Registered($user));
-            return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully, review your email');
+            return $this->returnSuccess('Your data saved successfully, review your email');
         }catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -43,23 +40,15 @@ class AuthController extends Controller
     {
         DB::beginTransaction();
         try{
-            $user = User::create($request->validated());
-            $user->forceFill([
-                'type' => UserType::SERVICE_PROVIDER->value,
-                'ip' => $request->ip(),
-                'activated' => 0,
-            ])->save();
+            $user = $this->userService->createUser($request->validated(), UserType::SERVICE_PROVIDER->value, $request->ip(), false);
             if($request->hasFile('evidence'))
                 $fileName = $this->uploadFile($request->file('evidence'), $user->attachment_path);
 
-            $user->serviceProviderProfile()->create([
-                $request->only('bank_name', 'iban_number', 'swift_code'),
-                'evidence' => $fileName,
-            ]);
+            $this->userService->createProfile($user, $request->only('bank_name', 'iban_number', 'swift_code'), $fileName);
             event(new Registered($user));
             Notification::send(Admin::findOrFail(1), new NewApplicantNotificationMail($user->id));
             DB::commit();
-            return $this->returnJSON(new UserResource(User::findOrFail($user->id)), 'Your data saved successfully, review your email');
+            return $this->returnSuccess('Your data saved successfully, review your email');
         }catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
@@ -92,17 +81,4 @@ class AuthController extends Controller
         }
     }
 
-    public function changePassword(ChangePasswordRequest $request)
-    {
-        //! this task doesn't have mobile UI
-        try{
-            $user = $request->user();
-            $user->update([
-                'password'  => Hash::make($request->new_password)
-            ]);
-            return $this->returnSuccess('Password Changed Successfully');
-        }catch(\Exception $e){
-            return $this->returnWrong($e->getMessage());
-        }
-    }
 }

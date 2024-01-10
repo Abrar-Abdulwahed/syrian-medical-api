@@ -27,14 +27,17 @@ class LoginController extends Controller
                 $request->password,
                 $request->route()->getName() === 'admin.login'
             );
+
             if ($result instanceof User) {
                 return $this->handleSending2FA($request, $result);
-            } elseif ($result instanceof Admin) {
+            }
+
+            if ($result instanceof Admin) {
                 $token = $result->createToken('auth', ['*'], now()->addYear())->plainTextToken;
                 return $this->returnJSON($token, 'You have logged in successfully');
-            } else {
-                return $this->returnWrong($result, 401);
             }
+
+            return $this->returnWrong($result, 401);
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
