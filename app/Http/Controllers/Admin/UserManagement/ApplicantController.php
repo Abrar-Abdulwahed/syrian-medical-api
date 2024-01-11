@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\UserManagement;
 
 use App\Models\User;
 use App\Enums\UserType;
@@ -8,56 +8,25 @@ use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\UserResource;
-use Illuminate\Database\Eloquent\Builder;
+use App\Http\Traits\PaginateResponseTrait;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Admin\UserActivationRequest;
 use App\Notifications\AdminReviewNotificationMail;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class UserManagementController extends Controller
+class ApplicantController extends Controller
 {
-    use FileTrait;
+    use FileTrait, PaginateResponseTrait;
     public function __construct(protected GetUsersDataAction $getUsersAction){
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
 
     public function index(Request $request)
     {
-        $type = $request->query('type');
-        $query = User::query();
-
-        if($type === UserType::PATIENT->value){
-            $query = $query->where('type', $type);
-            return $this->getUsersAction->__invoke($request, ['patientProfile'], $query);
-        }
-
-        else if($type === UserType::SERVICE_PROVIDER->value){
-            $query = $query->where('type', $type);
-            return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], $query);
-        }
-
-        // users in general
-        return $this->getUsersAction->__invoke($request, ['patientProfile', 'serviceProviderProfile'], $query);
-    }
-
-    public function listApplicant(Request $request)
-    {
         $applicantsQuery = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0]);
-        return $this->getUsersAction->__invoke($request, ['serviceProviderProfile'], $applicantsQuery);
+        return $this->getUsersAction->getData($request, ['serviceProviderProfile'], $applicantsQuery);
     }
 
-    public function show($id)
-    {
-        try{
-            $user = User::findOrFail($id);
-            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
-        } catch (\Exception $e) {
-            return $this->returnWrong($e->getMessage());
-        }
-    }
-
-    public function ServiceProviderAccept(UserActivationRequest $request, $id)
+    public function accept(UserActivationRequest $request, $id)
     {
         try{
             $user = User::findOrFail($id);
@@ -71,7 +40,7 @@ class UserManagementController extends Controller
         }
     }
 
-    public function ServiceProviderRefuse(UserActivationRequest $request, $id)
+    public function refuse(UserActivationRequest $request, $id)
     {
         try{
             $user = User::findOrFail($id);

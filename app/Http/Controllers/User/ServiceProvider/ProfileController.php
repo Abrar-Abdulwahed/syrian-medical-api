@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Collection;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
 
 class ProfileController extends Controller
@@ -28,21 +29,40 @@ class ProfileController extends Controller
 
     public function updateDetails(ServiceProviderAccountRequest $request)
     {
-        try{
+        try {
             $user = $request->user();
             $names = explode(' ', $request->username);
-            $updates = [
-                'firstname' => $names[0] ?? $user->firstname,
-                'lastname' => $names[1] ?? $user->lastname,
-                'email'    => $request->email ?? $user->email,
-                'bank_name'=> $request->bank_name ?? $user->bank_name,
-                'iban_number'=> $request->iban_number ?? $user->iban_number,
-                'swift_code'=> $request->swift_code ?? $user->swift_code,
-                'password'  => Hash::make($request->password) ?? Hash::make($user->password),
-            ];
-            $user->pendingUpdateProfileRequest()->updateOrCreate(['user_id' => $user->id], ['updates' => json_encode($updates)]);
+            $firstName = $names[0] ?? null;
+            $lastName = $names[1] ?? null;
+            $changes = collect([
+                'firstname' => $firstName && $firstName !== $user->firstname
+                    ? $firstName
+                    : null,
+                'lastname' => $lastName && $lastName !== $user->lastname
+                    ? $lastName
+                    : null,
+                'email' => $request->email !== $user->email
+                    ? $request->email
+                    : null,
+                'bank_name' => $request->bank_name !== $user->serviceProviderProfile->bank_name
+                    ? $request->bank_name
+                    : null,
+                'iban_number' => $request->iban_number !== $user->serviceProviderProfile->iban_number
+                    ? $request->iban_number
+                    : null,
+                'swift_code' => $request->swift_code !== $user->serviceProviderProfile->swift_code
+                    ? $request->swift_code
+                    : null,
+            ])->filter();
+            if ($changes->isEmpty()) {
+                return $this->returnSuccess('No changes were made');
+            }
+            $user->pendingUpdateProfileRequest()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['changes' => $changes->toJson()]
+            );
             return $this->returnSuccess('Wait for the administrator to approve your edits');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
     }

@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PendingUpdateProfileRequest extends Model
 {
     use HasFactory;
-    protected $fillable = ['updates'];
+    protected $fillable = ['changes'];
     const UPDATED_AT = null;
+
     public function user()
     {
         return $this->belongsTo(User::class);
