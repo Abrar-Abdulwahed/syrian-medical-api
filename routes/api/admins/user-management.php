@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\UserManagement\{
 Route::prefix('admin/user-management')->group(function () {
         Route::controller(UserController::class)->prefix('users')->group(function(){
             Route::get('/', 'index'); // all users, + fetch by type(patient, service-provider)
-            Route::get('{id}', 'show')->name('show.user');
+            Route::get('{id}', 'show')->name('admin.show.user');
         });
 
         Route::controller(ApplicantController::class)->prefix('registration-requests')->group(function(){
