@@ -74,7 +74,7 @@ class LoginController extends Controller
     public function verify2FA(VerificationRequest $request)
     {
         try{
-            $user = User::where('ip', '158.17.206.181')->first();
+            $user = User::where('ip', $request->ip())->first();
             if (!$user)
                 return $this->returnWrong('User not found', 404);
             if (!$user || $user->verification_code !== $request->verification_code) {
