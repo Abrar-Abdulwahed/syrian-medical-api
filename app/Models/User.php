@@ -6,6 +6,7 @@ use App\Enums\UserType;
 use App\Events\RegisterEvent;
 use App\Models\PatientProfile;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\ServiceProviderProfile;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Models\PendingUpdateProfileRequest;

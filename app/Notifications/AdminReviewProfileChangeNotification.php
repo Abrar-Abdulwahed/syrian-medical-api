@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AdminReviewNotificationMail extends Notification
+class AdminReviewProfileChangeNotification extends Notification
 {
     use Queueable;
 
@@ -34,12 +34,12 @@ class AdminReviewNotificationMail extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $acceptMSG = 'Congratulations! Your application has been accepted, you can update your profile by clicking below button.';
-        $rejectedMSG = 'Unfortunately, Your application has been rejected';
+        $acceptMSG = 'Congratulations! Your application to change profile data has been accepted, you can go to your profile by clicking below button.';
+        $rejectedMSG = 'Unfortunately, Your application to change data in your profile has been rejected';
         $message = $this->accept ? $acceptMSG : $rejectedMSG;
 
         $mailMessage = (new MailMessage)
-            ->subject('Update On Your Application')
+            ->subject('Updates On Your Application to Change Profile')
             ->line($message);
 
         //TODO: write route name for show user profile

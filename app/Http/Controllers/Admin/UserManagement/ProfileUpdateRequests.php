@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\PaginateResponseTrait;
 use App\Models\PendingUpdateProfileRequest;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\AdminReviewProfileChangeNotification;
 
 
 class ProfileUpdateRequests extends Controller
@@ -31,8 +33,8 @@ class ProfileUpdateRequests extends Controller
                 // $user = User::findOrFail($pendingChange->user_id);
 
                 return [
-                    'profile' => route('show.user', [$pendingChange->user_id]),
-                    'user' => $pendingChange->user_id, //new UserResource($user),
+                    'profile' => route('admin.show.user', [$pendingChange->user_id]),
+                    'user_id' => $pendingChange->user_id, //new UserResource($user),
                     'changes' => json_decode($pendingChange->changes, true)
                 ];
             });
@@ -52,12 +54,12 @@ class ProfileUpdateRequests extends Controller
             $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
             $profileChanges = collect($changes)->except(['firstname', 'lastname', 'email'])->all();
 
-            $user = $pending->user();
-            $user->update($userChanges);
+            $pending->user()->update($userChanges);
             $pending->user->serviceProviderProfile()->update($profileChanges);
 
             // Delete the pending change request
             $pending->delete();
+            Notification::send($pending->user, new AdminReviewProfileChangeNotification(true));
             DB::commit();
             return $this->returnSuccess('Change accepted and user profile updated successfully');
         } catch (\Exception $e) {
@@ -71,6 +73,7 @@ class ProfileUpdateRequests extends Controller
         DB::beginTransaction();
         try{
             $pending->delete();
+            Notification::send($pending->user, new AdminReviewProfileChangeNotification(false));
             DB::commit();
             return $this->returnSuccess('User changes rejected successfully');
         } catch (\Exception $e) {
