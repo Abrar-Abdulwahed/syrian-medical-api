@@ -10,7 +10,7 @@ use App\Http\Traits\PaginateResponseTrait;
 class GetUsersDataAction
 {
     use ApiResponseTrait, PaginateResponseTrait;
-    public function __invoke(Request $request, array $withRelations, $query){
+    public function getData(Request $request, array $withRelations, $query){
         $pageSize = $request->per_page ?? 10;
         $users = $query->with($withRelations)->paginate($pageSize);
         [$meta, $links] = $this->paginateResponse($users);
