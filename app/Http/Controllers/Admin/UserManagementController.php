@@ -10,6 +10,7 @@ use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Http\Traits\PaginateResponseTrait;
 use App\Models\PendingUpdateProfileRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Admin\UserActivationRequest;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserManagementController extends Controller
 {
-    use FileTrait;
+    use FileTrait, PaginateResponseTrait;
     public function __construct(protected GetUsersDataAction $getUsersAction){
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
@@ -86,27 +87,55 @@ class UserManagementController extends Controller
         }
     }
 
-    public function showUserProfileUpdateRequests()
+    public function showUserProfileUpdateRequests(Request $request)
     {
         try {
-            $pendingUpdates = PendingUpdateProfileRequest::all();
+            $pageSize = $request->per_page ?? 1;
+
+            $pendingUpdates = PendingUpdateProfileRequest::paginate($pageSize);
 
             if ($pendingUpdates->isEmpty()) {
                 return $this->returnSuccess('No pending updates found', 200);
             }
 
             $updates = $pendingUpdates->map(function ($pendingUpdate) {
+                // $user = User::findOrFail($pendingUpdate->user_id);
+
                 return [
-                    'user_id' => $pendingUpdate->user_id,
+                    'profile' => route('show.user', [$pendingUpdate->user_id]),
+                    'user' => $pendingUpdate->user_id, //new UserResource($user),
                     'updates' => json_decode($pendingUpdate->updates, true)
                 ];
             });
-
-            return $this->returnJSON($updates, 'All pending updates');
+            [$meta, $links] = $this->paginateResponse($pendingUpdates);
+            return $this->returnAllDataJSON($updates, $meta, $links, 'Pending updates retrieved successfully');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
     }
+
+
+    // public function showUserProfileUpdateRequests()
+    // {
+    //     try {
+    //         $pendingUpdates = PendingUpdateProfileRequest::all();
+
+    //         if ($pendingUpdates->isEmpty()) {
+    //             return $this->returnSuccess('No pending updates found', 200);
+    //         }
+
+    //         $updates = $pendingUpdates->map(function ($pendingUpdate) {
+    //             return [
+    //                 'user_id' => $pendingUpdate->user_id,
+    //                 'updates' => json_decode($pendingUpdate->updates, true)
+    //             ];
+    //         });
+
+    //         return $this->returnJSON($updates, 'All pending updates');
+    //     } catch (\Exception $e) {
+    //         return $this->returnWrong($e->getMessage());
+    //     }
+    // }
 
     public function acceptUserProfileUpdateRequests()
     {
