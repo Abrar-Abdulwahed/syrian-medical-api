@@ -34,7 +34,7 @@ class ProfileController extends Controller
             $names = explode(' ', $request->username);
             $firstName = $names[0] ?? null;
             $lastName = $names[1] ?? null;
-            $updates = collect([
+            $changes = collect([
                 'firstname' => $firstName && $firstName !== $user->firstname
                     ? $firstName
                     : null,
@@ -54,12 +54,12 @@ class ProfileController extends Controller
                     ? $request->swift_code
                     : null,
             ])->filter();
-            if ($updates->isEmpty()) {
+            if ($changes->isEmpty()) {
                 return $this->returnSuccess('No changes were made');
             }
             $user->pendingUpdateProfileRequest()->updateOrCreate(
                 ['user_id' => $user->id],
-                ['updates' => $updates->toJson()]
+                ['changes' => $changes->toJson()]
             );
             return $this->returnSuccess('Wait for the administrator to approve your edits');
         } catch (\Exception $e) {

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pending_update_profile_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->json('updates');
+            $table->json('changes');
             $table->timestamp('created_at');
         });
     }

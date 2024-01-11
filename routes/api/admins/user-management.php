@@ -3,6 +3,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\UserManagement\{
+    UserController,
     ApplicantController,
     ProfileUpdateRequests
 };
@@ -17,17 +18,20 @@ use App\Http\Controllers\Admin\UserManagement\{
 |
 */
 Route::prefix('admin/user-management')->group(function () {
+        Route::controller(UserController::class)->prefix('users')->group(function(){
+            Route::get('/', 'index'); // all users, + fetch by type(patient, service-provider)
+            Route::get('{id}', 'show')->name('show.user');
+        });
+
         Route::controller(ApplicantController::class)->prefix('registration-requests')->group(function(){
             Route::get('/', 'index');
             Route::post('/{id}/accept', 'accept');
-            Route::post('/{id}/refuse', 'refuse');
+            Route::delete('/{id}/refuse', 'refuse');
         });
 
         Route::controller(ProfileUpdateRequests::class)->prefix('profile-update-requests')->group(function(){
-            Route::get('/', 'showUserProfileUpdateRequests');
-            Route::get('review', 'reviewUserProfileUpdateRequests');
+            Route::get('/', 'index');
+            Route::post('{pending}/accept', 'accept');
+            Route::delete('{pending}/refuse', 'refuse');
         });
-
-        // Route::get('users', 'index'); // all users, + fetch by type(patient, service-provider)
-        // Route::get('user/{id}', 'show')->name('show.user');
 });
