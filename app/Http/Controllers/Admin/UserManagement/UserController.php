@@ -10,6 +10,7 @@ use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\PaginateResponseTrait;
+use App\Http\Requests\Admin\UserActivationRequest;
 
 class UserController extends Controller
 {
@@ -42,6 +43,18 @@ class UserController extends Controller
         try{
             $user = User::findOrFail($id);
             return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
+        } catch (\Exception $e) {
+            return $this->returnWrong($e->getMessage());
+        }
+    }
+
+    public function activation(UserActivationRequest $request, $id)
+    {
+        try{
+            $user = User::findOrFail($id);
+            $user->forceFill(['activated' => $request->activated])->save();
+            $msg = $request->activated? 'Service Provider has been activated!' : 'Service Provider has been deactivated!';
+            return $this->returnSuccess($msg);
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
