@@ -46,10 +46,13 @@ class UserFactory extends Factory
                     'bank_name' => '',
                     'iban_number' => '',
                     'swift_code' => '',
+                    'latitude' => 40.7128,
+                    'longitude' => -74.0060,
                ]);
             else if($user->isPatient())
                 $user->patientProfile()->create([
-                    'welcome' => $user->id,
+                    'latitude' => 40.7128,
+                    'longitude' => -74.0060,
             ]);
         });
     }

@@ -10,7 +10,7 @@ class ServiceProviderProfile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['bank_name', 'iban_number', 'swift_code', 'evidence'];
+    protected $fillable = ['bank_name', 'iban_number', 'swift_code', 'evidence', 'latitude', 'longitude'];
 
     public function user()
     {

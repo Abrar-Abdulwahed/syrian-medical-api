@@ -14,10 +14,12 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('service-providers')->middleware(['auth:sanctum', 'verified', 'activated'])->group(function () {
+Route::prefix('service-providers/profile')->middleware(['auth:sanctum', 'verified', 'activated'])->group(function () {
     Route::controller(ProfileController::class)->group(function () {
-        Route::get('profile-details', 'showDetails');
-        Route::post('profile-details', 'updateDetails');
+        Route::get('/', 'showDetails');
+        Route::post('/update', 'updateDetails');
+        Route::post('/change-picture', 'updatePicture');
+        Route::post('/change-location', 'updateLocation');
     });
 });
 

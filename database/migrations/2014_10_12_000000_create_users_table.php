@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('ip')->nullable();
             $table->string('email')->unique();
+            $table->string('picture')->nullable();
             $table->string('type')->default(UserType::PATIENT->value);
             $table->boolean('activated')->default(1); //0: no 1: yes
             $table->timestamp('email_verified_at')->nullable();
