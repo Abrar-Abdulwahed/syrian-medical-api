@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\UserManagement;
 
+use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -75,7 +76,7 @@ class ProfileUpdateRequests extends Controller
             $pending->delete();
             Notification::send($pending->user, new AdminReviewProfileChangeNotification(false));
             DB::commit();
-            return $this->returnSuccess('User changes rejected successfully');
+            return $this->returnSuccess('User\'s changes rejected successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('iban_number');
             $table->string('swift_code');
             $table->string('evidence')->nullable();
+            $table->double('latitude', 10, 8)->nullable();
+            $table->double('longitude', 11, 8)->nullable();
             $table->timestamps();
         });
     }

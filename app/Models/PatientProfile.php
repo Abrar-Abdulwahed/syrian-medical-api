@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PatientProfile extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['welcome'];
+    protected $fillable = ['latitude', 'longitude'];
 
     public function user()
     {
