@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\ServiceProvider\ProfileController;
+use App\Http\Controllers\User\Patient\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +14,7 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('service-provider/dashboard')->group(function () {
+Route::prefix('patient/dashboard')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/', 'showDetails');
         Route::post('/update', 'updateDetails');

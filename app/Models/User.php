@@ -79,6 +79,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(PatientProfile::class);
     }
 
+    public function profile()
+    {
+        if($this->isPatient())
+            return $this->patientProfile();
+        else
+            return $this->serviceProviderProfile();
+    }
+
     public function pendingUpdateProfileRequest()
     {
         return $this->hasOne(PendingUpdateProfileRequest::class);
