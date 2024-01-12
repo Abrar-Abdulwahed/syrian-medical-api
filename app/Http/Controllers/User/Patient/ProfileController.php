@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\User\ServiceProvider;
+namespace App\Http\Controllers\User\Patient;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\PictureStoreRequest;
 use App\Http\Requests\LocationStoreRequest;
+use App\Http\Requests\Auth\PatientAccountRequest;
 use App\Http\Controllers\User\BaseProfileController;
-use App\Http\Requests\Auth\ServiceProviderAccountRequest;
 
 class ProfileController extends BaseProfileController
 {
-
-    public function updateDetails(ServiceProviderAccountRequest $request)
+    public function updateDetails(PatientAccountRequest $request)
     {
         try {
             $user = $request->user();
@@ -29,24 +29,13 @@ class ProfileController extends BaseProfileController
                 'email' => $request->email !== $user->email
                     ? $request->email
                     : null,
-                'bank_name' => $request->bank_name !== $user->serviceProviderProfile->bank_name
-                    ? $request->bank_name
-                    : null,
-                'iban_number' => $request->iban_number !== $user->serviceProviderProfile->iban_number
-                    ? $request->iban_number
-                    : null,
-                'swift_code' => $request->swift_code !== $user->serviceProviderProfile->swift_code
-                    ? $request->swift_code
-                    : null,
             ])->filter();
             if ($changes->isEmpty()) {
                 return $this->returnSuccess('No changes were made');
             }
-            $user->pendingUpdateProfileRequest()->updateOrCreate(
-                ['user_id' => $user->id],
-                ['changes' => $changes->toJson()]
-            );
-            return $this->returnSuccess('Wait for the administrator to approve your edits');
+            $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
+            $request->user()->update($userChanges);
+            return $this->returnSuccess('Your data has been updated successfully');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

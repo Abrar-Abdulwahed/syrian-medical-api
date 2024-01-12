@@ -18,8 +18,6 @@ trait FileTrait
 
             Storage::disk('public')->putFileAs($path, $newFile, $fileName);
 
-            // $newFile->storeAs("public/$path", $fileName);
-
             return $fileName;
         }
         return $oldFile;
