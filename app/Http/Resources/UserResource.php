@@ -18,7 +18,7 @@ class UserResource extends JsonResource
     {
         $attributes = [
             "username" => $this->fullName,
-            "ip" => $this->ip,
+            // "ip" => $this->ip,
             "email" =>  $this->email,
             "picture" => $this->picture,
             "type" => $this->type,

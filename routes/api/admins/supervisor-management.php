@@ -13,7 +13,9 @@ use App\Http\Controllers\Admin\SupervisorManagement\SupervisorController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-// Route::prefix('admin/supervisor-management')->group(function () {
-    Route::resource('/supervisor-management', SupervisorController::class);
-// });
+
+Route::apiResource('admin/supervisors', SupervisorController::class);
+Route::put('admin/supervisors/{supervisor}/deactivate', [SupervisorController::class, 'deactivate']);
+Route::put('admin/supervisors/{supervisor}/activate', [SupervisorController::class, 'activate']);
+
 

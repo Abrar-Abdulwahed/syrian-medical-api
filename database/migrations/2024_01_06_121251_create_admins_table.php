@@ -17,10 +17,9 @@ return new class extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
-            $table->string('ip')->nullable();
-            $table->string('role')->default(AdminRole::SUPER_ADMIN->value);
+            $table->string('role')->default(AdminRole::SUPERVISOR->value);
             $table->boolean('activated')->default(0); //0: no 1: yes
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
