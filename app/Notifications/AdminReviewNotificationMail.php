@@ -42,10 +42,9 @@ class AdminReviewNotificationMail extends Notification
             ->subject('Update On Your Application')
             ->line($message);
 
-        //TODO: write route name for show user profile
-        // if ($this->accept) {
-        //     $mailMessage->action('Your Profile', route('...', [$notifiable->id]));
-        // }
+        if ($this->accept) {
+            $mailMessage->action('Your Profile', route('show.profile'));
+        }
 
         $mailMessage->line('Thank you for using our application!');
 
