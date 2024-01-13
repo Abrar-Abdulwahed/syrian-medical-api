@@ -21,20 +21,20 @@ use App\Http\Controllers\Admin\UserManagement\{
 Route::prefix('admin/users')->group(function () {
         Route::controller(ApplicantController::class)->prefix('applicants')->group(function(){
             Route::get('/', 'index');
-            Route::post('{id}/accept', 'accept');
+            Route::put('{id}/accept', 'accept');
             Route::delete('{id}/refuse', 'refuse');
         });
 
         Route::controller(ProfileUpdateRequests::class)->prefix('profile-update-requests')->group(function(){
             Route::get('/', 'index');
-            Route::post('{pending}/accept', 'accept');
+            Route::put('{pending}/accept', 'accept');
             Route::delete('{pending}/refuse', 'refuse');
         });
 
         Route::controller(UserController::class)->group(function(){
             Route::get('/', 'index'); // all users, + fetch by type(patient, service-provider)
             Route::get('{id}', 'show')->name('admin.show.user');
-            Route::post('{id}/activation', 'activation');
+            Route::put('{id}/activation', 'activation');
         });
 });
 
