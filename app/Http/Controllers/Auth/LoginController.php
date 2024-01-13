@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Notifications\TwoFactorNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\VerificationRequest;
 
 class LoginController extends Controller
@@ -51,8 +53,8 @@ class LoginController extends Controller
             $perMinutes = 1,
             function () use ($user, $key) {
                 $code = generateRandomNumber(4);
-                // TODO: Send code to user email
-
+                Notification::send($user, new TwoFactorNotification($code));
+                
                 // Update user details and reset login attempts
                 $user->forceFill([
                     'verification_code' => $code,
@@ -74,7 +76,7 @@ class LoginController extends Controller
     public function verify2FA(VerificationRequest $request)
     {
         try{
-            $user = User::where('ip', '177.118.120.179')->first();
+            $user = User::where('ip', $request->ip())->first();
             if (!$user)
                 return $this->returnWrong('User not found', 404);
             if (!$user || $user->verification_code !== $request->verification_code) {

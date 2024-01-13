@@ -7,14 +7,14 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AdminReviewNotificationMail extends Notification
+class ChangePasswordNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public $accept)
+    public function __construct()
     {
         //
     }
@@ -34,21 +34,10 @@ class AdminReviewNotificationMail extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $acceptMSG = 'Congratulations! Your application has been accepted, you can update your profile by clicking below button.';
-        $rejectedMSG = 'Unfortunately, Your application has been rejected';
-        $message = $this->accept ? $acceptMSG : $rejectedMSG;
-
-        $mailMessage = (new MailMessage)
-            ->subject('Update On Your Application')
-            ->line($message);
-
-        if ($this->accept) {
-            $mailMessage->action('Your Profile', route('show.profile'));
-        }
-
-        $mailMessage->line('Thank you for using our application!');
-
-        return $mailMessage;
+        return (new MailMessage)
+            ->subject('Change Password')
+            ->line('You are receiving this email because you have changed your password.')
+            ->line('Thank you for using our application!');
     }
 
     /**

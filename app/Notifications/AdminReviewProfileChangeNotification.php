@@ -42,10 +42,9 @@ class AdminReviewProfileChangeNotification extends Notification
             ->subject('Updates On Your Application to Change Profile')
             ->line($message);
 
-        //TODO: write route name for show user profile
-        // if ($this->accept) {
-        //     $mailMessage->action('Your Profile', route('...', [$notifiable->id]));
-        // }
+        if ($this->accept) {
+            $mailMessage->action('Your Profile', route('show.profile'));
+        }
 
         $mailMessage->line('Thank you for using our application!');
 

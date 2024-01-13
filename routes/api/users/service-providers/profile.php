@@ -16,7 +16,7 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 */
 Route::prefix('service-provider/dashboard')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
-        Route::get('/', 'showDetails');
+        Route::get('/', 'showDetails')->name('show.profile');
         Route::post('/update', 'updateDetails');
         Route::post('/change-picture', 'updatePicture');
         Route::post('/change-location', 'updateLocation');
