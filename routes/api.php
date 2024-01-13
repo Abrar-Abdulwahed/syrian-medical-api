@@ -23,4 +23,3 @@ include __DIR__.'/api/users/patients/profile.php';
 
 include __DIR__.'/api/admins/auth.php';
 include __DIR__.'/api/admins/user-management.php';
-include __DIR__.'/api/admins/supervisor-management.php';

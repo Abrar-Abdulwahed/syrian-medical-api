@@ -92,7 +92,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(PendingUpdateProfileRequest::class);
     }
 
-    //scopes
     public function isPatient(){
         return $this->type === UserType::PATIENT->value;
     }
