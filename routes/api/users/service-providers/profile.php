@@ -14,7 +14,7 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('service-provider/dashboard')->group(function () {
+Route::prefix('dashboard/providers/profile')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/', 'showDetails')->name('show.profile');
         Route::post('/update', 'updateDetails');
