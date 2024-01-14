@@ -33,8 +33,8 @@ class UserFactory extends Factory
             'password' => Hash::make('12345678'),
             'remember_token' => Str::random(10),
             'activated' => random_int(0, 1),
-            'ip' => $this->faker->ipv4,
-            'type'=> $this->faker->randomElement([UserType::PATIENT->value, UserType::SERVICE_PROVIDER->value])
+            'ip' => fake()->ipv4,
+            'type'=> fake()->randomElement([UserType::PATIENT->value, UserType::SERVICE_PROVIDER->value])
         ];
     }
 

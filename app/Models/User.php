@@ -6,7 +6,7 @@ use App\Enums\UserType;
 use App\Events\RegisterEvent;
 use App\Models\PatientProfile;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\ServiceProviderProfile;
+use App\Models\ProviderProfile;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Models\PendingUpdateProfileRequest;
@@ -71,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
     // Relations
     public function serviceProviderProfile()
     {
-        return $this->hasOne(ServiceProviderProfile::class);
+        return $this->hasOne(ProviderProfile::class);
     }
 
     public function patientProfile()
