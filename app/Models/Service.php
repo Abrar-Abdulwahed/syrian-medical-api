@@ -18,6 +18,6 @@ class Service extends Model
 
     public function providers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps()->withPivot('price', 'description', 'discount', 'time');
     }
 }

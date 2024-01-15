@@ -4,8 +4,6 @@ namespace App\Http\Controllers\User\ServiceProvider;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PictureStoreRequest;
-use App\Http\Requests\LocationStoreRequest;
 use App\Http\Controllers\User\BaseProfileController;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
 

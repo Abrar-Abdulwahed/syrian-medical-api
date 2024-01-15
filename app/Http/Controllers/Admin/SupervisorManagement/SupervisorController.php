@@ -8,8 +8,8 @@ use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminResource;
 use App\Http\Traits\PaginateResponseTrait;
-use App\Http\Requests\SupervisorStoreRequest;
-use App\Http\Requests\SupervisorUpdateRequest;
+use App\Http\Requests\Admin\SupervisorStoreRequest;
+use App\Http\Requests\Admin\SupervisorUpdateRequest;
 use App\Http\Requests\Admin\UserActivationRequest;
 
 class SupervisorController extends Controller

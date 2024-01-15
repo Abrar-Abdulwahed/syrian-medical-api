@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\ServiceProvider;
 
-use App\Rules\PhoneRule;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
 
-class SupervisorUpdateRequest extends BaseRequest
+class ServiceStoreRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +23,11 @@ class SupervisorUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'username'  => 'required|string|between:2,24',
-            'email'     => 'required|email:rfc,dns|max:100|unique:admins,email,'.$this->route('supervisor')->id,
-            'phone'     => ['required', new PhoneRule],
+            'service_id'    => 'required|exists:services,id|unique:provider_profile_service,service_id',
+            'description'   => 'nullable|string',
+            'price'         => 'required|numeric',
+            'discount'      => 'sometimes|numeric',
+            'time'          => 'required|date_format:Y-m-d H:i:s',
         ];
     }
 }

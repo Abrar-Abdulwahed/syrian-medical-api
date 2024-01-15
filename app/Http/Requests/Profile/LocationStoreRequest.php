@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Profile;
 
-use App\Rules\PhoneRule;
 use App\Http\Requests\BaseRequest;
 
-class SupervisorStoreRequest extends BaseRequest
+class LocationStoreRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,9 +22,8 @@ class SupervisorStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'username'  => 'required|string|between:2,24',
-            'email'     => 'required|email:rfc,dns|max:100|unique:admins,email',
-            'phone'     => ['required', new PhoneRule],
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180'
         ];
     }
 }

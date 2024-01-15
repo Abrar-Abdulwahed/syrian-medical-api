@@ -8,8 +8,8 @@ use App\Http\Traits\FileTrait;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
-use App\Http\Requests\PictureStoreRequest;
-use App\Http\Requests\LocationStoreRequest;
+use App\Http\Requests\Profile\PictureStoreRequest;
+use App\Http\Requests\Profile\LocationStoreRequest;
 
 class BaseProfileController extends Controller
 {

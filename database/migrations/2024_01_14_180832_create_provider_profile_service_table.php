@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('provider_profile_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->text('description');
             $table->decimal('price', 10, 2);
-            $table->decimal('discount', 5, 2)->nullable();
+            $table->decimal('discount', 5, 2)->default(0)->nullable();
             $table->timestamp('time');
             $table->timestamps();
         });

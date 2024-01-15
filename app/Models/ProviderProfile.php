@@ -23,7 +23,7 @@ class ProviderProfile extends Model
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class)->withPivot('price', 'description', 'discount', 'time');;
+        return $this->belongsToMany(Service::class)->withTimestamps()->withPivot('price', 'description', 'discount', 'time');
     }
 
     public function products(): HasMany
