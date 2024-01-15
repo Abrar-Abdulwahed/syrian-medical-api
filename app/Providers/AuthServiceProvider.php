@@ -4,6 +4,8 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\Product;
+use App\Policies\ProductPolicy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use App\Policies\ProviderServicePolicy;
@@ -22,6 +24,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         ProviderProfileService::class => ProviderServicePolicy::class,
+        Product::class => ProductPolicy::class,
+
         // User::class => SuperAdminPolicy::class,
     ];
 
@@ -30,8 +34,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Gate::define('is-super-admin', [SuperAdminPolicy::class, 'isSuperAdmin']);
-
         // customize email verification
         VerifyEmail::toMailUsing(function (object $notifiable) {
             $code = generateRandomNumber(8);

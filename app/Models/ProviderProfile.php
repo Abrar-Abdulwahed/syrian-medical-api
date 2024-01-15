@@ -26,8 +26,8 @@ class ProviderProfile extends Model
         return $this->belongsToMany(Service::class)->withTimestamps()->withPivot('price', 'description', 'discount', 'time');
     }
 
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
+    // public function products(): HasMany
+    // {
+    //     return $this->hasMany(Product::class);
+    // }
 }

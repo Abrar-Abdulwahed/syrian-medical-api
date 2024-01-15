@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Profile;
+namespace App\Http\Requests\ServiceProvider;
 
-use App\Http\Requests\BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class PictureStoreRequest extends BaseRequest
+class ProductUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,10 @@ class PictureStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'picture' => 'required|image|mimes:jpeg,jpg,png,gif|max:100',
+            'name'     => 'required|string',
+            'thumbnail'=> 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
+            'price'    => 'required|numeric',
+            'discount' => 'sometimes|numeric',
         ];
     }
 }

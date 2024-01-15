@@ -14,16 +14,29 @@ class ProviderServicePolicy
         //
     }
 
-    public function update(User $user, ProviderProfileService $service)
+    // public function update(User $user, ProviderProfileService $service)
+    // {
+    //     // Authorization logic for updating a service
+    //     return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
+    // }
+
+    // public function delete(User $user, ProviderProfileService $service)
+    // {
+    //     dd($user);
+    //     // Authorization logic for deleting a service
+    //     return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
+    // }
+
+    public function update(User $user, ProviderProfileService $providerProfileService): bool
     {
-        // Authorization logic for updating a service
         return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
     }
 
-    public function delete(User $user, ProviderProfileService $service)
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, ProviderProfileService $providerProfileService): bool
     {
-        dd($user);
-        // Authorization logic for deleting a service
         return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
     }
 }

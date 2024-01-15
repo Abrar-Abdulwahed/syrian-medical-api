@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use App\Enums\UserType;
+use App\Models\Product;
+use App\Models\Service;
 use App\Events\RegisterEvent;
 use App\Models\PatientProfile;
-use Laravel\Sanctum\HasApiTokens;
 use App\Models\ProviderProfile;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Models\PendingUpdateProfileRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -90,6 +93,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function pendingUpdateProfileRequest()
     {
         return $this->hasOne(PendingUpdateProfileRequest::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 
     public function isPatient(){

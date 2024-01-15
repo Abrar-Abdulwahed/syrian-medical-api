@@ -17,7 +17,7 @@ class ServiceController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
-        // $this->authorizeResource(ProviderProfileService::class, 'service');
+        $this->authorizeResource(ProviderProfileService::class, 'service');
     }
 
     public function index(Request $request)

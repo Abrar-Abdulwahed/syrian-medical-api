@@ -33,7 +33,7 @@ class UserResource extends JsonResource
             $profile = new PatientProfileResource($this->whenLoaded('patientProfile'));
         }
         elseif ($this->isServiceProvider()) {
-            $profile = new ProviderProfileResource($this->whenLoaded('serviceProviderProfile'), $this->serviceProviderProfile->loadCount('services'));
+            $profile = new ProviderProfileResource($this->whenLoaded('serviceProviderProfile'));
         }
 
         return array_merge($attributes, [
