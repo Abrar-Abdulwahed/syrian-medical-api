@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -98,6 +99,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(Service::class, 'provider_service', 'provider_id', 'service_id')->withTimestamps()->withPivot('price', 'description', 'discount', 'time');
     }
 
     public function isPatient(){

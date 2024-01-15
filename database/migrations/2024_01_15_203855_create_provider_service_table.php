@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('provider_profile_service', function (Blueprint $table) {
+        Schema::create('provider_service', function (Blueprint $table) {
             $table->id();
             $table->foreignId('service_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('provider_profile_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            // $table->unsignedBigInteger('provider_id');
+            $table->foreignId('provider_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->decimal('discount', 5, 2)->default(0)->nullable();
             $table->timestamp('time');
             $table->timestamps();
+            // $table->foreign('provider_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('provider_profile_service');
+        Schema::dropIfExists('provider_service');
     }
 };

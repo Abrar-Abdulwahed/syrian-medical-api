@@ -20,14 +20,4 @@ class ProviderProfile extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function services(): BelongsToMany
-    {
-        return $this->belongsToMany(Service::class)->withTimestamps()->withPivot('price', 'description', 'discount', 'time');
-    }
-
-    // public function products(): HasMany
-    // {
-    //     return $this->hasMany(Product::class);
-    // }
 }

@@ -22,9 +22,9 @@ class ServiceUpdateRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $id = $this->route()->parameters['service'];
+        $id = $this->route('service')->id; // === $this->route()->parameters['service']->id;
         return [
-            'service_id'    => 'required|exists:services,id|unique:provider_profile_service,service_id,'.$id,
+            'service_id'    => 'required|exists:services,id|unique:provider_service,service_id,'.$id,
             'description'   => 'nullable|string',
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',

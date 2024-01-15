@@ -23,7 +23,7 @@ class ServiceStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'service_id'    => 'required|exists:services,id|unique:provider_profile_service,service_id',
+            'service_id'    => 'required|exists:services,id|unique:provider_service,service_id',
             'description'   => 'nullable|string',
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',

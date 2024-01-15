@@ -18,13 +18,13 @@ class ServiceResource extends JsonResource
             'id'          => $this->id,
             'title'       => $this->title,
             'thumbnail'   => $this->thumbnail,
-            'description' => $this->pivot->description,
-            'discount'    => $this->pivot->discount,
-            'price'       => $this->pivot->price,
-            'final_price' => $this->when($this->pivot->discount > 0, $this->pivot->price - ($this->pivot->price * ($this->pivot->discount / 100))),
-            'time'        => $this->pivot->time,
-            'created_at'  => $this->pivot->created_at?->format('Y-m-d H:i:s'),
-            'updated_at'  => $this->pivot->updated_at?->format('Y-m-d H:i:s'),
+            'description' => $this->description,
+            'discount'    => $this->discount,
+            'price'       => $this->price,
+            'final_price' => $this->when($this->discount > 0, $this->price - ($this->price * ($this->discount / 100))),
+            'time'        => $this->time,
+            'created_at'  => $this->created_at?->format('Y-m-d H:i:s'),
+            'updated_at'  => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

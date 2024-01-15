@@ -2,41 +2,65 @@
 
 namespace App\Policies;
 
+use App\Models\ProviderService;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
 class ProviderServicePolicy
 {
     /**
-     * Create a new policy instance.
+     * Determine whether the user can view any models.
      */
-    public function __construct()
+    public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
-    // public function update(User $user, ProviderProfileService $service)
-    // {
-    //     // Authorization logic for updating a service
-    //     return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
-    // }
-
-    // public function delete(User $user, ProviderProfileService $service)
-    // {
-    //     dd($user);
-    //     // Authorization logic for deleting a service
-    //     return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
-    // }
-
-    public function update(User $user, ProviderProfileService $providerProfileService): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, ProviderService $providerService): bool
     {
-        return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
+        return $user->id === $providerService->provider_id;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, ProviderService $providerService): bool
+    {
+        return $user->id === $providerService->provider_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ProviderProfileService $providerProfileService): bool
+    public function delete(User $user, ProviderService $providerService): bool
     {
-        return $user->serviceProviderProfile()->id === $service->provider_profile_id; // Or use your own logic
+        return $user->id === $providerService->provider_id;
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(User $user, ProviderService $providerService): bool
+    {
+        //
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     */
+    public function forceDelete(User $user, ProviderService $providerService): bool
+    {
+        //
     }
 }
