@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\ServiceProvider\ProfileController;
+use App\Http\Controllers\User\ServiceProvider\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +14,5 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::prefix('dashboard/providers/profile')->group(function () {
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('/', 'showDetails')->name('show.profile');
-        Route::post('/update', 'updateDetails');
-        Route::post('/change-picture', 'updatePicture');
-        Route::post('/change-location', 'updateLocation');
-    });
-});
+Route::apiResource('dashboard/providers/products', ProductController::class);
 

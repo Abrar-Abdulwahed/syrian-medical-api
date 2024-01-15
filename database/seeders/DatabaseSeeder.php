@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             DoctorSpecializationSeeder::class,
             ServiceProviderCategorySeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

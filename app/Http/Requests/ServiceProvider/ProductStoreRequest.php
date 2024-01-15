@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\ServiceProvider;
 
-use App\Http\Requests\BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class LocationStoreRequest extends BaseRequest
+class ProductStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,10 @@ class LocationStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180'
+            'name'     => 'required|string',
+            'thumbnail'=> 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
+            'price'    => 'required|numeric',
+            'discount' => 'sometimes|numeric',
         ];
     }
 }

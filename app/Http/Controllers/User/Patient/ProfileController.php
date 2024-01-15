@@ -4,9 +4,6 @@ namespace App\Http\Controllers\User\Patient;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\PictureStoreRequest;
-use App\Http\Requests\LocationStoreRequest;
 use App\Http\Requests\Auth\PatientAccountRequest;
 use App\Http\Controllers\User\BaseProfileController;
 

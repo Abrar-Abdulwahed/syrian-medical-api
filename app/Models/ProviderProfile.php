@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Service;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class ServiceProviderProfile extends Model
+class ProviderProfile extends Model
 {
     use HasFactory;
 

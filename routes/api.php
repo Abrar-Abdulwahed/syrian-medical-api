@@ -17,7 +17,12 @@ use App\Http\Controllers\Admin\UserManagementController;
 |
 */
 include __DIR__.'/api/users/auth.php';
+
 include __DIR__.'/api/users/service-providers/profile.php';
+include __DIR__.'/api/users/service-providers/services.php';
+include __DIR__.'/api/users/service-providers/products.php';
+
+
 include __DIR__.'/api/users/patients/profile.php';
 
 

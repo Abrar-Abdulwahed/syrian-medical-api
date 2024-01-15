@@ -4,8 +4,12 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\ProviderService;
+use App\Policies\ProductPolicy;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use App\Policies\ProviderServicePolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use App\Http\Controllers\Auth\BaseLoginController;
@@ -20,7 +24,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // User::class => SuperAdminPolicy::class,
+
     ];
 
     /**
@@ -28,8 +32,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Gate::define('is-super-admin', [SuperAdminPolicy::class, 'isSuperAdmin']);
-
         // customize email verification
         VerifyEmail::toMailUsing(function (object $notifiable) {
             $code = generateRandomNumber(8);
