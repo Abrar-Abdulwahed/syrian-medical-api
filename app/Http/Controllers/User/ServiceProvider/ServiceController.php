@@ -6,16 +6,18 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\ProviderProfileService;
 use App\Http\Resources\ServiceResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\ServiceProvider\ServiceStoreRequest;
 use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ServiceController extends Controller
 {
     public function __construct()
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        // $this->authorizeResource(ProviderProfileService::class, 'service');
     }
 
     public function index(Request $request)

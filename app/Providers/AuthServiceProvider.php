@@ -6,6 +6,7 @@ namespace App\Providers;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use App\Policies\ProviderServicePolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use App\Http\Controllers\Auth\BaseLoginController;
@@ -20,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+        ProviderProfileService::class => ProviderServicePolicy::class,
         // User::class => SuperAdminPolicy::class,
     ];
 
