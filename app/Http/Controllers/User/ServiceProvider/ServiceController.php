@@ -44,7 +44,6 @@ class ServiceController extends Controller
 
     public function update(ServiceUpdateRequest $request, string $id)
     {
-        $user = $request->user();
         $pivotQuery = DB::table('provider_profile_service')->where('id', $id);
         if (!$pivotQuery->first()) {
             throw new ModelNotFoundException('Record not found');
@@ -53,8 +52,13 @@ class ServiceController extends Controller
         return $this->returnSuccess('Service has been updated successfully');
     }
 
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $pivotRecord = DB::table('provider_profile_service')->where('id', $id)->first();
+        if (!$pivotRecord) {
+            throw new ModelNotFoundException('Record not found');
+        }
+        $request->user()->serviceProviderProfile->services()->detach($pivotRecord->service_id);
+        return $this->returnSuccess('Service has been deleted successfully');
     }
 }
