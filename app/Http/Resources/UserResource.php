@@ -4,7 +4,8 @@ namespace App\Http\Resources;
 
 use App\Enums\UserType;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProfileResource;
+use App\Http\Resources\PatientProfileResource;
+use App\Http\Resources\ProviderProfileResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -29,10 +30,10 @@ class UserResource extends JsonResource
         $profile = null;
 
         if ($this->isPatient()) {
-            $profile = new ProfileResource($this->whenLoaded('patientProfile'));
+            $profile = new PatientProfileResource($this->whenLoaded('patientProfile'));
         }
         elseif ($this->isServiceProvider()) {
-            $profile = new ProfileResource($this->whenLoaded('serviceProviderProfile'));
+            $profile = new ProviderProfileResource($this->whenLoaded('serviceProviderProfile'), $this->serviceProviderProfile->loadCount('services'), );
         }
 
         return array_merge($attributes, [

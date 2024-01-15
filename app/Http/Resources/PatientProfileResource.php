@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProfileResource extends JsonResource
+class PatientProfileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,7 @@ class ProfileResource extends JsonResource
         $attributes =  $this->resource->getAttributes();
 
         return array_merge($attributes, [
-            'user' => new UserResource($this->whenLoaded('user'))
+            'user'           => new UserResource($this->whenLoaded('user')),
         ]);
     }
 }
