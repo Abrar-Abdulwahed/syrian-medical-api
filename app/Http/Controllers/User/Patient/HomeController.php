@@ -41,7 +41,7 @@ class HomeController extends Controller
                 return new ServiceResource($item);
             }
         });
-        return $this->returnAllDataJSON($result, $meta, $links, 'Data retrieved successfully');
+        return $this->returnAllDataJSON($result->flatten(), $meta, $links, 'Data retrieved successfully');
     }
 
     public function store(Request $request)
