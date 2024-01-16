@@ -53,7 +53,7 @@ class ProviderServicePolicy
      */
     public function restore(User $user, ProviderService $providerService): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -61,6 +61,6 @@ class ProviderServicePolicy
      */
     public function forceDelete(User $user, ProviderService $providerService): bool
     {
-        //
+        return true;
     }
 }

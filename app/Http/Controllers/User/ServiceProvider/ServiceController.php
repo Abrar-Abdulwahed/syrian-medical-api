@@ -37,18 +37,14 @@ class ServiceController extends Controller
     public function show(Request $request, ProviderService $providerService)
     {
         $user = $request->user();
-        if ($user->cannot('view', $providerService)) {
-            abort(403);
-        }
+        $this->authorize('view', $providerService);
         return $this->returnJSON(new ServiceResource($providerService), 'Data retrieved successfully');
     }
 
     public function update(ServiceUpdateRequest $request, ProviderService $providerService)
     {
         $user = $request->user();
-        if ($user->cannot('update', $providerService)) {
-            abort(403);
-        }
+        $this->authorize('update', $providerService);
         $providerService->update($request->validated());
         return $this->returnSuccess('Service has been updated successfully');
     }
@@ -56,9 +52,7 @@ class ServiceController extends Controller
     public function destroy(Request $request, ProviderService $providerService)
     {
         $user = $request->user();
-        if ($user->cannot('delete', $providerService)) {
-            abort(403);
-        }
+        $this->authorize('delete', $providerService);
         $request->user()->services()->detach($providerService->service_id);
         return $this->returnSuccess('Service has been deleted successfully');
     }
