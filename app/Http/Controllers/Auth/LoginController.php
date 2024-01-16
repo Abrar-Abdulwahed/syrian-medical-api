@@ -22,7 +22,8 @@ class LoginController extends Controller
         $this->middleware(['auth:sanctum'])->only(['logout', 'admin.logout']);
     }
 
-    public function login(LoginRequest $request){
+    public function login(LoginRequest $request)
+    {
         try {
             $result = Authenticator::authenticate(
                 $request->email,
@@ -54,7 +55,7 @@ class LoginController extends Controller
             function () use ($user, $key) {
                 $code = generateRandomNumber(4);
                 Notification::send($user, new TwoFactorNotification($code));
-                
+
                 // Update user details and reset login attempts
                 $user->forceFill([
                     'verification_code' => $code,
@@ -75,13 +76,14 @@ class LoginController extends Controller
 
     public function verify2FA(VerificationRequest $request)
     {
-        try{
+        try {
             // $user = User::where('ip', '$request->ip()')->first();
+            // $user = User::find(2);
             $user = User::first();
             if (!$user)
                 return $this->returnWrong('User not found', 404);
             if (!$user || $user->verification_code !== $request->verification_code) {
-                $user->forceFill(['login_attempts' => $user->login_attempts+1])->save();
+                $user->forceFill(['login_attempts' => $user->login_attempts + 1])->save();
 
                 if ($user->login_attempts > 3) {
                     $this->reset2FA($user);
@@ -96,24 +98,25 @@ class LoginController extends Controller
 
             if (Cache::has($user->ip) && Cache::get($user->ip)) {
                 $token = $user->createToken('auth', ['remember'])->plainTextToken;
-
-            }else{
+            } else {
                 $token = $user->createToken('auth', ['*'], now()->addYear())->plainTextToken;
             }
             return $this->returnJSON($token, 'You have logged in successfully');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
     }
 
-    private function reset2FA(User $user){
+    private function reset2FA(User $user)
+    {
         $user->forceFill([
             'verification_code' => null,
             'login_attempts' => 0,
         ])->save();
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         $request->user()->tokens()->delete();
         return $this->returnSuccess('logged out successfully', 'success', 201);
     }

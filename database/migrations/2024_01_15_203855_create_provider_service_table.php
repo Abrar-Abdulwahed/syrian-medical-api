@@ -14,14 +14,12 @@ return new class extends Migration
         Schema::create('provider_service', function (Blueprint $table) {
             $table->id();
             $table->foreignId('service_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            // $table->unsignedBigInteger('provider_id');
             $table->foreignId('provider_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->decimal('discount', 5, 2)->default(0)->nullable();
             $table->timestamp('time');
             $table->timestamps();
-            // $table->foreign('provider_id')->references('id')->on('users')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
