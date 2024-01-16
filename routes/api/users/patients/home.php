@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\Patient\HomeController;
 use App\Http\Controllers\User\Patient\ProfileController;
 
 /*
@@ -15,11 +16,8 @@ use App\Http\Controllers\User\Patient\ProfileController;
 |
 */
 
-Route::prefix('dashboard/patients/profile')->group(function () {
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('/', 'showDetails');
-        Route::post('/update', 'updateDetails');
-        Route::post('/change-picture', 'updatePicture');
-        Route::post('/change-location', 'updateLocation');
+Route::prefix('patients/home')->group(function () {
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/', 'index');
     });
 });

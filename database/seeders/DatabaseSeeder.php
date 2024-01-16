@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             DoctorSpecializationSeeder::class,
             ServiceProviderCategorySeeder::class,
             ServiceSeeder::class,
+            ProductSeeder::class,
+            ProviderServiceSeeder::class,
         ]);
     }
 }
