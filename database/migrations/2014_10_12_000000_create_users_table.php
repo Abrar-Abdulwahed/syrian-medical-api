@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('ip')->nullable();
+            $table->ipAddress('ip')->nullable();
             $table->string('email')->unique();
             $table->string('picture')->nullable();
             $table->string('type')->default(UserType::PATIENT->value);

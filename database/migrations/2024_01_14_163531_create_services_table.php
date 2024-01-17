@@ -15,10 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('thumbnail');
-            // $table->text('description'); //
-            // $table->decimal('price', 10, 2);
-            // $table->decimal('discount', 5, 2)->nullable();
-            // $table->timestamp('time'); //
             $table->timestamps();
         });
     }

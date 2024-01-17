@@ -54,21 +54,21 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'activated'=> 'boolean'
+        'activated' => 'boolean'
     ];
 
     // Accessor
     protected function attachmentPath(): Attribute
     {
         return Attribute::make(
-            get: fn() => '/profiles'. '/' . $this->id,
+            get: fn () => '/profiles' . '/' . $this->id,
         );
     }
 
     protected function fullName(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->firstname.' '.$this->lastname,
+            get: fn () => $this->firstname . ' ' . $this->lastname,
         );
     }
 
@@ -85,7 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function profile()
     {
-        if($this->isPatient())
+        if ($this->isPatient())
             return $this->patientProfile();
         else
             return $this->serviceProviderProfile();
@@ -103,14 +103,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class, 'provider_service', 'provider_id', 'service_id')->withTimestamps()->withPivot('price', 'description', 'discount', 'time');
+        return $this->belongsToMany(Service::class, 'provider_service', 'provider_id', 'service_id')->withPivot('price', 'description', 'discount', 'time')->withTimestamps();
     }
 
-    public function isPatient(){
+    public function isPatient()
+    {
         return $this->type === UserType::PATIENT->value;
     }
 
-    public function isServiceProvider(){
+    public function isServiceProvider()
+    {
         return $this->type === UserType::SERVICE_PROVIDER->value;
     }
 
