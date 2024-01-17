@@ -24,11 +24,13 @@ class ServiceUpdateRequest extends BaseRequest
     {
         $id = $this->route('service')->id; // === $this->route()->parameters['service']->id;
         return [
-            'service_id'    => 'required|exists:services,id|unique:provider_service,service_id,'.$id,
+            'service_id'    => 'required|exists:services,id|unique:provider_service,service_id,' . $id,
             'description'   => 'nullable|string',
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',
-            'time'          => 'required|date_format:Y-m-d H:i:s',
+            'date'          => 'required|date_format:Y-m-d',
+            'times'         => 'required|array',
+            'times.*'       => 'required|string',
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Service;
 use App\Events\RegisterEvent;
 use App\Models\PatientProfile;
 use App\Models\ProviderProfile;
+use App\Models\ProviderService;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -103,7 +104,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function services(): BelongsToMany
     {
-        return $this->belongsToMany(Service::class, 'provider_service', 'provider_id', 'service_id')->withPivot('price', 'description', 'discount', 'time')->withTimestamps();
+        return $this->belongsToMany(Service::class, 'provider_service', 'provider_id', 'service_id')
+            ->using(ProviderService::class)
+            ->withPivot('price', 'description', 'discount')
+            ->withTimestamps();
     }
 
     public function isPatient()

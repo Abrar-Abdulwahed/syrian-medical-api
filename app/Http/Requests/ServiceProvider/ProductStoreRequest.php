@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\ServiceProvider;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest;
 
-class ProductStoreRequest extends FormRequest
+class ProductStoreRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class ProductStoreRequest extends FormRequest
     {
         return [
             'name'     => 'required|string',
-            'thumbnail'=> 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
+            'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
             'price'    => 'required|numeric',
             'discount' => 'sometimes|numeric',
         ];

@@ -18,8 +18,6 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('price', 10, 2);
             $table->decimal('discount', 5, 2)->default(0)->nullable();
-            $table->json('dates');
-            $table->json('times');
             $table->timestamps();
         });
     }

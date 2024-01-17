@@ -22,7 +22,6 @@ class ServiceResource extends JsonResource
             'discount'    => $this->pivot->discount,
             'price'       => $this->pivot->price,
             'final_price' => $this->when($this->pivot->discount > 0, $this->pivot->price - ($this->pivot->price * ($this->pivot->discount / 100))),
-            'time'        => $this->pivot->time,
             'created_at'  => $this->pivot->created_at?->format('Y-m-d H:i:s'),
             'updated_at'  => $this->pivot->updated_at?->format('Y-m-d H:i:s'),
         ];

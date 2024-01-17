@@ -18,6 +18,9 @@ class Service extends Model
 
     public function providers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'provider_service', 'service_id', 'provider_id')->withPivot('price', 'description', 'discount', 'time')->withTimestamps();
+        return $this->belongsToMany(User::class, 'provider_service', 'service_id', 'provider_id')
+            ->using(ProviderService::class)
+            ->withPivot('price', 'description', 'discount')
+            ->withTimestamps();
     }
 }

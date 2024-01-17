@@ -29,8 +29,15 @@ class ServiceController extends Controller
 
     public function store(ServiceStoreRequest $request)
     {
+        DB::beginTransaction();
         // syncWithoutDetaching: no repeated service, no detach existing ones
-        $request->user()->services()->syncWithoutDetaching([$request->service_id => $request->validated()]);
+        $request->user()->services()->syncWithoutDetaching([$request->service_id => $request->safe()->except(['date', 'times'])]);
+        $service = ProviderService::where('service_id', $request->service_id)->first();
+        $availabilityData = [
+            'date' => $request->input('date'),
+            'times' => $request->input('times'),
+        ];
+        $service->availabilities()->create($availabilityData);
         return $this->returnSuccess('Service has been added successfully');
     }
 
@@ -44,6 +51,9 @@ class ServiceController extends Controller
     {
         $this->authorize('update', $providerService);
         $providerService->update($request->validated());
+        $providerService->availabilities()->create([
+            $request->safe()->only(['date', 'times']),
+        ]);
         return $this->returnSuccess('Service has been updated successfully');
     }
 

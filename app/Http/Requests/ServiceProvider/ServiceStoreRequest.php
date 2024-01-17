@@ -34,7 +34,9 @@ class ServiceStoreRequest extends BaseRequest
             'description'   => 'nullable|string',
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',
-            'time'          => 'required|date_format:Y-m-d H:i:s',
+            'date'          => 'required|date_format:Y-m-d',
+            'times'         => 'required|array',
+            'times.*'       => 'required|string',
         ];
     }
 }
