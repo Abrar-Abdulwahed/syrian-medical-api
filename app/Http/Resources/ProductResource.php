@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\OfferingType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,10 +15,13 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $link = $request->user()->id === $this->user_id ? route('products.show', $this->id) : route('users.products.show', $this->id);
         return [
             'id'          => $this->id,
             'name'        => $this->name,
             'thumbnail'   => $this->thumbnail,
+            'type'        => OfferingType::PRODUCT->value,
+            'link'        => $link,
             'discount'    => $this->discount,
             'price'       => $this->price,
             'final_price' => $this->when($this->discount > 0, $this->price - ($this->price * ($this->discount / 100))),

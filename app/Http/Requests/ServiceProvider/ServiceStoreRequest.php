@@ -30,11 +30,13 @@ class ServiceStoreRequest extends BaseRequest
                     return $query->where('provider_id', $this->user()->id);
                 }),
             ],
-            // 'service_id'    => 'required|exists:services,id|unique:provider_service,service_id',
             'description'   => 'nullable|string',
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',
-            'time'          => 'required|date_format:Y-m-d H:i:s',
+            'dates'         => 'required|array',
+            'dates.*'       => 'required|date_format:Y-m-d',
+            'times'         => 'required|array',
+            'times.*.*'     => 'required|string',
         ];
     }
 }

@@ -30,7 +30,6 @@ class ProviderServiceSeeder extends Seeder
                     'description' => fake()->sentence,
                     'price' => fake()->randomFloat(2, 0, 1000),
                     'discount' => fake()->randomFloat(2, 0, 50),
-                    'time' => fake()->dateTimeBetween('now', '+1 year'),
                 ]);
             }
         }
