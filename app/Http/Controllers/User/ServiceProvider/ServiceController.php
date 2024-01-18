@@ -6,8 +6,10 @@ use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
 use Illuminate\Support\Facades\DB;
+use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceResource;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\ServiceProvider\ServiceStoreRequest;
 use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
@@ -30,15 +32,18 @@ class ServiceController extends Controller
     public function store(ServiceStoreRequest $request)
     {
         DB::beginTransaction();
-        // syncWithoutDetaching: no repeated service, no detach existing ones
-        $request->user()->services()->syncWithoutDetaching([$request->service_id => $request->safe()->except(['date', 'times'])]);
-        $service = ProviderService::where('service_id', $request->service_id)->first();
-        $availabilityData = [
-            'date' => $request->input('date'),
-            'times' => $request->input('times'),
-        ];
-        $service->availabilities()->create($availabilityData);
-        return $this->returnSuccess('Service has been added successfully');
+        try {
+            $request->user()->services()->syncWithoutDetaching([$request->service_id => $request->safe()->except(['dates', 'times'])]);
+            $service = ProviderService::where(['service_id' => $request->service_id, 'provider_id' => $request->user()->id])->first();
+            $dates = $request->safe()->only('dates')["dates"];
+            $times = $request->safe()->only('times')["times"];
+            $this->saveAvailability($dates, $times, $service);
+            DB::commit();
+            return $this->returnSuccess('Service has been added successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->returnWrong($e->getMessage());
+        }
     }
 
     public function show(ProviderService $providerService)
@@ -49,12 +54,17 @@ class ServiceController extends Controller
 
     public function update(ServiceUpdateRequest $request, ProviderService $providerService)
     {
-        $this->authorize('update', $providerService);
-        $providerService->update($request->validated());
-        $providerService->availabilities()->create([
-            $request->safe()->only(['date', 'times']),
-        ]);
-        return $this->returnSuccess('Service has been updated successfully');
+        try {
+            $this->authorize('update', $providerService);
+            $providerService->update($request->safe()->except(['dates', 'times']));
+            $dates = $request->safe()->only('dates')["dates"];
+            $times = $request->safe()->only('times')["times"];
+            $this->saveAvailability($dates, $times, $providerService);
+            return $this->returnSuccess('Service has been updated successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return $this->returnWrong($e->getMessage());
+        }
     }
 
     public function destroy(Request $request, ProviderService $providerService)
@@ -62,5 +72,18 @@ class ServiceController extends Controller
         $this->authorize('delete', $providerService);
         $request->user()->services()->detach($providerService->service_id);
         return $this->returnSuccess('Service has been deleted successfully');
+    }
+
+    public function saveAvailability($dates, $times, $providerService)
+    {
+        $providerService->availabilities()->delete();
+        collect($dates)->each(function ($date, $index) use ($providerService, $times) {
+            $availabilityData = [
+                'date' => $date,
+                'times' => json_encode($times[$index]),
+            ];
+
+            $providerService->availabilities()->create($availabilityData);
+        });
     }
 }

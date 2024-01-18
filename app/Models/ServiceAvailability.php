@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class ServiceAvailability extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $fillable = [
         'date',
         'times',

@@ -14,6 +14,6 @@ class ProviderService extends Pivot
     // Relationship
     public function availabilities()
     {
-        return $this->hasMany(ServiceAvailability::class);
+        return $this->hasMany(ServiceAvailability::class, 'provider_service_id');
     }
 }
