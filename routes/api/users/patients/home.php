@@ -16,8 +16,10 @@ use App\Http\Controllers\User\Patient\ProfileController;
 |
 */
 
-Route::prefix('patients/home')->group(function () {
+Route::prefix('patients')->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/', 'index');
+        Route::get('services/{service}', 'showService')->name('users.services.show');
+        Route::get('products/{product}', 'showProduct')->name('users.products.show');
     });
 });

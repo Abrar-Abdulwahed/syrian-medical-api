@@ -35,9 +35,16 @@ class HomeController extends Controller
         //
     }
 
-    public function show(string $id)
+    public function showProduct(Product $product)
     {
-        //
+        // Load additional data if needed
+        $product->load('provider');
+        return $this->returnJSON(new ProductResource($product), 'Data retrieved successfully');
+    }
+
+    public function showService(ProviderService $providerService)
+    {
+        return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
     }
 
     public function update(Request $request, string $id)
