@@ -15,7 +15,13 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $link = $request->user()->id === $this->user_id ? route('products.show', $this->id) : route('users.products.show', $this->id);
+        dd($request->user());
+        if ($request->user()->id === $this->user_id)
+            $link = route('products.show', $this->id);
+        //TODO: modify to give route for admin to review
+        if ($request->user()->id)
+            $link = route('users.offerings.show', [OfferingType::PRODUCT->value, $this->id]);
+
         return [
             'id'          => $this->id,
             'name'        => $this->name,

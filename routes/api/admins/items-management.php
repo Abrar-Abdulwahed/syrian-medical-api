@@ -2,7 +2,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ItemManagement\ItemController;
+use App\Http\Controllers\Admin\ItemManagement\OfferingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +15,7 @@ use App\Http\Controllers\Admin\ItemManagement\ItemController;
 |
 */
 
-Route::apiResource('admin/items', ItemController::class);
+Route::apiResource('admin/items', OfferingsController::class);
+// Custom show route with the 'type' parameter
+Route::get('admin/items/{type}/{id}/', [OfferingsController::class, 'show'])
+    ->name('admin.items.show');
