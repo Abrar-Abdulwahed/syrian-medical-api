@@ -10,7 +10,8 @@ use App\Models\ProviderService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
-use App\Http\Resources\ServiceResource;
+use App\Http\Resources\ServiceReviewResource;
+use App\Http\Resources\ServiceListResource;
 use App\Http\Resources\ProviderServiceResource;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -25,7 +26,7 @@ class HomeController extends Controller
     {
         $products = Product::with('provider')->get();
         $services = ProviderService::get();
-        $result =   ProviderServiceResource::collection($services)->merge(ProductResource::collection($products));
+        $result =   ProductResource::collection($products)->merge(ServiceListResource::collection($services));
         return $this->returnJSON($result, 'Data retrieved successfully');
     }
 

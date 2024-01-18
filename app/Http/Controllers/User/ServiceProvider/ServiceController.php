@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers\User\ServiceProvider;
 
-use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
 use Illuminate\Support\Facades\DB;
-use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ServiceResource;
-use Illuminate\Database\Eloquent\Casts\Json;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\ServiceReviewResource;
+use App\Http\Resources\ProviderServiceListResource;
 use App\Http\Requests\ServiceProvider\ServiceStoreRequest;
 use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
 
@@ -26,7 +23,7 @@ class ServiceController extends Controller
         $pageSize = $request->per_page ?? 10;
         $services = $request->user()->services()->paginate($pageSize);
         [$meta, $links] = $this->paginateResponse($services);
-        return $this->returnAllDataJSON(ServiceResource::collection($services), $meta, $links, 'Data retrieved successfully');
+        return $this->returnAllDataJSON(ProviderServiceListResource::collection($services), $meta, $links, 'Data retrieved successfully');
     }
 
     public function store(ServiceStoreRequest $request)
@@ -49,7 +46,7 @@ class ServiceController extends Controller
     public function show(ProviderService $providerService)
     {
         $this->authorize('view', $providerService);
-        return $this->returnJSON(new ServiceResource($providerService), 'Data retrieved successfully');
+        return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
     }
 
     public function update(ServiceUpdateRequest $request, ProviderService $providerService)
