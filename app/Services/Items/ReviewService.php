@@ -4,13 +4,12 @@ namespace App\Services\Items;
 
 use App\Models\Product;
 use App\Enums\OfferingType;
-use App\Actions\ProductItem;
-use App\Actions\ServiceItem;
 use App\Models\ProviderService;
-use App\Contracts\OfferingsInterface;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ServiceListResource;
+use App\Http\Resources\ProductReviewResource;
+use App\Http\Resources\ServiceReviewResource;
 
 class ReviewService
 {
@@ -26,15 +25,12 @@ class ReviewService
     public function getItemByType(string $id, string $type)
     {
         if ($type === OfferingType::SERVICE->value) {
-            return $this->show(new ServiceItem, $id);
+            $providerService = ProviderService::findOrFail($id);
+            return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
         } else if ($type === OfferingType::PRODUCT->value) {
-            return $this->show(new ProductItem, $id);
+            $product = Product::findOrFail($id);
+            return $this->returnJSON(new ProductReviewResource($product), 'Data retrieved successfully');
         }
-    }
-
-    public function show(OfferingsInterface $itemInterface, $id)
-    {
-        return $itemInterface->show($id);
     }
 
     public function getItemsByType(string $type)
