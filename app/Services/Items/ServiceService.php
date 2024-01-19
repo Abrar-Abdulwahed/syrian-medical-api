@@ -16,14 +16,15 @@ use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
 class ServiceService
 {
     use ApiResponseTrait, FileTrait, PaginateResponseTrait;
-    public function store(ServiceStoreRequest $request, User $user)
+    public function store(User $user, $data)
     {
         DB::beginTransaction();
         try {
-            $user->services()->syncWithoutDetaching([$request->service_id => $request->safe()->except(['dates', 'times'])]);
-            $service = ProviderService::where(['service_id' => $request->service_id, 'provider_id' => $request->user()->id])->first();
-            $dates = $request->safe()->only('dates')["dates"];
-            $times = $request->safe()->only('times')["times"];
+            $providerServiceData = collect($data)->except(['dates', 'times'])->toArray();
+            $user->services()->syncWithoutDetaching([$data['service_id'] => $providerServiceData]);
+            $service = ProviderService::where(['service_id' => $data['service_id'], 'provider_id' => $user->id])->first();
+            $dates = $data['dates'];
+            $times = $data['times'];
             $this->saveAvailability($dates, $times, $service);
             DB::commit();
             return $this->returnSuccess('Service has been added successfully');
@@ -33,18 +34,16 @@ class ServiceService
         }
     }
 
-    public function show(ProviderService $providerService)
+    public function update($data, ProviderService $providerService)
     {
-        return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
-    }
-
-    public function update(ServiceUpdateRequest $request, ProviderService $providerService)
-    {
+        DB::beginTransaction();
         try {
-            $providerService->update($request->safe()->except(['dates', 'times']));
-            $dates = $request->safe()->only('dates')["dates"];
-            $times = $request->safe()->only('times')["times"];
+            $providerServiceData = collect($data)->except(['dates', 'times'])->toArray();
+            $providerService->update($providerServiceData);
+            $dates = $data['dates'];
+            $times = $data['times'];
             $this->saveAvailability($dates, $times, $providerService);
+            DB::commit();
             return $this->returnSuccess('Service has been updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -52,9 +51,9 @@ class ServiceService
         }
     }
 
-    public function destroy(Request $request, ProviderService $providerService)
+    public function destroy(User $user, ProviderService $providerService)
     {
-        $request->user()->services()->detach($providerService->service_id);
+        $user->services()->detach($providerService->service_id);
         return $this->returnSuccess('Service has been deleted successfully');
     }
 

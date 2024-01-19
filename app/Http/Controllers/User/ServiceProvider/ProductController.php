@@ -19,22 +19,21 @@ class ProductController extends Controller
         $this->authorizeResource(Product::class, 'product');
     }
 
-    public function index(Request $request)
-    {
-        $pageSize = $request->per_page ?? 10;
-        $products = $request->user()->products()->paginate($pageSize);
-        [$meta, $links] = $this->paginateResponse($products);
-        return $this->returnAllDataJSON(ProductListResource::collection($products), $meta, $links, 'Data retrieved successfully');
-    }
+    // public function index(Request $request)
+    // {
+    //     $pageSize = $request->per_page ?? 10;
+    //     $products = $request->user()->products()->paginate($pageSize);
+    //     [$meta, $links] = $this->paginateResponse($products);
+    //     return $this->returnAllDataJSON(ProductListResource::collection($products), $meta, $links, 'Data retrieved successfully');
+    // }
+    // public function show(Product $product)
+    // {
+    //     return $this->returnJSON(new ProductReviewResource($product), 'Product data retrieved successfully');
+    // }
 
     public function store(ProductStoreRequest $request)
     {
         return $this->productService->store($request->user(), $request->validated());
-    }
-
-    public function show(Product $product)
-    {
-        return $this->returnJSON(new ProductReviewResource($product), 'Product data retrieved successfully');
     }
 
     public function update(ProductUpdateRequest $request, Product $product)

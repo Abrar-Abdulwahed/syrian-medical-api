@@ -2,8 +2,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ItemManagement\ReviewController;
-use App\Http\Controllers\Admin\ItemManagement\ProductController;
+use App\Http\Controllers\Admin\ItemManagement\{
+    ReviewController,
+    ProductController,
+    ServiceController
+};
 
 /*
 |--------------------------------------------------------------------------
