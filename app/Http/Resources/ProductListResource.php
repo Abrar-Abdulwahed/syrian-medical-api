@@ -19,7 +19,7 @@ class ProductListResource extends JsonResource
     {
         return [
             'id'          => $this->id,
-            'name'        => $this->name,
+            'title'        => $this->title,
             'thumbnail'   => $this->thumbnail,
             'type'        => OfferingType::PRODUCT->value,
             'link'        => url()->current() . '/' . OfferingType::PRODUCT->value . '/' . $this->id,

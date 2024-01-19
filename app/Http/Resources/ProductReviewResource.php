@@ -18,7 +18,7 @@ class ProductReviewResource extends JsonResource
     {
         $attributes = [
             'id'          => $this->id,
-            'name'        => $this->name,
+            'title'        => $this->title,
             'thumbnail'   => $this->thumbnail,
             'type'        => OfferingType::PRODUCT->value,
             'link'        => url()->current() . '/' . OfferingType::PRODUCT->value . '/' . $this->id,
@@ -28,7 +28,7 @@ class ProductReviewResource extends JsonResource
         ];
 
         // show more info for provider and admin
-        if ($request->user() instanceof Admin || $request->user()->id === $this->user_id)
+        if ($request->user() instanceof Admin || $request->user()->id === $this->provider_id)
             $attributes = array_merge($attributes, [
                 //TODO: reservations
                 'orders'     => 0,

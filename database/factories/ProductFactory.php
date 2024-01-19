@@ -21,8 +21,8 @@ class ProductFactory extends Factory
         $providerIds = User::where('type', UserType::SERVICE_PROVIDER)->pluck('id')->toArray();
 
         return [
-            'user_id' => fake()->randomElement($providerIds),
-            'name' => fake()->word,
+            'provider_id' => fake()->randomElement($providerIds),
+            'title' => fake()->word,
             'thumbnail' => fake()->imageUrl(),
             'price' => fake()->randomFloat(2, 0, 1000),
             'discount' => fake()->randomFloat(2, 0, 50),

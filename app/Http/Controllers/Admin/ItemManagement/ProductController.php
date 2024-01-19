@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Admin\ItemManagement;
 
 use App\Models\User;
 use App\Models\Product;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Services\Items\ProductService;
 use App\Http\Requests\ServiceProvider\ProductStoreRequest;
@@ -19,22 +17,13 @@ class ProductController extends Controller
     }
     public function store(ProductStoreRequest $request)
     {
-        $user = User::find($request->user_id);
+        $user = User::find($request->provider_id);
         return $this->productService->store($user, $request->validated());
     }
 
     public function update(ProductUpdateRequest $request, Product $product)
     {
-        DB::beginTransaction();
-        try {
-            $product->forceFill(['user_id' => $request->user_id])->save();
-            $result = $this->productService->update($request->validated(), $product);
-            DB::commit();
-            return $result;
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return $this->returnWrong($e->getMessage());
-        }
+        return $this->productService->update($request->validated(), $product);
     }
 
     public function destroy(Product $product)

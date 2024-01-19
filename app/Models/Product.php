@@ -14,7 +14,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'title',
         'thumbnail',
         'price',
         'discount',
@@ -30,6 +30,6 @@ class Product extends Model
 
     public function provider(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'provider_id');
     }
 }

@@ -24,13 +24,13 @@ class ProductStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'user_id'   => [
+            'provider_id'   => [
                 'sometimes',
                 Rule::exists('users', 'id')->where(function ($query) {
                     $query->where('type', UserType::SERVICE_PROVIDER->value);
                 }),
             ],
-            'name'     => 'required|string',
+            'title'     => 'required|string',
             'thumbnail' => 'required|image|mimes:jpeg,jpg,png,gif|max:100',
             'price'    => 'required|numeric',
             'discount' => 'sometimes|numeric',
@@ -40,7 +40,7 @@ class ProductStoreRequest extends BaseRequest
     public function messages()
     {
         return [
-            'user_id.exists' => 'User must be existed as service-provider',
+            'provider_id.exists' => 'User must be existed as service-provider',
         ];
     }
 }
