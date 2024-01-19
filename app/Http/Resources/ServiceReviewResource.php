@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\User;
 use App\Models\Admin;
 use App\Models\Service;
 use App\Enums\OfferingType;

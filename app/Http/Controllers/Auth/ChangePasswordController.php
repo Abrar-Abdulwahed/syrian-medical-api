@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\ChangePasswordRequest;
 use App\Notifications\ChangePasswordNotification;
 
@@ -25,7 +23,7 @@ class ChangePasswordController extends Controller
             $user->update([
                 'password'  => $request->new_password
             ]);
-            Notification::send($user, new ChangePasswordNotification);
+            $user->notify(new ChangePasswordNotification);
             return $this->returnSuccess('Password Changed Successfully');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());

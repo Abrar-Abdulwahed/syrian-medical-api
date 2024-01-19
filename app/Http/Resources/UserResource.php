@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\UserType;
 use Illuminate\Http\Request;
 use App\Http\Resources\PatientProfileResource;
 use App\Http\Resources\ProviderProfileResource;
@@ -31,8 +30,7 @@ class UserResource extends JsonResource
 
         if ($this->isPatient()) {
             $profile = new PatientProfileResource($this->whenLoaded('patientProfile'));
-        }
-        elseif ($this->isServiceProvider()) {
+        } elseif ($this->isServiceProvider()) {
             $profile = new ProviderProfileResource($this->whenLoaded('serviceProviderProfile'));
         }
 

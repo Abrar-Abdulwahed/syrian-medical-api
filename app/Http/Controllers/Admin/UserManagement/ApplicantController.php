@@ -9,14 +9,14 @@ use App\Http\Traits\FileTrait;
 use App\Actions\GetUsersDataAction;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\PaginateResponseTrait;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Admin\UserActivationRequest;
 use App\Notifications\AdminReviewNotificationMail;
 
 class ApplicantController extends Controller
 {
     use FileTrait, PaginateResponseTrait;
-    public function __construct(protected GetUsersDataAction $getUsersAction){
+    public function __construct(protected GetUsersDataAction $getUsersAction)
+    {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
 
@@ -28,12 +28,12 @@ class ApplicantController extends Controller
 
     public function accept(UserActivationRequest $request, $id)
     {
-        try{
+        try {
             $user = User::findOrFail($id);
             $user->forceFill(['activated' => 1])->save();
 
             // Notify service provider
-            Notification::send($user, new AdminReviewNotificationMail(true));
+            $user->notify(new AdminReviewNotificationMail(true));
             return $this->returnSuccess('Service Provider has been activated!');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
@@ -42,10 +42,10 @@ class ApplicantController extends Controller
 
     public function refuse(UserActivationRequest $request, $id)
     {
-        try{
+        try {
             $user = User::findOrFail($id);
             // Notify service provider
-            Notification::send($user, new AdminReviewNotificationMail(false));
+            $user->notify(new AdminReviewNotificationMail(false));
             $this->removeDirectory($user->attachment_path);
             $user->delete();
             return $this->returnSuccess('Service Provider has been deleted from database!');
