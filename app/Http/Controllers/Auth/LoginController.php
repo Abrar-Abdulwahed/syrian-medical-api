@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Notifications\TwoFactorNotification;
-use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\Auth\VerificationRequest;
 
 class LoginController extends Controller
@@ -54,7 +53,7 @@ class LoginController extends Controller
             $perMinutes = 1,
             function () use ($user, $key) {
                 $code = generateRandomNumber(4);
-                Notification::send($user, new TwoFactorNotification($code));
+                $user->notify(new TwoFactorNotification($code));
 
                 // Update user details and reset login attempts
                 $user->forceFill([

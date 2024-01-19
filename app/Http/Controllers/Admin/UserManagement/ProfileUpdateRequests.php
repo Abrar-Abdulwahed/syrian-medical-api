@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Admin\UserManagement;
 
-use Throwable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\PaginateResponseTrait;
 use App\Models\PendingUpdateProfileRequest;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\AdminReviewProfileChangeNotification;
 
 
 class ProfileUpdateRequests extends Controller
 {
     use PaginateResponseTrait;
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
 
@@ -49,7 +48,7 @@ class ProfileUpdateRequests extends Controller
     public function accept(Request $request, PendingUpdateProfileRequest $pending)
     {
         DB::beginTransaction();
-        try{
+        try {
             $changes = json_decode($pending->changes, true);
 
             $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
@@ -60,7 +59,7 @@ class ProfileUpdateRequests extends Controller
 
             // Delete the pending change request
             $pending->delete();
-            Notification::send($pending->user, new AdminReviewProfileChangeNotification(true));
+            $pending->user->notify(new AdminReviewProfileChangeNotification(true));
             DB::commit();
             return $this->returnSuccess('Change accepted and user profile updated successfully');
         } catch (\Exception $e) {
@@ -72,9 +71,9 @@ class ProfileUpdateRequests extends Controller
     public function refuse(Request $request, PendingUpdateProfileRequest $pending)
     {
         DB::beginTransaction();
-        try{
+        try {
             $pending->delete();
-            Notification::send($pending->user, new AdminReviewProfileChangeNotification(false));
+            $pending->user->notify(new AdminReviewProfileChangeNotification(false));
             DB::commit();
             return $this->returnSuccess('User\'s changes rejected successfully');
         } catch (\Exception $e) {

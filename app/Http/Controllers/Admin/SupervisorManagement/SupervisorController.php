@@ -9,11 +9,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminResource;
 use App\Http\Requests\Admin\SupervisorStoreRequest;
 use App\Http\Requests\Admin\SupervisorUpdateRequest;
-use App\Http\Requests\Admin\UserActivationRequest;
 
 class SupervisorController extends Controller
 {
-    public function __construct(protected GetUsersDataAction $getUsersAction){
+    public function __construct(protected GetUsersDataAction $getUsersAction)
+    {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
 
@@ -50,7 +50,7 @@ class SupervisorController extends Controller
 
     public function activate(Request $request, Admin $supervisor)
     {
-        try{
+        try {
             $supervisor->forceFill(['activated' => 1])->save();
             return $this->returnSuccess('This supervisor has been activated!');
         } catch (\Exception $e) {
@@ -60,7 +60,7 @@ class SupervisorController extends Controller
 
     public function deactivate(Request $request, Admin $supervisor)
     {
-        try{
+        try {
             $supervisor->forceFill(['activated' => 0])->save();
             return $this->returnSuccess('This supervisor has been deactivated!');
         } catch (\Exception $e) {
