@@ -24,7 +24,7 @@ class ServiceListResource extends JsonResource
             'title'       => $service->title,
             'thumbnail'   => $service->thumbnail,
             'type'        => OfferingType::SERVICE->value,
-            'link'        => route('users.services.show', $service->id),
+            'link'        => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
             'description' => $this->description,
             'price'       => $this->price,
             'final_price' => $this->when($this->discount > 0, $this->price - ($this->price * ($this->discount / 100))),

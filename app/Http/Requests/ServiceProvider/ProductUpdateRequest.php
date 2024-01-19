@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\ServiceProvider;
 
+use App\Enums\UserType;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
 
 class ProductUpdateRequest extends BaseRequest
@@ -22,10 +24,17 @@ class ProductUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name'     => 'required|string',
-            'thumbnail'=> 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
+            'title'     => 'required|string',
+            'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
             'price'    => 'required|numeric',
             'discount' => 'sometimes|numeric',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'provider_id.exists' => 'User must be existed as service-provider',
         ];
     }
 }

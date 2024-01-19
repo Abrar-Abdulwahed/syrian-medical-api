@@ -16,7 +16,7 @@ class ProductPolicy
 
     public function view(User $user, Product $product): bool
     {
-        return $user->id === $product->user_id;
+        return $user->id === $product->provider_id;
     }
 
     public function create(User $user): bool
@@ -26,21 +26,21 @@ class ProductPolicy
 
     public function update(User $user, Product $product): bool
     {
-        return $user->id === $product->user_id;
+        return $user->id === $product->provider_id;
     }
 
     public function delete(User $user, Product $product): bool
     {
-        return $user->id === $product->user_id;
+        return $user->id === $product->provider_id;
     }
 
     public function restore(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 
     public function forceDelete(User $user, Product $product): bool
     {
-        //
+        return true;
     }
 }

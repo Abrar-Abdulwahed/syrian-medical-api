@@ -36,7 +36,7 @@ class LoginController extends Controller
             }
 
             if ($result instanceof Admin) {
-                $token = $result->createToken('auth', ['*'], now()->addYear())->plainTextToken;
+                $token = $result->createToken('auth', ['*'], now()->addWeek())->plainTextToken;
                 return $this->returnJSON($token, 'You have logged in successfully');
             }
 
@@ -78,8 +78,8 @@ class LoginController extends Controller
     {
         try {
             // $user = User::where('ip', '$request->ip()')->first();
-            $user = User::find(7);
-            // $user = User::first();
+            // $user = User::find(7);
+            $user = User::first();
             if (!$user)
                 return $this->returnWrong('User not found', 404);
             if (!$user || $user->verification_code !== $request->verification_code) {
@@ -99,7 +99,7 @@ class LoginController extends Controller
             if (Cache::has($user->ip) && Cache::get($user->ip)) {
                 $token = $user->createToken('auth', ['remember'])->plainTextToken;
             } else {
-                $token = $user->createToken('auth', ['*'], now()->addYear())->plainTextToken;
+                $token = $user->createToken('auth', ['*'], now()->addWeek())->plainTextToken;
             }
             return $this->returnJSON($token, 'You have logged in successfully');
         } catch (\Exception $e) {

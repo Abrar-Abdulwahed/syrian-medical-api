@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\User\Patient;
+namespace App\Http\Controllers\User\ServiceProvider\ItemManagement;
+
 
 use Illuminate\Http\Request;
 use App\Services\Items\ReviewService;
 use App\Http\Controllers\Controller;
 
-class HomeController extends Controller
+class ReviewController extends Controller
 {
-    public function __construct(protected ReviewService $offerings)
+    public function __construct(protected ReviewService $reviewService)
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
     }
@@ -17,11 +18,11 @@ class HomeController extends Controller
     {
         // show all items or filter by type
         $type = $request->query('type');
-        return $type ? $this->offerings->getItemsByType($type) : $this->offerings->getAllItems();
+        return $type ? $this->reviewService->getItemsByType($type) : $this->reviewService->getAllItems();
     }
 
     public function show(string $type, string $id)
     {
-        return $this->offerings->getItemByType($id, $type);
+        return $this->reviewService->getItemByType($id, $type);
     }
 }

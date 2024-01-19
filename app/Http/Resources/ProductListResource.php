@@ -2,11 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
+use App\Models\Admin;
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,18 +17,15 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $link = $request->user()->id === $this->user_id ? route('products.show', $this->id) : route('users.products.show', $this->id);
         return [
             'id'          => $this->id,
-            'name'        => $this->name,
+            'title'        => $this->title,
             'thumbnail'   => $this->thumbnail,
             'type'        => OfferingType::PRODUCT->value,
-            'link'        => $link,
+            'link'        => url()->current() . '/' . OfferingType::PRODUCT->value . '/' . $this->id,
             'discount'    => $this->discount,
             'price'       => $this->price,
             'final_price' => $this->when($this->discount > 0, $this->price - ($this->price * ($this->discount / 100))),
-            'created_at'  => $this->created_at?->format('Y-m-d H:i:s'),
-            'updated_at'  => $this->updated_at?->format('Y-m-d H:i:s'),
         ];
     }
 }
