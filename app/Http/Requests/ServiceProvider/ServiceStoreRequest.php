@@ -23,6 +23,7 @@ class ServiceStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            'provider_id'  => 'required|exists:users,id',
             'service_id'    => [
                 'required',
                 'exists:services,id',

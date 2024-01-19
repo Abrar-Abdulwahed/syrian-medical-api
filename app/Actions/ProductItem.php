@@ -5,7 +5,7 @@ namespace App\Actions;
 use App\Models\Product;
 use App\Contracts\OfferingsInterface;
 use App\Http\Traits\ApiResponseTrait;
-use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductReviewResource;
 
 class ProductItem implements OfferingsInterface
 {
@@ -13,6 +13,6 @@ class ProductItem implements OfferingsInterface
     public function show(string $id)
     {
         $product = Product::findOrFail($id);
-        return $this->returnJSON(new ProductResource($product), 'Data retrieved successfully');
+        return $this->returnJSON(new ProductReviewResource($product), 'Data retrieved successfully');
     }
 }

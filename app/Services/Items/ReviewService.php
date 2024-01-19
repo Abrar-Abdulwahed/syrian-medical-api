@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Items;
 
 use App\Models\Product;
 use App\Enums\OfferingType;
@@ -9,17 +9,17 @@ use App\Actions\ServiceItem;
 use App\Models\ProviderService;
 use App\Contracts\OfferingsInterface;
 use App\Http\Traits\ApiResponseTrait;
-use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ServiceListResource;
 
-class OfferingsService
+class ReviewService
 {
     use ApiResponseTrait;
     public function getAllItems()
     {
         $products = Product::with('provider')->get();
         $services = ProviderService::get();
-        $result =   ProductResource::collection($products)->merge(ServiceListResource::collection($services));
+        $result =   ProductListResource::collection($products)->merge(ServiceListResource::collection($services));
         return $this->returnJSON($result, 'Data retrieved successfully');
     }
 
@@ -44,7 +44,7 @@ class OfferingsService
             return $this->returnJSON(ServiceListResource::collection($services), 'Data retrieved successfully');
         } else if ($type === OfferingType::PRODUCT->value) {
             $products = Product::with('provider')->get();
-            return $this->returnJSON(ProductResource::collection($products), 'Data retrieved successfully');
+            return $this->returnJSON(ProductListResource::collection($products), 'Data retrieved successfully');
         }
     }
 }

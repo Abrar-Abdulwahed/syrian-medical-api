@@ -2,7 +2,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ItemManagement\OfferingsController;
+use App\Http\Controllers\Admin\ItemManagement\ReviewController;
+use App\Http\Controllers\Admin\ItemManagement\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,17 @@ use App\Http\Controllers\Admin\ItemManagement\OfferingsController;
 |
 */
 
-Route::apiResource('admin/items', OfferingsController::class);
-// Custom show route with the 'type' parameter
-Route::get('admin/items/{type}/{id}/', [OfferingsController::class, 'show'])
-    ->name('admin.items.show');
+Route::name('admin.')->apiResource('admin/products', ProductController::class)->only(['store', 'update', 'destroy']);
+Route::name('admin.')->apiResource('admin/services', ServiceController::class)->only(['store', 'update', 'destroy']);
+
+Route::name('admin.')->prefix('admin/items')->group(function () {
+    Route::get('/', [ReviewController::class, 'index'])->name('items.index');
+    Route::get('{type}/{id}', [ReviewController::class, 'show'])->name('items.show');
+});
+// Route::apiResource('admin/items', ReviewController::class)
+// ->parameters(['type', 'id'])
+// ->only(['index', 'show'])
+// ->names([
+//     'index' => 'admin.items.index',
+//     'show' => 'admin.items.show',
+// ]);

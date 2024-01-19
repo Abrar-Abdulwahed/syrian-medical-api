@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\User\Patient;
 
 use Illuminate\Http\Request;
-use App\Services\OfferingsService;
+use App\Services\Items\ReviewService;
 use App\Http\Controllers\Controller;
 
 class HomeController extends Controller
 {
-    public function __construct(protected OfferingsService $offerings)
+    public function __construct(protected ReviewService $offerings)
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
     }

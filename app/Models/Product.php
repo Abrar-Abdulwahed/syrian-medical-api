@@ -24,7 +24,7 @@ class Product extends Model
     protected function attachmentPath(): Attribute
     {
         return Attribute::make(
-            get: fn() => '/products'. '/' . $this->id,
+            get: fn () => '/products' . '/' . $this->id,
         );
     }
 

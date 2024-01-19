@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\ServiceProvider;
 
+use App\Enums\UserType;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
 
 class ProductUpdateRequest extends BaseRequest
@@ -22,10 +24,23 @@ class ProductUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
+            'user_id'   => [
+                'sometimes',
+                Rule::exists('users', 'id')->where(function ($query) {
+                    $query->where('type', UserType::SERVICE_PROVIDER->value);
+                }),
+            ],
             'name'     => 'required|string',
-            'thumbnail'=> 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
+            'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
             'price'    => 'required|numeric',
             'discount' => 'sometimes|numeric',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'user_id.exists' => 'User must be existed as service-provider',
         ];
     }
 }

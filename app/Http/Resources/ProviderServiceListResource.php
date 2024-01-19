@@ -20,7 +20,7 @@ class ProviderServiceListResource extends JsonResource
             'title'          => $this->title,
             'thumbnail'      => $this->thumbnail,
             'type'           => OfferingType::SERVICE->value,
-            'link'           => route('services.show', $this->id),
+            'link'           => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
             'description'    => $this->pivot->description,
             'price'          => $this->pivot->price,
             'final_price'    => $this->when($this->pivot->discount > 0, $this->pivot->price - ($this->pivot->price * ($this->pivot->discount / 100))),

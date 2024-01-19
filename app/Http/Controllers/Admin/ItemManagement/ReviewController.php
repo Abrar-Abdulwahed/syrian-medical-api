@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin\ItemManagement;
 
+
 use Illuminate\Http\Request;
-use App\Services\OfferingsService;
+use App\Services\Items\ReviewService;
 use App\Http\Controllers\Controller;
 
-class OfferingsController extends Controller
+class ReviewController extends Controller
 {
-    public function __construct(protected OfferingsService $offerings)
+    public function __construct(protected ReviewService $offerings)
     {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
@@ -23,15 +24,5 @@ class OfferingsController extends Controller
     public function show(string $type, string $id)
     {
         return $this->offerings->getItemByType($id, $type);
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 }
