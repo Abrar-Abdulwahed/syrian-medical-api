@@ -20,14 +20,14 @@ class ChangePasswordController extends Controller
     public function changePassword(ChangePasswordRequest $request)
     {
         //! this task doesn't have mobile UI
-        try{
+        try {
             $user = $request->user();
             $user->update([
-                'password'  => Hash::make($request->new_password)
+                'password'  => $request->new_password
             ]);
             Notification::send($user, new ChangePasswordNotification);
             return $this->returnSuccess('Password Changed Successfully');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
     }
