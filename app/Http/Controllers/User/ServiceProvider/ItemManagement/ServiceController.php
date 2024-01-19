@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\ServiceProvider;
+namespace App\Http\Controllers\User\ServiceProvider\ItemManagement;
 
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
@@ -19,18 +19,18 @@ class ServiceController extends Controller
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
     }
 
-    public function index(Request $request)
-    {
-        $pageSize = $request->per_page ?? 10;
-        $services = $request->user()->services()->paginate($pageSize);
-        [$meta, $links] = $this->paginateResponse($services);
-        return $this->returnAllDataJSON(ProviderServiceListResource::collection($services), $meta, $links, 'Data retrieved successfully');
-    }
-    public function show(ProviderService $providerService)
-    {
-        $this->authorize('view', $providerService);
-        return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
-    }
+    // public function index(Request $request)
+    // {
+    //     $pageSize = $request->per_page ?? 10;
+    //     $services = $request->user()->services()->paginate($pageSize);
+    //     [$meta, $links] = $this->paginateResponse($services);
+    //     return $this->returnAllDataJSON(ProviderServiceListResource::collection($services), $meta, $links, 'Data retrieved successfully');
+    // }
+    // public function show(ProviderService $providerService)
+    // {
+    //     $this->authorize('view', $providerService);
+    //     return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
+    // }
 
     public function store(ServiceStoreRequest $request)
     {

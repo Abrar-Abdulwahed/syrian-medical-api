@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\ItemManagement;
+namespace App\Http\Controllers\User\ServiceProvider\ItemManagement;
 
 
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ class ReviewController extends Controller
 {
     public function __construct(protected ReviewService $reviewService)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
+        $this->middleware(['auth:sanctum', 'verified', 'activated']);
     }
 
     public function index(Request $request)
