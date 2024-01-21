@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\PaymentMethodController;
 use App\Http\Controllers\User\Patient\ProfileController;
 
 /*
@@ -23,3 +24,4 @@ Route::prefix('dashboard/patients/profile')->group(function () {
         Route::post('/change-location', 'updateLocation');
     });
 });
+Route::apiResource('dashboard/patients/payment-method', PaymentMethodController::class)->only(['index', 'store']);
