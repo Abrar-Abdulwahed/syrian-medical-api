@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PatientProfile extends Model
 {
     use HasFactory;
-    protected $fillable = ['latitude', 'longitude'];
+    protected $fillable = ['latitude', 'longitude', 'payment_methods'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $casts = [
+        'payment_methods' => 'json',
+    ];
 }

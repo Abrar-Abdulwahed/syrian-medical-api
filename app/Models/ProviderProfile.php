@@ -14,10 +14,14 @@ class ProviderProfile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['bank_name', 'iban_number', 'swift_code', 'evidence', 'latitude', 'longitude'];
+    protected $fillable = ['bank_name', 'iban_number', 'swift_code', 'evidence', 'latitude', 'longitude', 'payment_methods'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $casts = [
+        'payment_methods' => 'json',
+    ];
 }

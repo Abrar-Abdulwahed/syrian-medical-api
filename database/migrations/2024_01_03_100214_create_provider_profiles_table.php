@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('evidence')->nullable();
             $table->double('latitude', 10, 8)->nullable();
             $table->double('longitude', 11, 8)->nullable();
+            $table->json('payment_methods')->nullable();
             $table->timestamps();
         });
     }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\User\PaymentMethodController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\ServiceProvider\ProfileController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::prefix('dashboard/providers/profile')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/', 'showDetails')->name('show.profile');
@@ -22,4 +24,4 @@ Route::prefix('dashboard/providers/profile')->group(function () {
         Route::post('/change-location', 'updateLocation');
     });
 });
-
+Route::apiResource('dashboard/providers/payment-method', PaymentMethodController::class)->only(['index', 'store']);
