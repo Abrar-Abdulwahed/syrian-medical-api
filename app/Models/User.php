@@ -110,6 +110,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->withTimestamps();
     }
 
+    public function reservations(): HasMany
+    {
+        return $this->hasMany(Reservation::class, 'patient_id');
+    }
+
     public function isPatient()
     {
         return $this->type === UserType::PATIENT->value;

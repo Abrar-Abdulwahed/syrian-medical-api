@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
         Relation::morphMap([
             'User'   => 'App\Models\User',
             'Admin'  => 'App\Models\Admin',
+            'Service' => 'App\Models\ProviderService',
+            'Product' => 'App\Models\Product'
         ]);
     }
 }

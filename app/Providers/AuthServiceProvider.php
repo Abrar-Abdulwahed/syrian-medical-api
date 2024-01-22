@@ -3,16 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use App\Models\User;
-use App\Models\Product;
-use App\Models\ProviderService;
-use App\Policies\ProductPolicy;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
-use App\Policies\ProviderServicePolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use App\Http\Controllers\Auth\BaseLoginController;
+use App\Models\Reservation;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -23,9 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [
-
-    ];
+    protected $policies = [];
 
     /**
      * Register any authentication / authorization services.
@@ -42,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
             ]);
             return (new MailMessage)
                 ->subject('Verify Email Address')
-                ->line('This is your code: '. $code)
+                ->line('This is your code: ' . $code)
                 ->line('If you did not create an account, no further action is required');
         });
 
@@ -54,10 +47,10 @@ class AuthServiceProvider extends ServiceProvider
                 ['code' => $code, 'created_at' => now()]
             );
             return (new MailMessage)
-            ->subject('Reset Password Notification')
-            ->line('You are receiving this email because we received a password reset request for your account.')
-            ->line('This is your code: '. $code)
-            ->line('If you did not request a password reset, no further action is required.');
+                ->subject('Reset Password Notification')
+                ->line('You are receiving this email because we received a password reset request for your account.')
+                ->line('This is your code: ' . $code)
+                ->line('If you did not request a password reset, no further action is required.');
         });
     }
 }

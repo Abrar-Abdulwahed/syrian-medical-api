@@ -65,8 +65,11 @@ class ServiceService
                 'date' => $date,
                 'times' => json_encode($times[$index]),
             ];
-
             $providerService->availabilities()->create($availabilityData);
         });
     }
 }
+// $date = $providerService->availabilities()->create(['date' => $date]);
+// foreach ($times[$index] as $time) {
+//     $date->times()->create(['time' => $time]);
+// }
