@@ -11,14 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservations', function (Blueprint $table) {
+        Schema::create('service_reservations', function (Blueprint $table) {
             $table->id();
-            $table->nullableMorphs('reservationable');
-            $table->foreignId('patient_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('provider_service_id')->constrained('provider_service')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('appointment_date')->nullable();
             $table->time('appointment_time')->nullable();
-            $table->json('location');
-            $table->json('payment_method');
             $table->timestamps();
         });
     }
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reservations');
+        Schema::dropIfExists('service_reservations');
     }
 };

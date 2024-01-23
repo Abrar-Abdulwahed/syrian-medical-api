@@ -6,9 +6,10 @@ use App\Models\User;
 use App\Models\ProviderProfile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -34,8 +35,8 @@ class Product extends Model
         return $this->belongsTo(User::class, 'provider_id');
     }
 
-    public function reservations(): MorphMany
+    public function reservations(): HasMany
     {
-        return $this->morphMany(Reservation::class, 'reservationable');
+        return $this->hasMany(ProductReservation::class);
     }
 }

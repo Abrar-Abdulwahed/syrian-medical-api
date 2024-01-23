@@ -24,7 +24,9 @@ class AppServiceProvider extends ServiceProvider
             'User'   => 'App\Models\User',
             'Admin'  => 'App\Models\Admin',
             'Service' => 'App\Models\ProviderService',
-            'Product' => 'App\Models\Product'
+            'Product' => 'App\Models\Product',
+            'Product' => 'App\Models\ProductReservation',
+            'Service' => 'App\Models\ServiceReservation',
         ]);
     }
 }

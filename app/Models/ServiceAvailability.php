@@ -19,6 +19,6 @@ class ServiceAvailability extends Model
 
     public function providerService(): BelongsTo
     {
-        return $this->belongsTo(ProviderService::class);
+        return $this->belongsTo(ProviderService::class, 'provider_service_id');
     }
 }
