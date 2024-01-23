@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Patient;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
@@ -11,6 +12,7 @@ use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReservationResource;
 use App\Http\Requests\Patient\ReservationStoreRequest;
+use App\Notifications\ReservationNotification;
 
 class ReservationController extends Controller
 {
@@ -59,6 +61,8 @@ class ReservationController extends Controller
                     ]
                 );
             }
+            $provider = User::find($reservation->reservationable->provider_id);
+            $provider->notify(new ReservationNotification(true, $reservation));
             DB::commit();
             return $this->returnSuccess('You\'ve completed your Order');
         } catch (\Exception $e) {
@@ -70,7 +74,8 @@ class ReservationController extends Controller
     // cancel reservation
     public function destroy(Reservation $reservation)
     {
-        dd($reservation);
+        $provider = User::find($reservation->reservationable->provider_id);
+        $provider->notify(new ReservationNotification(false, $reservation));
         $reservation->delete();
         return $this->returnSuccess('You\'ve canceled your reservation');
     }
