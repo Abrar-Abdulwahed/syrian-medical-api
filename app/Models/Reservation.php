@@ -29,7 +29,7 @@ class Reservation extends Model
         return $this->morphTo();
     }
 
-    public function user(): BelongsTo
+    public function patient(): BelongsTo
     {
         return $this->belongsTo(User::class, 'patient_id');
     }
