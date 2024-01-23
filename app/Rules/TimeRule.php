@@ -13,12 +13,16 @@ class TimeRule implements ValidationRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
+    protected $date;
+    public function __construct($date)
+    {
+        $this->date = $date;
+    }
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $selectedTime = Carbon::createFromFormat('Y-m-d H:i:s', $value);
-        if ($selectedTime === false) {
-            $fail('Invalid time format');
-        } elseif ($selectedTime->lessThan(now())) {
+        $selectedTime = Carbon::createFromFormat('Y-m-d H:i:s', $this->date . ' ' . $value);
+        if ($selectedTime->lessThan(now())) {
             $fail('The selected time is outdated');
         }
     }

@@ -34,10 +34,10 @@ class ReservationStoreRequest extends BaseRequest
         ];
         // Check if $item is an instance of ProviderService
         if ($this->item instanceof ProviderService) {
-            $rules['appointment_date'] = 'required|date|after:now';
+            $rules['appointment_date'] = 'required|date|after_or_equal:today';
             $rules['appointment_time'] = [
                 'required',
-                Rule::when($this->filled('appointment_date'), ['date_format:H:i:s', new TimeRule()])
+                Rule::when($this->filled('appointment_date'), ['date_format:H:i:s', new TimeRule($this->input('appointment_date'))])
             ];
         }
         return $rules;

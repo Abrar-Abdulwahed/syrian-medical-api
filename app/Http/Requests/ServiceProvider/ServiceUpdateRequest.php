@@ -48,9 +48,9 @@ class ServiceUpdateRequest extends BaseRequest
         ];
         if ($this->has('dates'))
             foreach ($this->input('dates') as $index => $date) {
-                $rules["dates.$index"] = "required|date|date_format:Y-m-d|after_or_equal:now";
+                $rules["dates.$index"] = "required|date|date_format:Y-m-d|after_or_equal:today";
                 $rules["times.$index"] = "required_with:dates.$index";
-                $rules["times.$index.*"] = "date_format:H:i:s";
+                $rules["times.$index.*"] = ["date_format:H:i:s", new TimeRule($date)];
             }
 
         return $rules;
