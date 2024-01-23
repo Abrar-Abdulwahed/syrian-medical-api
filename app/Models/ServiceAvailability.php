@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ServiceAvailability extends Model
 {
@@ -12,8 +13,9 @@ class ServiceAvailability extends Model
     public $timestamps = false;
     protected $fillable = [
         'date',
-        'times',
+        'times'
     ];
+
 
     public function providerService(): BelongsTo
     {

@@ -40,7 +40,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
@@ -74,5 +74,6 @@ class Kernel extends HttpKernel
 
         'activated' => \App\Http\Middleware\CheckUserActivation::class,
         'is-admin'  => \App\Http\Middleware\IsAdmin::class,
+        'bind.items.type' => \App\Http\Middleware\DynamicModelBindingMiddleware::class,
     ];
 }
