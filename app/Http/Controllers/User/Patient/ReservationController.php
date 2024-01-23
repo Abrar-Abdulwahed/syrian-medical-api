@@ -17,7 +17,7 @@ class ReservationController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
-        $this->middleware('bind.items.type')->only('make');
+        $this->middleware('bind.items.type')->only('store');
         $this->authorizeResource(Reservation::class, 'reservation');
     }
 
@@ -31,7 +31,8 @@ class ReservationController extends Controller
         return $this->returnJSON(new ReservationResource($reservation));
     }
 
-    public function make(ReservationStoreRequest $request)
+    // make reservation
+    public function store(ReservationStoreRequest $request)
     {
         DB::beginTransaction();
         try {
