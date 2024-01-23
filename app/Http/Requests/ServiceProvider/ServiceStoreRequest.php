@@ -4,6 +4,7 @@ namespace App\Http\Requests\ServiceProvider;
 
 use App\Models\Admin;
 use App\Enums\UserType;
+use App\Rules\TimeRule;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
 
@@ -38,7 +39,7 @@ class ServiceStoreRequest extends BaseRequest
             }),
         ];
 
-        return [
+        $rules = [
             'provider_id'   => [
                 'sometimes',
                 Rule::exists('users', 'id')->where(function ($query) {
@@ -50,9 +51,14 @@ class ServiceStoreRequest extends BaseRequest
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',
             'dates'         => 'required|array',
-            'dates.*'       => 'required|date_format:Y-m-d',
-            'times'         => 'required|array',
-            'times.*.*'     => 'required|string',
         ];
+        if ($this->has('dates'))
+            foreach ($this->input('dates') as $index => $date) {
+                $rules["dates.$index"] = "required|date|date_format:Y-m-d|after_or_equal:now";
+                $rules["times.$index"] = "required_with:dates.$index";
+                $rules["times.$index.*"] = "date_format:H:i:s";
+            }
+
+        return $rules;
     }
 }

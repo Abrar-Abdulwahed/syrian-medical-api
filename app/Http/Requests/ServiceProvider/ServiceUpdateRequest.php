@@ -4,6 +4,7 @@ namespace App\Http\Requests\ServiceProvider;
 
 use App\Models\Admin;
 use App\Enums\UserType;
+use App\Rules\TimeRule;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
 
@@ -38,15 +39,20 @@ class ServiceUpdateRequest extends BaseRequest
                 }
             })->ignore($service->id),
         ];
-        return [
+        $rules = [
             'service_id'    => $serviceIdRules,
             'description'   => 'nullable|string',
             'price'         => 'required|numeric',
             'discount'      => 'sometimes|numeric',
             'dates'         => 'required|array',
-            'dates.*'       => 'required|date_format:Y-m-d',
-            'times'         => 'required|array',
-            'times.*.*'     => 'required|string',
         ];
+        if ($this->has('dates'))
+            foreach ($this->input('dates') as $index => $date) {
+                $rules["dates.$index"] = "required|date|date_format:Y-m-d|after_or_equal:now";
+                $rules["times.$index"] = "required_with:dates.$index";
+                $rules["times.$index.*"] = "date_format:H:i:s";
+            }
+
+        return $rules;
     }
 }

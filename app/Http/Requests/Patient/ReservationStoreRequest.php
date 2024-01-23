@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Patient;
 
+use App\Rules\TimeRule;
 use App\Models\Reservation;
 use App\Models\ProviderService;
 use Illuminate\Validation\Rule;
@@ -33,10 +34,10 @@ class ReservationStoreRequest extends BaseRequest
         ];
         // Check if $item is an instance of ProviderService
         if ($this->item instanceof ProviderService) {
-            $rules['appointment_date'] = 'required|date|after:today';
+            $rules['appointment_date'] = 'required|date|after:now';
             $rules['appointment_time'] = [
                 'required',
-                Rule::when($this->filled('appointment_date'), ['date_format:H:i:s', 'after_or_equal:now'])
+                Rule::when($this->filled('appointment_date'), ['date_format:H:i:s', new TimeRule()])
             ];
         }
         return $rules;

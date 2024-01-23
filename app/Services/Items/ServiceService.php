@@ -24,6 +24,7 @@ class ServiceService
             $user->services()->syncWithoutDetaching([$data['service_id'] => $providerServiceData]);
             $service = ProviderService::where(['service_id' => $data['service_id'], 'provider_id' => $user->id])->first();
             $dates = $data['dates'];
+            // dd($data['times']);
             $times = $data['times'];
             $this->saveAvailability($dates, $times, $service);
             DB::commit();
@@ -69,7 +70,3 @@ class ServiceService
         });
     }
 }
-// $date = $providerService->availabilities()->create(['date' => $date]);
-// foreach ($times[$index] as $time) {
-//     $date->times()->create(['time' => $time]);
-// }
