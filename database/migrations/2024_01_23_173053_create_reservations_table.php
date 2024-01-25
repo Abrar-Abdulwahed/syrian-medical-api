@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->json('location');
             $table->json('payment_method');
-            $table->string('status')->nullable();
+            // $table->string('status')->nullable();
             $table->timestamps();
         });
     }

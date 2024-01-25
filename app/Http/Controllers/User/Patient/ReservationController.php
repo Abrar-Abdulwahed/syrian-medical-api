@@ -66,7 +66,7 @@ class ReservationController extends Controller
                 );
             }
             $reservation = $startToReserve->morphReservation()->create($reservationData);
-            $reservation->forceFill(['status' => 'pending', 'patient_id' => $request->user()->id])->save();
+            $reservation->forceFill(['patient_id' => $request->user()->id])->save();
             $item->provider->notify(new ReservationNotification(true, $reservation));
             DB::commit();
             return $this->returnSuccess('You\'ve completed your Order');

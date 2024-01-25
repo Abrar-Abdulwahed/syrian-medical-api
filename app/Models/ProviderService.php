@@ -26,7 +26,7 @@ class ProviderService extends Pivot
         return $this->belongsTo(User::class, 'provider_id');
     }
 
-    public function reservations(): hasMany
+    public function reservations(): HasMany
     {
         return $this->hasMany(ServiceReservation::class, 'provider_service_id');
     }

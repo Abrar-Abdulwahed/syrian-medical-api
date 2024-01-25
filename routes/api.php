@@ -21,6 +21,7 @@ include __DIR__ . '/api/users/auth.php';
 
 include __DIR__ . '/api/users/service-providers/profile.php';
 include __DIR__ . '/api/users/service-providers/items-management.php';
+include __DIR__ . '/api/users/service-providers/orders-management.php';
 
 
 include __DIR__ . '/api/users/patients/profile.php';

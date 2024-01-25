@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('provider_service_id')->constrained('provider_service')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('appointment_date')->nullable();
             $table->time('appointment_time')->nullable();
-            $table->timestamps();
         });
     }
 
