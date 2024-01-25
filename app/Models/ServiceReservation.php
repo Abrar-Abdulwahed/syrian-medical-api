@@ -19,7 +19,7 @@ class ServiceReservation extends Model
 
     public static function isAvailable($date, $time)
     {
-        return !ServiceReservation::where('appointment_date', Carbon::parse($date))->where('appointment_time', $time)->exists();
+        return !ServiceReservation::whereDate('appointment_date', Carbon::parse($date))->where('appointment_time', $time)->exists();
     }
 
     public function service(): BelongsTo

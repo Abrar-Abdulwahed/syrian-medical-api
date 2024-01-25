@@ -20,12 +20,14 @@ class ReservationResource extends JsonResource
     {
         $reservation = $this->reservationable;
         if ($reservation instanceof ProductReservation) {
-            $item = new ProductReviewResource(Product::find($this->reservationable->product_id));
-        } else if ($reservation instanceof ServiceReservation)
-            $item = new ServiceReviewResource(ProviderService::find($this->reservationable->provider_service_id));
+            $item = new ProductReviewResource($reservation->product);
+        } else if ($reservation instanceof ServiceReservation) {
+            $reservation->service->load('availabilities');
+            $item = new ServiceReviewResource($reservation->service);
+        }
 
         return [
-            'Item' => $item,
+            'item' => $item,
             'appointment' => $this->when($reservation instanceof ServiceReservation, $this->reservationable->appointment_date . ' ' . $this->reservationable->appointment_time),
             'quantity' => $this->when($reservation instanceof ProductReservation, $this->reservationable->quantity),
             'location' => $this->location,

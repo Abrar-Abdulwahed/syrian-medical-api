@@ -24,7 +24,8 @@ class ReservationController extends Controller
 
     public function index(Request $request)
     {
-        return $this->returnJSON(ReservationResource::collection($request->user()->reservations()->get()));
+        $user = $request->user()->load('reservations.reservationable');
+        return $this->returnJSON(ReservationResource::collection($user->reservations));
     }
 
     public function show(Reservation $reservation)

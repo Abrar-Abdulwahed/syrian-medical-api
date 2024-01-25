@@ -81,7 +81,7 @@ class LoginController extends Controller
             // $user = User::first();
             if (!$user)
                 return $this->returnWrong('User not found', 404);
-            if (!$user || $user->verification_code !== $request->verification_code) {
+            if ($user->verification_code !== $request->verification_code) {
                 $user->forceFill(['login_attempts' => $user->login_attempts + 1])->save();
 
                 if ($user->login_attempts > 3) {

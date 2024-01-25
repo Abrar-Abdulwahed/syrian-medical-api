@@ -18,9 +18,7 @@ class ServiceReviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
-        $service = Service::find($this->service_id);
-        // $user = User::find($this->provider_id);
+        $service = $this->resource->service;
         $attributes =  [
             'id'             => $this->id,
             'type'           => OfferingType::SERVICE->value,
