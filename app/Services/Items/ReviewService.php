@@ -2,10 +2,14 @@
 
 namespace App\Services\Items;
 
+use App\Models\Admin;
 use App\Models\Product;
+use App\Enums\OrderStatus;
 use App\Enums\OfferingType;
+use Illuminate\Http\Request;
 use App\Models\ProviderService;
 use App\Http\Traits\ApiResponseTrait;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ServiceListResource;
 use App\Http\Resources\ProductReviewResource;
@@ -22,14 +26,28 @@ class ReviewService
         return $this->returnJSON($result, 'Data retrieved successfully');
     }
 
-    public function getItemByType(string $id, string $type)
+    public function getItemByType(Request $request)
     {
-        if ($type === OfferingType::SERVICE->value) {
-            $providerService = ProviderService::findOrFail($id);
-            return $this->returnJSON(new ServiceReviewResource($providerService), 'Data retrieved successfully');
-        } else if ($type === OfferingType::PRODUCT->value) {
-            $product = Product::findOrFail($id);
-            return $this->returnJSON(new ProductReviewResource($product), 'Data retrieved successfully');
+        $user = $request->user();
+        $item = $request->item;
+
+        // Show the total/completed/canceled orders ONLY for admin and owner provider
+        if ($user instanceof Admin || $user->id === $item->provider_id) {
+            $item->loadCount([
+                'reservations as total_orders_count',
+                'reservations as completed_orders_count' => function (Builder $query) {
+                    $query->whereRelation('morphReservation', 'status', OrderStatus::COMPLETED->value);
+                },
+                'reservations as canceled_orders_count' => function (Builder $query) {
+                    $query->whereRelation('morphReservation', 'status', OrderStatus::CANCELED->value);
+                },
+            ]);
+        }
+        if ($item instanceof ProviderService) {
+            $item->load('availabilities');
+            return $this->returnJSON(new ServiceReviewResource($item), 'Data retrieved successfully');
+        } else if ($item instanceof Product) {
+            return $this->returnJSON(new ProductReviewResource($item), 'Data retrieved successfully');
         }
     }
 

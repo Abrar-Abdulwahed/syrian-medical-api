@@ -5,13 +5,14 @@ namespace App\Http\Controllers\User\Patient;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
+use App\Models\ProductReservation;
 use App\Models\ServiceReservation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\ReservationResource;
 use App\Notifications\ReservationNotification;
 use App\Http\Requests\Patient\ReservationStoreRequest;
-use App\Models\ProductReservation;
 
 class ReservationController extends Controller
 {

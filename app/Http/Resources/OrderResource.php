@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // FOR PROVIDER
         $instance = $this->resource;
         if ($instance instanceof ProductReservation) {
             $item = new ProductReviewResource($instance->product);
@@ -26,7 +27,7 @@ class OrderResource extends JsonResource
         }
 
         return [
-            'Item' => $item,
+            'item' => $item,
             'appointment' => $this->when(
                 $instance instanceof ServiceReservation,
                 $instance->appointment_date . ' ' . $instance->appointment_time
@@ -34,6 +35,8 @@ class OrderResource extends JsonResource
             'quantity' => $this->when($instance instanceof ProductReservation, $instance->quantity),
             'location' => $instance->morphReservation->location,
             'payment_method' => json_decode($instance->morphReservation->payment_method),
+            'status'      => $this->morphReservation->status,
+            'ordered_at'  => $this->morphReservation->created_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

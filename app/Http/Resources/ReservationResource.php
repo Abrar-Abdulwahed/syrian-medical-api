@@ -18,20 +18,21 @@ class ReservationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // FOR PATIENT
         $reservation = $this->reservationable;
         if ($reservation instanceof ProductReservation) {
             $item = new ProductReviewResource($reservation->product);
         } else if ($reservation instanceof ServiceReservation) {
-            $reservation->service->load('availabilities');
             $item = new ServiceReviewResource($reservation->service);
         }
-
         return [
             'item' => $item,
             'appointment' => $this->when($reservation instanceof ServiceReservation, $this->reservationable->appointment_date . ' ' . $this->reservationable->appointment_time),
             'quantity' => $this->when($reservation instanceof ProductReservation, $this->reservationable->quantity),
             'location' => $this->location,
             'payment_method' => json_decode($this->payment_method),
+            'status'      => $this->getStatusLabel($this->status),
+            'ordered_at'  => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

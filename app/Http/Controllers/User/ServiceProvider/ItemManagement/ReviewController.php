@@ -16,6 +16,7 @@ class ReviewController extends Controller
     public function __construct(protected ReviewService $reviewService)
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        $this->middleware('bind.items.type')->only('show');
     }
 
     public function index(Request $request)
@@ -38,9 +39,9 @@ class ReviewController extends Controller
         return $this->returnJSON($result, 'Data retrieved successfully');
     }
 
-    public function show(string $type, string $id)
+    public function show(Request $request)
     {
-        $this->authorize('view', ProviderService::find($id));
-        return $this->reviewService->getItemByType($id, $type);
+        $this->authorize('view', $request->item);
+        return $this->reviewService->getItemByType($request);
     }
 }

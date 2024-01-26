@@ -12,5 +12,5 @@ Route::name('provider')->apiResource('dashboard/services', ServiceController::cl
 
 Route::name('provider.')->prefix('dashboard/items')->group(function () {
     Route::get('/', [ReviewController::class, 'index'])->name('items.index');
-    Route::get('{type}/{id}', [ReviewController::class, 'show'])->name('items.show');
+    Route::get('{type}/{item}', [ReviewController::class, 'show'])->name('items.show');
 });

@@ -115,12 +115,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ProviderService::class, 'provider_id');
     }
 
-    // relationship for provider ONLY
-    // public function orders()
-    // {
-    //     return
-    // }
-
     // relationship for patient ONLY
     public function reservations(): HasMany
     {
