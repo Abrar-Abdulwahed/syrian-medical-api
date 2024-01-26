@@ -13,6 +13,7 @@ class ProductReservation extends Model
     protected $fillable = [
         'quantity',
     ];
+    public $timestamps = false;
 
     public function product(): BelongsTo
     {

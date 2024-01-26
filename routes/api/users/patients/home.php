@@ -19,6 +19,6 @@ use App\Http\Controllers\User\Patient\ProfileController;
 Route::prefix('patients')->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('/items', 'index');
-        Route::get('items/{type}/{id}', 'show')->name('user.items.show');
+        Route::get('items/{type}/{item}', 'show')->name('user.items.show');
     });
 });

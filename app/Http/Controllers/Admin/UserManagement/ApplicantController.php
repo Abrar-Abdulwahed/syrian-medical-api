@@ -44,10 +44,10 @@ class ApplicantController extends Controller
     {
         try {
             $user = User::findOrFail($id);
+            $user->delete();
+            $this->removeDirectory($user->attachment_path);
             // Notify service provider
             $user->notify(new AdminReviewNotificationMail(false));
-            $this->removeDirectory($user->attachment_path);
-            $user->delete();
             return $this->returnSuccess('Service Provider has been deleted from database!');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());

@@ -5,13 +5,14 @@ namespace App\Http\Controllers\User\Patient;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
+use App\Models\ProductReservation;
 use App\Models\ServiceReservation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\ReservationResource;
 use App\Notifications\ReservationNotification;
 use App\Http\Requests\Patient\ReservationStoreRequest;
-use App\Models\ProductReservation;
 
 class ReservationController extends Controller
 {
@@ -24,7 +25,8 @@ class ReservationController extends Controller
 
     public function index(Request $request)
     {
-        return $this->returnJSON(ReservationResource::collection($request->user()->reservations()->get()));
+        $user = $request->user()->load('reservations.reservationable');
+        return $this->returnJSON(ReservationResource::collection($user->reservations));
     }
 
     public function show(Reservation $reservation)
@@ -66,7 +68,7 @@ class ReservationController extends Controller
                 );
             }
             $reservation = $startToReserve->morphReservation()->create($reservationData);
-            $reservation->forceFill(['status' => 'pending', 'patient_id' => $request->user()->id])->save();
+            $reservation->forceFill(['patient_id' => $request->user()->id])->save();
             $item->provider->notify(new ReservationNotification(true, $reservation));
             DB::commit();
             return $this->returnSuccess('You\'ve completed your Order');

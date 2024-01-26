@@ -9,9 +9,6 @@ use App\Models\ProviderService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Traits\ApiResponseTrait;
 use App\Http\Traits\PaginateResponseTrait;
-use App\Http\Resources\ServiceReviewResource;
-use App\Http\Requests\ServiceProvider\ServiceStoreRequest;
-use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
 
 class ServiceService
 {
@@ -24,7 +21,6 @@ class ServiceService
             $user->services()->syncWithoutDetaching([$data['service_id'] => $providerServiceData]);
             $service = ProviderService::where(['service_id' => $data['service_id'], 'provider_id' => $user->id])->first();
             $dates = $data['dates'];
-            // dd($data['times']);
             $times = $data['times'];
             $this->saveAvailability($dates, $times, $service);
             DB::commit();

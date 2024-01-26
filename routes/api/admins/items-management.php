@@ -24,5 +24,5 @@ Route::name('admin')->apiResource('admin/services', ServiceController::class)->o
 
 Route::name('admin.')->prefix('admin/items')->group(function () {
     Route::get('/', [ReviewController::class, 'index'])->name('items.index');
-    Route::get('{type}/{id}', [ReviewController::class, 'show'])->name('items.show');
+    Route::get('{type}/{item}', [ReviewController::class, 'show'])->name('items.show');
 });

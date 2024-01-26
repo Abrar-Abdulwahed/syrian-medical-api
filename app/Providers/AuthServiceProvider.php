@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Reservation;
+use App\Policies\OrderPolicy;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use App\Http\Controllers\Auth\BaseLoginController;
-use App\Models\Reservation;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -25,6 +27,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('manage-reservations', [OrderPolicy::class, 'manageReservations']);
+
         // customize email verification
         VerifyEmail::toMailUsing(function (object $notifiable) {
             $code = generateRandomNumber(8);

@@ -11,6 +11,7 @@ class HomeController extends Controller
     public function __construct(protected ReviewService $offerings)
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        $this->middleware('bind.items.type')->only('show');
     }
 
     public function index(Request $request)
@@ -20,8 +21,8 @@ class HomeController extends Controller
         return $type ? $this->offerings->getItemsByType($type) : $this->offerings->getAllItems();
     }
 
-    public function show(string $type, string $id)
+    public function show(Request $request)
     {
-        return $this->offerings->getItemByType($id, $type);
+        return $this->offerings->getItemByType($request);
     }
 }
