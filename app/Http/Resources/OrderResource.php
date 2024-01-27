@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\OrderStatus;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
@@ -36,6 +37,7 @@ class OrderResource extends JsonResource
             'location' => $instance->morphReservation->location,
             'payment_method' => json_decode($instance->morphReservation->payment_method),
             'status'      => $this->morphReservation->status,
+            'rejection_reason' => $this->when($this->morphReservation->status === OrderStatus::CANCELED->value,  $this->morphReservation->rejectionReason->first()->rejection_reason),
             'ordered_at'  => $this->morphReservation->created_at?->format('Y-m-d H:i:s'),
         ];
     }

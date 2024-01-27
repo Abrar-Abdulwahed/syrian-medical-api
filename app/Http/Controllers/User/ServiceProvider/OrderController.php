@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\ServiceProvider\OrderManagement;
+namespace App\Http\Controllers\User\ServiceProvider;
 
 use App\Enums\OrderStatus;
 use App\Models\Reservation;
@@ -42,9 +42,9 @@ class OrderController extends Controller
         try {
             $this->authorize('manage-reservations', $reservation);
             $orders = $reservation->reservationable;
-            if ($orders instanceof ServiceReservation) {
-                $orders->load('service.availabilities');
-            }
+            // if ($orders instanceof ServiceReservation) {
+            //     $orders->load('service.availabilities');
+            // }
             return $this->returnJSON(new OrderResource($orders), 'Data retrieved successfully');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
