@@ -26,12 +26,7 @@ class ReservationResource extends JsonResource
         } else if ($reservation instanceof ServiceReservation) {
             $item = new ServiceReviewResource($reservation->service);
         }
-        $rejectionReason = $this->when(
-            $this->relationLoaded('rejectionReason') && $this->status === OrderStatus::CANCELED->value,
-            function () {
-                return $this->rejectionReason->rejection_reason;
-            }
-        );
+
         return [
             'item' => $item,
             'appointment' => $this->when($reservation instanceof ServiceReservation, $this->reservationable->appointment_date . ' ' . $this->reservationable->appointment_time),
@@ -39,7 +34,18 @@ class ReservationResource extends JsonResource
             'location' => $this->location,
             'payment_method' => json_decode($this->payment_method),
             'status'      => $this->getStatusLabel($this->status),
-            'rejection_reason' => $rejectionReason,
+            'rejection_reason' => $this->when(
+                $this->relationLoaded('rejectionReason') && $this->status === OrderStatus::CANCELED->value,
+                function () {
+                    return $this->rejectionReason->rejection_reason;
+                }
+            ),
+            'rejected_at' => $this->when(
+                $this->relationLoaded('rejectionReason') && $this->status === OrderStatus::CANCELED->value,
+                function () {
+                    return $this->rejectionReason->rejected_at; // Replace 'rejected_at' with the actual attribute name
+                }
+            ),
             'ordered_at'  => $this->created_at?->format('Y-m-d H:i:s'),
         ];
     }
