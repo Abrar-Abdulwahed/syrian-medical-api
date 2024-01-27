@@ -26,6 +26,7 @@ class Reservation extends Model
     function getStatusLabel($status)
     {
         $labels = [
+            OrderStatus::PENDING->value => 'pending',
             OrderStatus::COMPLETED->value => 'accepted',
             OrderStatus::CANCELED->value => 'refused',
         ];

@@ -31,3 +31,4 @@ include __DIR__ . '/api/users/patients/reservation.php';
 include __DIR__ . '/api/admins/auth.php';
 include __DIR__ . '/api/admins/user-management.php';
 include __DIR__ . '/api/admins/items-management.php';
+include __DIR__ . '/api/admins/orders-management.php';

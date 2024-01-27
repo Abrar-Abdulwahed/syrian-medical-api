@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\User\ServiceProvider\OrderManagement\OrderController;
+use App\Http\Controllers\User\ServiceProvider\OrderController;
 
 
 Route::name('provider')->apiResource('dashboard/reservations', OrderController::class)->only(['index', 'show']);
