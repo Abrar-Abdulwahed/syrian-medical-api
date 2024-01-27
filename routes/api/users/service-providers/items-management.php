@@ -7,10 +7,10 @@ use App\Http\Controllers\User\ServiceProvider\ItemManagement\{
     ServiceController
 };
 
-Route::name('provider')->apiResource('dashboard/products', ProductController::class)->only(['store', 'update', 'destroy']);
-Route::name('provider')->apiResource('dashboard/services', ServiceController::class)->only(['store', 'update', 'destroy']);
+Route::name('provider')->apiResource('providers/products', ProductController::class)->only(['store', 'update', 'destroy']);
+Route::name('provider')->apiResource('providers/services', ServiceController::class)->only(['store', 'update', 'destroy']);
 
-Route::name('provider.')->prefix('dashboard/items')->group(function () {
+Route::name('provider.')->prefix('providers/items')->group(function () {
     Route::get('/', [ReviewController::class, 'index'])->name('items.index');
     Route::get('{type}/{item}', [ReviewController::class, 'show'])->name('items.show');
 });

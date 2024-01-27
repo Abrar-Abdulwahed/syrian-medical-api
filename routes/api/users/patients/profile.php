@@ -16,7 +16,7 @@ use App\Http\Controllers\User\Patient\ProfileController;
 |
 */
 
-Route::prefix('dashboard/patients/profile')->group(function () {
+Route::prefix('patients/profile')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/', 'showDetails');
         Route::post('/update', 'updateDetails');
@@ -24,4 +24,4 @@ Route::prefix('dashboard/patients/profile')->group(function () {
         Route::post('/change-location', 'updateLocation');
     });
 });
-Route::apiResource('dashboard/patients/payment-method', PaymentMethodController::class)->only(['index', 'store']);
+Route::apiResource('patients/payment-method', PaymentMethodController::class)->only(['index', 'store']);

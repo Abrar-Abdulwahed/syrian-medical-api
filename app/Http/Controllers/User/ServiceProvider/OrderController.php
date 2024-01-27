@@ -9,6 +9,7 @@ use App\Models\ServiceReservation;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Requests\ServiceProvider\RejectionReasonRequest;
+use App\Notifications\ProviderReviewOrderNotification;
 
 class OrderController extends Controller
 {
@@ -58,7 +59,7 @@ class OrderController extends Controller
             $this->authorize('manage-reservations', $reservation);
             $reservation->forceFill(['status' => OrderStatus::COMPLETED->value])->save();
 
-            //TODO: Notify patient
+            $reservation->patient->notify(new ProviderReviewOrderNotification(true, $reservation));
             return $this->returnSuccess('You Mark this order as completed');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
@@ -72,7 +73,7 @@ class OrderController extends Controller
             $this->authorize('manage-reservations', $reservation);
             $reservation->forceFill(['status' => OrderStatus::CANCELED->value])->save();
             $reservation->rejectionReason()->updateOrCreate(['rejection_reason' => $request->rejection_reason]);
-            //TODO: Notify patient
+            $reservation->patient->notify(new ProviderReviewOrderNotification(false, $reservation));
             return $this->returnSuccess('You Mark this order as canceled');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
