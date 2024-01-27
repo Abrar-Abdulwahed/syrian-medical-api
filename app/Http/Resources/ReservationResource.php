@@ -43,7 +43,7 @@ class ReservationResource extends JsonResource
             'rejected_at' => $this->when(
                 $this->relationLoaded('rejectionReason') && $this->status === OrderStatus::CANCELED->value,
                 function () {
-                    return $this->rejectionReason->rejected_at; // Replace 'rejected_at' with the actual attribute name
+                    return $this->rejectionReason->rejected_at;
                 }
             ),
             'ordered_at'  => $this->created_at?->format('Y-m-d H:i:s'),
