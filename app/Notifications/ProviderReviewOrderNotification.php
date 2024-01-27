@@ -8,14 +8,14 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ReservationNotification extends Notification
+class ProviderReviewOrderNotification extends Notification
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(public $make, public Reservation $reservation)
+    public function __construct(public $accept, public Reservation $reservation)
     {
         //
     }
@@ -35,19 +35,16 @@ class ReservationNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
-        $makeMSG = $this->reservation->patient->fullName . ' has reserved your product/service';
-        $canceledMSG = 'Unfortunately, ' . $this->reservation->patient->fullName . ' has canceled the reservation.';
-        $message = $this->make ? $makeMSG : $canceledMSG;
-        $subject = $this->make ? 'New Reservation' : 'Canceled Reservation';
+        $acceptMSG = 'Congratulations! Your reservation has been accepted by the service provider, know more by clicking below button.';
+        $rejectedMSG = 'Unfortunately, Your reservation has been refused for some reason, click button to review your order';
+        $message = $this->accept ? $acceptMSG : $rejectedMSG;
 
         $mailMessage = (new MailMessage)
-            ->subject($subject)
-            ->line($message)
-            ->line('click button below to show details');
+            ->subject('Updates On Your Reservation')
+            ->line($message);
 
-        if ($this->make) {
-            $mailMessage->action('View Order', route('provider.reservations.show', $this->reservation->id));
-        }
+
+        $mailMessage->action('Your Order', route('patient.reservations.show', $this->reservation->id));
 
         $mailMessage->line('Thank you for using our application!');
 

@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('/patients/reservations', ReservationController::class)->only('index', 'show', 'destroy');
-Route::post('/patients/items/{type}/{item}/reserve', [ReservationController::class, 'store'])
+Route::name('patient')->apiResource('patients/reservations', ReservationController::class)->only('index', 'show', 'destroy');
+Route::post('patients/items/{type}/{item}/reserve', [ReservationController::class, 'store'])
     ->name('reservations.make');

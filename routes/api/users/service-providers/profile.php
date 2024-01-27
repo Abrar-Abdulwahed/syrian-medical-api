@@ -16,12 +16,12 @@ use App\Http\Controllers\User\ServiceProvider\ProfileController;
 |
 */
 
-Route::prefix('dashboard/providers/profile')->group(function () {
+Route::prefix('providers/profile')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/', 'showDetails')->name('show.profile');
-        Route::post('/update', 'updateDetails');
-        Route::post('/change-picture', 'updatePicture');
-        Route::post('/change-location', 'updateLocation');
+        Route::post('update', 'updateDetails');
+        Route::post('change-picture', 'updatePicture');
+        Route::post('change-location', 'updateLocation');
     });
 });
-Route::apiResource('dashboard/providers/payment-method', PaymentMethodController::class)->only(['index', 'store']);
+Route::apiResource('providers/payment-method', PaymentMethodController::class)->only(['index', 'store']);
