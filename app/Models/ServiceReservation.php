@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -22,6 +23,7 @@ class ServiceReservation extends Model
     {
         return !ServiceReservation::whereDate('appointment_date', Carbon::parse($date))
             ->where('appointment_time', $time)
+            ->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)
             ->exists();
     }
 
