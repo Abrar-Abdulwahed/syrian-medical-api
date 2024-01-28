@@ -75,5 +75,6 @@ class Kernel extends HttpKernel
         'activated' => \App\Http\Middleware\CheckUserActivation::class,
         'is-admin'  => \App\Http\Middleware\IsAdmin::class,
         'bind.items.type' => \App\Http\Middleware\DynamicModelBindingMiddleware::class,
+        'bind.reservation.type' => \App\Http\Middleware\DynamicReservationBindingMiddleware::class,
     ];
 }

@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Patient;
+namespace App\Http\Requests\ServiceProvider;
 
-use App\Enums\OrderStatus;
+use Carbon\Carbon;
+use App\Models\Reservation;
 use App\Http\Requests\BaseRequest;
+use App\Models\ServiceReservation;
 use Illuminate\Validation\Validator;
 
-class ReservationDestroyRequest extends BaseRequest
+class OrderAcceptRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,11 +32,13 @@ class ReservationDestroyRequest extends BaseRequest
     {
         return [
             function (Validator $validator) {
-                $instance = $this->reservation;
-                if ($instance->status !== OrderStatus::PENDING->value) {
+                $instance = $this->reservation->reservationable;
+                $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $instance->appointment_date . ' ' . $instance->appointment_time);
+
+                if ($instance instanceof ServiceReservation && $appointmentDateTime->lessThan(now())) {
                     $validator->errors()->add(
-                        'status',
-                        'You can\'t cancel this reservation, because it\'s ' . $instance->getStatusLabel($instance->status) . ' by provider!'
+                        'appointment_date',
+                        'The appointment date and time are outdated!'
                     );
                 }
             }
