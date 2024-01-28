@@ -2,6 +2,7 @@
 
 namespace App\Services\Items;
 
+use App\Enums\OrderStatus;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
@@ -34,7 +35,13 @@ class ServiceService
     public function update($data, ProviderService $providerService)
     {
         DB::beginTransaction();
+
         try {
+            // Check if this service is under reservation
+            if ($providerService->reservations()->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)->exists()) {
+                return $this->returnWrong('This service is under reservation, you cant edit it!');
+            }
+
             $providerServiceData = collect($data)->except(['dates', 'times'])->toArray();
             $providerService->update($providerServiceData);
             $dates = $data['dates'];
@@ -50,6 +57,10 @@ class ServiceService
 
     public function destroy(User $user, ProviderService $providerService)
     {
+        // Check if this service is under reservation
+        if ($providerService->reservations()->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)->exists()) {
+            return $this->returnWrong('This service is under reservation, you cant delete it!');
+        }
         $user->services()->detach($providerService->service_id);
         return $this->returnSuccess('Service has been deleted successfully');
     }
