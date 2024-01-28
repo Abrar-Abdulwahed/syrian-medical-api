@@ -9,7 +9,7 @@ use App\Models\ProductReservation;
 use App\Models\ServiceReservation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderResource;
+use App\Http\Requests\Patient\ReservationDestroyRequest;
 use App\Http\Resources\ReservationResource;
 use App\Notifications\ReservationNotification;
 use App\Http\Requests\Patient\ReservationStoreRequest;
@@ -79,7 +79,7 @@ class ReservationController extends Controller
     }
 
     // cancel reservation
-    public function destroy(Reservation $reservation)
+    public function destroy(ReservationDestroyRequest $request, Reservation $reservation)
     {
         $typeReservation = $reservation->reservationable; // ProductReservation or ServiceReservation
         $provider = $typeReservation->provider;

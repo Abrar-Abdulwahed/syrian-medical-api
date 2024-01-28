@@ -4,7 +4,7 @@ namespace App\Http\Requests\ServiceProvider;
 
 use App\Http\Requests\BaseRequest;
 
-class RejectionReasonRequest extends BaseRequest
+class OrderRejectRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.

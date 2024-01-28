@@ -9,6 +9,6 @@ class OrderPolicy
 {
     public function manageReservations(User $user, ?Reservation $reservation): bool
     {
-        return $user->id === $reservation->reservationable->provider->id;
+        return $user->id === $reservation->reservationable?->provider->id;
     }
 }

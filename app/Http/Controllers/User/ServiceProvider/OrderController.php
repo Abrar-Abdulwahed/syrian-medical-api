@@ -8,14 +8,16 @@ use Illuminate\Http\Request;
 use App\Models\ServiceReservation;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
-use App\Http\Requests\ServiceProvider\RejectionReasonRequest;
 use App\Notifications\ProviderReviewOrderNotification;
+use App\Http\Requests\ServiceProvider\OrderAcceptRequest;
+use App\Http\Requests\ServiceProvider\OrderRejectRequest;
 
 class OrderController extends Controller
 {
     public function __construct()
     {
         $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        $this->middleware('bind.reservation.type')->only('accept');
     }
 
     public function index(Request $request)
@@ -52,9 +54,9 @@ class OrderController extends Controller
         }
     }
 
-    public function accept(string $id)
+    public function accept(OrderAcceptRequest $request)
     {
-        $reservation = Reservation::findOrFail($id);
+        $reservation = $request->reservation;
         try {
             $this->authorize('manage-reservations', $reservation);
             $reservation->forceFill(['status' => OrderStatus::COMPLETED->value])->save();
@@ -66,7 +68,7 @@ class OrderController extends Controller
         }
     }
 
-    public function refuse(RejectionReasonRequest $request, string $id)
+    public function refuse(OrderRejectRequest $request, string $id)
     {
         $reservation = Reservation::findOrFail($id);
         try {

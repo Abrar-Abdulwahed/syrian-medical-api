@@ -3,9 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Enums\OrderStatus;
-use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\ProviderService;
 use App\Models\ProductReservation;
 use App\Models\ServiceReservation;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -21,9 +19,10 @@ class OrderResource extends JsonResource
     {
         // FOR PROVIDER
         $instance = $this->resource;
-        if ($instance instanceof ProductReservation) {
+        $item = null;
+        if ($instance && $instance instanceof ProductReservation) {
             $item = new ProductReviewResource($instance->product);
-        } elseif ($instance instanceof ServiceReservation) {
+        } elseif ($instance && $instance instanceof ServiceReservation) {
             $item = new ServiceReviewResource($instance->service);
         }
 
@@ -31,13 +30,13 @@ class OrderResource extends JsonResource
             'item' => $item,
             'appointment' => $this->when(
                 $instance instanceof ServiceReservation,
-                $instance->appointment_date . ' ' . $instance->appointment_time
+                $instance?->appointment_date . ' ' . $instance?->appointment_time
             ),
             'quantity' => $this->when($instance instanceof ProductReservation, $instance->quantity),
             'location' => $instance->morphReservation->location,
             'payment_method' => json_decode($instance->morphReservation->payment_method),
             'status'      => $this->morphReservation->status,
-            'rejection_reason' => $this->when($this->morphReservation->status === OrderStatus::CANCELED->value,  $this->morphReservation->rejectionReason->first()->rejection_reason),
+            'rejection_reason' => $this->when($this->morphReservation->status === OrderStatus::CANCELED->value,  $this->morphReservation->rejectionReason?->first()->rejection_reason),
             'ordered_at'  => $this->morphReservation->created_at?->format('Y-m-d H:i:s'),
         ];
     }

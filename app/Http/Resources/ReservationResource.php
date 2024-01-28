@@ -21,16 +21,17 @@ class ReservationResource extends JsonResource
     {
         // FOR PATIENT || ADMIN
         $reservation = $this->reservationable;
-        if ($reservation instanceof ProductReservation) {
+        $item = null;
+        if ($reservation && $reservation instanceof ProductReservation) {
             $item = new ProductReviewResource($reservation->product);
-        } else if ($reservation instanceof ServiceReservation) {
+        } else if ($reservation && $reservation instanceof ServiceReservation) {
             $item = new ServiceReviewResource($reservation->service);
         }
 
         return [
             'item' => $item,
-            'appointment' => $this->when($reservation instanceof ServiceReservation, $this->reservationable->appointment_date . ' ' . $this->reservationable->appointment_time),
-            'quantity' => $this->when($reservation instanceof ProductReservation, $this->reservationable->quantity),
+            'appointment' => $this->when($reservation instanceof ServiceReservation, $this->reservationable?->appointment_date . ' ' . $this->reservationable?->appointment_time),
+            'quantity' => $this->when($reservation instanceof ProductReservation, $this->reservationable?->quantity),
             'location' => $this->location,
             'payment_method' => json_decode($this->payment_method),
             'status'      => $this->getStatusLabel($this->status),

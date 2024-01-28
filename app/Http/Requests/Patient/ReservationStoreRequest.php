@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests\Patient;
 
-use App\Rules\TimeRule;
-use App\Models\Reservation;
+use App\Rules\FutureDateTimeRule;
 use App\Models\ProviderService;
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
@@ -37,7 +36,7 @@ class ReservationStoreRequest extends BaseRequest
             $rules['appointment_date'] = 'required|date|after_or_equal:today';
             $rules['appointment_time'] = [
                 'required',
-                Rule::when($this->filled('appointment_date'), ['date_format:H:i:s', new TimeRule($this->input('appointment_date'))])
+                Rule::when($this->filled('appointment_date'), ['date_format:H:i:s', new FutureDateTimeRule($this->input('appointment_date'))])
             ];
         }
         return $rules;
