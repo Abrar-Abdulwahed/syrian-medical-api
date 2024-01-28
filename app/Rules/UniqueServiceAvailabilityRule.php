@@ -26,7 +26,7 @@ class UniqueServiceAvailabilityRule implements ValidationRule
         $preExisting =
             $this->user->providerServices
             ->flatMap->availabilities
-            ->where('date', $this->date)
+            ->whereDate('date', $this->date)
             ->reject(function ($availability) {
                 return $this->ignore === $availability->providerService->id;
             })
