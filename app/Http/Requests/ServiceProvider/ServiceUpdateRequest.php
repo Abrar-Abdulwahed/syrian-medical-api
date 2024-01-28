@@ -3,9 +3,10 @@
 namespace App\Http\Requests\ServiceProvider;
 
 use App\Models\Admin;
-use App\Rules\FutureDateTimeRule;
 use Illuminate\Validation\Rule;
+use App\Rules\FutureDateTimeRule;
 use App\Http\Requests\BaseRequest;
+use App\Rules\UniqueServiceAvailabilityRule;
 
 class ServiceUpdateRequest extends BaseRequest
 {
@@ -49,7 +50,7 @@ class ServiceUpdateRequest extends BaseRequest
             foreach ($this->input('dates') as $index => $date) {
                 $rules["dates.$index"] = "required|date|date_format:Y-m-d|after_or_equal:today";
                 $rules["times.$index"] = "required_with:dates.$index";
-                $rules["times.$index.*"] = ["date_format:H:i:s", new FutureDateTimeRule($date)];
+                $rules["times.$index.*"] = ["date_format:H:i:s", new FutureDateTimeRule($date), new UniqueServiceAvailabilityRule($user, $date, $service->id)];
             }
 
         return $rules;

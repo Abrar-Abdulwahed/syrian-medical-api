@@ -13,11 +13,12 @@ class UniqueServiceAvailabilityRule implements ValidationRule
      *
      * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
-    protected $date, $user;
-    public function __construct($user, $date)
+    protected $date, $user, $ignore;
+    public function __construct($user, $date, $ignore = null)
     {
         $this->date = $date;
         $this->user = $user;
+        $this->ignore = $ignore;
     }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -26,6 +27,9 @@ class UniqueServiceAvailabilityRule implements ValidationRule
             $this->user->providerServices
             ->flatMap->availabilities
             ->where('date', $this->date)
+            ->reject(function ($availability) {
+                return $this->ignore === $availability->providerService->id;
+            })
             ->some(function ($availability) use ($value) {
                 return in_array($value, json_decode($availability->times, true));
             });
