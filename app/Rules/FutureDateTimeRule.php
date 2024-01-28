@@ -6,7 +6,7 @@ use Closure;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class TimeRule implements ValidationRule
+class FutureDateTimeRule implements ValidationRule
 {
     /**
      * Run the validation rule.
