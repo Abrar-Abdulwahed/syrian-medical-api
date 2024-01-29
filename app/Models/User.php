@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Enums\UserType;
 use App\Models\Product;
 use App\Models\Service;
-use App\Events\RegisterEvent;
 use App\Models\PatientProfile;
 use App\Models\ProviderProfile;
 use App\Models\ProviderService;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use App\Models\PendingUpdateProfileRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -22,7 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, Notifiable;
     protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.

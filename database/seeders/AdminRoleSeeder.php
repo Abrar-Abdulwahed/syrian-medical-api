@@ -14,11 +14,11 @@ class AdminRoleSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (AdminRole::cases() as $role) {
-            DB::table('roles')->insert([
-                'name' => $role->value,
-                'guard_name' => 'api',
-            ]);
-        }
+        // foreach (AdminRole::cases() as $role) {
+        //     DB::table('roles')->insert([
+        //         'name' => $role->value,
+        //         'guard_name' => 'api',
+        //     ]);
+        // }
     }
 }
