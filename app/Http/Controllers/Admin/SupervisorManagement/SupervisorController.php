@@ -15,6 +15,7 @@ class SupervisorController extends Controller
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
+        $this->middleware('permission:add_supervisor')->only('store');
     }
 
     public function index(Request $request)

@@ -18,6 +18,7 @@ class ApplicantController extends Controller
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
+        $this->middleware('permission:accept_registration_request')->except('index');
     }
 
     public function index(Request $request)

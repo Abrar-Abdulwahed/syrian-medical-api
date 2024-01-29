@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers\Admin\SupervisorManagement;
+
+use App\Models\Admin;
+use App\Models\Permission;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\PermissionResource;
+use App\Http\Requests\Admin\AssignPermissionRequest;
+
+class PowerController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
+        $this->middleware('permission:attach_detach_permission')->only('store');
+    }
+
+    public function index($id)
+    {
+        $supervisor = Admin::findOrFail($id);
+        $permissions = Permission::all();
+
+        $permissionResource = PermissionResource::collection($permissions);
+
+        // add additional parameter(user) to resources
+        $permissionResource->map(function ($i) use ($supervisor) {
+            $i->hasPermission = $supervisor->hasPermission($i->name);
+        });
+        return $this->returnJSON($permissionResource, 'Data retrieved successfully');
+    }
+
+    public function store(AssignPermissionRequest $request, $id)
+    {
+        $user = Admin::findOrFail($id);
+        $user->permissions()->sync($request->validated()['permissions']);
+        return $this->returnSuccess('Permissions of this user saved successfully');
+    }
+}

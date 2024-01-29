@@ -16,6 +16,7 @@ class ProfileUpdateRequests extends Controller
     public function __construct()
     {
         $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
+        $this->middleware('permission:accept_registration_request')->except('index');
     }
 
     public function index(Request $request)
