@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Enums\AdminRole;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -25,5 +26,9 @@ class AdminSeeder extends Seeder
         ];
 
         $admin = Admin::create($adminInfo);
+
+        // Attach all existing permissions to the super admin
+        $permissions = Permission::all();
+        $admin->permissions()->attach($permissions);
     }
 }

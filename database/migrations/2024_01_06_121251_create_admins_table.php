@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('role')->default(AdminRole::SUPERVISOR->value);
-            $table->boolean('activated')->default(0); //0: no 1: yes
-            $table->string('password')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('activated')->default(1); //0: no 1: yes
+            $table->string('password');
+            $table->timestamp('email_verified_at')->useCurrent();
             $table->rememberToken();
             $table->timestamps();
         });

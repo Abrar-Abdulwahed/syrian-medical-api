@@ -9,12 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Admin extends Authenticatable implements Authorizable
 {
     use Notifiable, HasFactory, HasApiTokens;
-
+    protected $guard_name = 'api';
     protected $fillable = [
         'username',
         'email',
@@ -30,12 +31,22 @@ class Admin extends Authenticatable implements Authorizable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'activated'=> 'boolean'
+        'activated' => 'boolean'
     ];
 
     //scope
     public function scopeSupervisors(Builder $query): void
     {
         $query->where('role', AdminRole::SUPERVISOR->value);
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->permissions->contains('name', $permission);
+    }
+
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class);
     }
 }

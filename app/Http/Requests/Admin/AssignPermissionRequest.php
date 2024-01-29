@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Rules\PhoneRule;
 use App\Http\Requests\BaseRequest;
 
-class SupervisorStoreRequest extends BaseRequest
+class AssignPermissionRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +22,8 @@ class SupervisorStoreRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'username'  => 'required|string|between:2,24',
-            'email'     => 'required|email:rfc,dns|max:100|unique:admins,email',
-            'phone'     => ['required', new PhoneRule],
-            'password'  => 'required',
+            'permissions'   => 'required|array',
+            'permissions.*'   => 'required|exists:permissions,id',
         ];
     }
 }
