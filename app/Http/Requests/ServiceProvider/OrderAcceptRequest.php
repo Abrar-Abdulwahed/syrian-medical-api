@@ -33,13 +33,16 @@ class OrderAcceptRequest extends BaseRequest
         return [
             function (Validator $validator) {
                 $instance = $this->reservation->reservationable;
-                $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $instance->appointment_date . ' ' . $instance->appointment_time);
 
-                if ($instance instanceof ServiceReservation && $appointmentDateTime->lessThan(now())) {
-                    $validator->errors()->add(
-                        'appointment_date',
-                        'The appointment date and time are outdated!'
-                    );
+                if ($instance instanceof ServiceReservation) {
+                    $appointmentDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $instance->appointment_date . ' ' . $instance->appointment_time);
+
+                    if ($appointmentDateTime->lessThan(now())) {
+                        $validator->errors()->add(
+                            'appointment_date',
+                            'The appointment date and time are outdated!'
+                        );
+                    }
                 }
             }
         ];

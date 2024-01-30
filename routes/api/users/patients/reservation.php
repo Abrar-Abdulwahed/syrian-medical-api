@@ -1,7 +1,10 @@
 <?php
 
-use App\Http\Controllers\User\Patient\ReservationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\Patient\{
+    PaymentController,
+    ReservationController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +20,5 @@ use Illuminate\Support\Facades\Route;
 Route::name('patient')->apiResource('patients/reservations', ReservationController::class)->only('index', 'show', 'destroy');
 Route::post('patients/items/{type}/{item}/reserve', [ReservationController::class, 'store'])
     ->name('reservations.make');
+
+Route::post('patients/pay', PaymentController::class)->name('patients.pay');
