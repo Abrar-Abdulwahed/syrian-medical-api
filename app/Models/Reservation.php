@@ -4,10 +4,11 @@ namespace App\Models;
 
 use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Reservation extends Model
 {
@@ -27,7 +28,7 @@ class Reservation extends Model
     {
         $labels = [
             OrderStatus::PENDING->value => 'pending',
-            OrderStatus::COMPLETED->value => 'accepted',
+            OrderStatus::ACCEPTED->value => 'accepted',
             OrderStatus::CANCELED->value => 'refused',
         ];
 
@@ -47,5 +48,15 @@ class Reservation extends Model
     public function rejectionReason(): HasOne
     {
         return $this->hasOne(RejectionReason::class);
+    }
+
+    public function scopeAccepted(Builder $query)
+    {
+        return $query->where('status', OrderStatus::ACCEPTED->value);
+    }
+
+    public function scopePaid(Builder $query)
+    {
+        return $query->where('status', OrderStatus::PAID->value);
     }
 }

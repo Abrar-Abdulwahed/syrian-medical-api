@@ -36,7 +36,7 @@ class ReviewService
             $item->loadCount([
                 'reservations as total_orders_count',
                 'reservations as completed_orders_count' => function (Builder $query) {
-                    $query->whereRelation('morphReservation', 'status', OrderStatus::COMPLETED->value);
+                    $query->whereRelation('morphReservation', 'status', OrderStatus::ACCEPTED->value);
                 },
                 'reservations as canceled_orders_count' => function (Builder $query) {
                     $query->whereRelation('morphReservation', 'status', OrderStatus::CANCELED->value);

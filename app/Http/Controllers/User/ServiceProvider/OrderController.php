@@ -59,10 +59,10 @@ class OrderController extends Controller
         $reservation = $request->reservation;
         try {
             $this->authorize('manage-reservations', $reservation);
-            $reservation->forceFill(['status' => OrderStatus::COMPLETED->value])->save();
+            $reservation->forceFill(['status' => OrderStatus::ACCEPTED->value])->save();
 
             $reservation->patient->notify(new ProviderReviewOrderNotification(true, $reservation));
-            return $this->returnSuccess('You Mark this order as completed');
+            return $this->returnSuccess('You Mark this order as accepted');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
