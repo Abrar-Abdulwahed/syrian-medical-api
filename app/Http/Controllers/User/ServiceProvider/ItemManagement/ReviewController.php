@@ -29,7 +29,7 @@ class ReviewController extends Controller
             $services = $user->services()->get();
             return $this->returnJSON(ProviderServiceListResource::collection($services), 'Data retrieved successfully');
         } else if ($type === OfferingType::PRODUCT->value) {
-            $products = $user->products->get();
+            $products = $user->products;
             return $this->returnJSON(ProductListResource::collection($products), 'Data retrieved successfully');
         }
 
