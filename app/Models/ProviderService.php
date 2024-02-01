@@ -35,4 +35,13 @@ class ProviderService extends Pivot
     {
         return $this->hasMany(ServiceReservation::class, 'provider_service_id');
     }
+
+
+    public function getFinalPriceAttribute()
+    {
+        if ($this->discount > 0)
+            return $this->price - ($this->price * ($this->discount / 100));
+
+        return null;
+    }
 }

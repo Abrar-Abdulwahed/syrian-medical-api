@@ -50,13 +50,8 @@ class Reservation extends Model
         return $this->hasOne(RejectionReason::class);
     }
 
-    public function scopeAccepted(Builder $query)
+    public function getProviderAttribute()
     {
-        return $query->where('status', OrderStatus::ACCEPTED->value);
-    }
-
-    public function scopePaid(Builder $query)
-    {
-        return $query->where('status', OrderStatus::PAID->value);
+        return $this->reservationable->provider;
     }
 }

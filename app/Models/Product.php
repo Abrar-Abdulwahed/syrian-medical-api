@@ -39,4 +39,13 @@ class Product extends Model
     {
         return $this->hasMany(ProductReservation::class);
     }
+
+
+    public function getFinalPriceAttribute()
+    {
+        if ($this->discount > 0)
+            return $this->price - ($this->price * ($this->discount / 100));
+
+        return null;
+    }
 }

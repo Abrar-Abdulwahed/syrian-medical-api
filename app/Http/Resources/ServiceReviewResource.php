@@ -28,7 +28,7 @@ class ServiceReviewResource extends JsonResource
             'availabilities'    => AvailabilityResource::collection($this->whenLoaded('availabilities')),
             'discount'          => $this->discount,
             'price'             => $this->price,
-            'final_price'       => $this->when($this->discount > 0, $this->price - ($this->price * ($this->discount / 100))),
+            'final_price'       => $this->when($this->final_price, $this->final_price),
             'total_orders'      => $this->whenHas('total_orders_count'),
             'completed_orders'  => $this->whenHas('completed_orders_count'),
             'refused_orders'    => $this->whenHas('canceled_orders_count'),
