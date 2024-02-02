@@ -77,8 +77,8 @@ class LoginController extends Controller
     {
         try {
             // $user = User::where('ip', '$request->ip()')->first();
-            // $user = User::find(2);
-            $user = User::first();
+            $user = User::find(4);
+            // $user = User::first();
             if (!$user)
                 return $this->returnWrong('User not found', 404);
             if ($user->verification_code !== $request->verification_code) {

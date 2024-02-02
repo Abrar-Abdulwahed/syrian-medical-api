@@ -36,4 +36,4 @@ Route::name('admin.')->prefix('admin/items')->group(function () {
 Route::name('admin')->apiResource('admin/reservations', OrderController::class)->only(['index', 'show']);
 
 /*********** Sales Management ***********/
-Route::name('admin')->apiResource('admin/sales', SalesController::class)->only(['index', 'show']);
+Route::name('admin')->get('admin/sales', SalesController::class);

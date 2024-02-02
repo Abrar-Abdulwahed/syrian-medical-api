@@ -69,7 +69,7 @@ class ReservationController extends Controller
             }
             $price = $item->final_price ?? $item->price;
             $reservation = $startToReserve->morphReservation()->create($reservationData);
-            $reservation->forceFill(['price' => $price, 'patient_id' => $request->user()->id])->save();
+            $reservation->forceFill(['price' => $price, 'patient_id' => $request->user()->id, 'provider_id' => $item->provider->id])->save();
             $item->provider->notify(new ReservationNotification(true, $reservation));
             DB::commit();
             return $this->returnSuccess('You\'ve completed your Order');

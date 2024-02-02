@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->nullableMorphs('reservationable');
             $table->foreignId('patient_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('provider_id')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->json('location');
-            $table->decimal('price', 10, 2);
+            $table->double('price', 10, 2)->nullable();
             $table->json('payment_method');
             $table->string('status')->default(OrderStatus::PENDING->value)->nullable();
             $table->timestamps();

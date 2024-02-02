@@ -27,9 +27,11 @@ class Reservation extends Model
     function getStatusLabel($status)
     {
         $labels = [
-            OrderStatus::PENDING->value => 'pending',
-            OrderStatus::ACCEPTED->value => 'accepted',
-            OrderStatus::CANCELED->value => 'refused',
+            OrderStatus::PENDING->value   => 'pending',
+            OrderStatus::ACCEPTED->value  => 'accepted',
+            OrderStatus::PAID->value      => 'not delivered',
+            OrderStatus::DELIVERED->value => 'delivered',
+            OrderStatus::CANCELED->value  => 'refused',
         ];
 
         return $labels[$status] ?? '';
@@ -45,13 +47,13 @@ class Reservation extends Model
         return $this->belongsTo(User::class, 'patient_id');
     }
 
+    public function provider(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'provider_id');
+    }
+
     public function rejectionReason(): HasOne
     {
         return $this->hasOne(RejectionReason::class);
-    }
-
-    public function getProviderAttribute()
-    {
-        return $this->reservationable->provider;
     }
 }
