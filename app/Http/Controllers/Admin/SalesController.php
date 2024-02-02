@@ -2,47 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Enums\OrderStatus;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\BaseAdminController;
+use App\Http\Resources\ReservationResource;
 
-class SalesController extends Controller
+class SalesController extends BaseAdminController
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $query = Reservation::whereIn('status', [OrderStatus::PAID->value, OrderStatus::DELIVERED])->get();
+        return $this->returnJSON(ReservationResource::collection($query), 'Data retrieved successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
     {
         //
     }

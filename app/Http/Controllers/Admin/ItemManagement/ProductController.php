@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Admin\ItemManagement;
 
 use App\Models\User;
 use App\Models\Product;
-use App\Http\Controllers\Controller;
 use App\Services\Items\ProductService;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Requests\ServiceProvider\ProductStoreRequest;
 use App\Http\Requests\ServiceProvider\ProductUpdateRequest;
 
-class ProductController extends Controller
+class ProductController extends BaseAdminController
 {
     public function __construct(protected ProductService $productService)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
+
     public function store(ProductStoreRequest $request)
     {
         $user = User::find($request->provider_id);

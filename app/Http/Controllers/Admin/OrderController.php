@@ -2,20 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Enums\OrderStatus;
 use App\Models\Reservation;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderResource;
-use Illuminate\Database\Eloquent\Builder;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Resources\ReservationResource;
 
-class OrderController extends Controller
+class OrderController extends BaseAdminController
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
-    }
-
     public function index()
     {
         $orders = Reservation::get();

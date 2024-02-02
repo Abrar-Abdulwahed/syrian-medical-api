@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Admin\UserManagement;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Http\Traits\PaginateResponseTrait;
 use App\Models\PendingUpdateProfileRequest;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Notifications\AdminReviewProfileChangeNotification;
 
 
-class ProfileUpdateRequests extends Controller
+class ProfileUpdateRequests extends BaseAdminController
 {
     use PaginateResponseTrait;
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
         $this->middleware('permission:accept_registration_request')->except('index');
     }
 

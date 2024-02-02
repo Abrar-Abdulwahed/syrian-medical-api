@@ -5,19 +5,17 @@ namespace App\Http\Controllers\Admin\UserManagement;
 use App\Models\User;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
-use App\Http\Traits\FileTrait;
 use App\Actions\GetUsersDataAction;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Traits\PaginateResponseTrait;
 use App\Http\Requests\Admin\UserActivationRequest;
 use App\Notifications\AdminReviewNotificationMail;
 
-class ApplicantController extends Controller
+class ApplicantController extends BaseAdminController
 {
-    use FileTrait, PaginateResponseTrait;
+    use PaginateResponseTrait;
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
         $this->middleware('permission:accept_registration_request')->except('index');
     }
 
