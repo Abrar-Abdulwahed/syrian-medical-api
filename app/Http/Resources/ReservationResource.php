@@ -19,7 +19,6 @@ class ReservationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // FOR PATIENT || ADMIN
         $reservation = $this->reservationable;
         $item = null;
         if ($reservation && $reservation instanceof ProductReservation) {
@@ -44,7 +43,7 @@ class ReservationResource extends JsonResource
             'rejected_at' => $this->when(
                 $this->relationLoaded('rejectionReason') && $this->status === OrderStatus::CANCELED->value,
                 function () {
-                    return $this->rejectionReason->rejected_at;
+                    return $this->rejectionReason->created_at->format('Y-m-d H:i:s');
                 }
             ),
             'ordered_at'  => $this->created_at?->format('Y-m-d H:i:s'),

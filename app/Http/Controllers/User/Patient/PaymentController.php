@@ -20,6 +20,7 @@ class PaymentController extends Controller
     public function __invoke(Request $request)
     {
         $user = $request->user();
+
         $query = $user->reservations()->whereIn('status', [OrderStatus::PENDING->value, OrderStatus::ACCEPTED])->get();
         $acceptedOrders = $query->where('status', OrderStatus::ACCEPTED->value);
         $pendingOrders = $query->where('status', OrderStatus::PENDING->value);
@@ -48,10 +49,9 @@ class PaymentController extends Controller
                     //         'cvc'       => $cvv,
                     //     ],
                     // ]);
-
                     //! 'source' => 'tok_visa' : is for test token recommended by new stripe version
                     $response = $stripe->charges->create([
-                        'amount' => $order->price,
+                        'amount' => round($order->price),
                         'currency' => 'usd',
                         'source' => 'tok_visa', // $token->id
                         'description' => 'Test Payment',

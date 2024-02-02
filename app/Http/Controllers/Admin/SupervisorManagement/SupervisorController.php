@@ -5,16 +5,15 @@ namespace App\Http\Controllers\Admin\SupervisorManagement;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Actions\GetUsersDataAction;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Resources\AdminResource;
 use App\Http\Requests\Admin\SupervisorStoreRequest;
 use App\Http\Requests\Admin\SupervisorUpdateRequest;
 
-class SupervisorController extends Controller
+class SupervisorController extends BaseAdminController
 {
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
         $this->middleware('permission:add_supervisor')->only('store');
     }
 

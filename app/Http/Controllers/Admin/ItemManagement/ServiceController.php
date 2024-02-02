@@ -5,16 +5,15 @@ namespace App\Http\Controllers\Admin\ItemManagement;
 use App\Models\User;
 use App\Models\ProviderService;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Services\Items\ServiceService;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Requests\ServiceProvider\ServiceStoreRequest;
 use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
 
-class ServiceController extends Controller
+class ServiceController extends BaseAdminController
 {
     public function __construct(protected ServiceService $serviceService)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
     }
 
     public function store(ServiceStoreRequest $request)

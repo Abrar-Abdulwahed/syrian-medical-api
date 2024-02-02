@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Admin\ItemManagement;
 
 use Illuminate\Http\Request;
 use App\Services\Items\ReviewService;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\BaseAdminController;
 
-class ReviewController extends Controller
+class ReviewController extends BaseAdminController
 {
     public function __construct(protected ReviewService $reviewService)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
         $this->middleware('bind.items.type')->only('show');
     }
 

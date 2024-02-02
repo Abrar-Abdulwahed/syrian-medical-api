@@ -7,17 +7,16 @@ use App\Enums\UserType;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use App\Actions\GetUsersDataAction;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\PaginateResponseTrait;
+use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Requests\Admin\UserActivationRequest;
 
-class UserController extends Controller
+class UserController extends BaseAdminController
 {
     use FileTrait, PaginateResponseTrait;
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
-        $this->middleware(['auth:sanctum', 'activated', 'verified', 'is-admin']);
         $this->middleware('permission:block_user')->only('activation');
     }
 

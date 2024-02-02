@@ -5,9 +5,8 @@ namespace App\Http\Controllers\User\ServiceProvider;
 use App\Enums\OrderStatus;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Models\ServiceReservation;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderResource;
+use App\Http\Resources\ReservationResource;
 use App\Notifications\ProviderReviewOrderNotification;
 use App\Http\Requests\ServiceProvider\OrderAcceptRequest;
 use App\Http\Requests\ServiceProvider\OrderRejectRequest;
@@ -30,11 +29,16 @@ class OrderController extends Controller
                 'products.reservations.morphReservation',
                 'providerServices.reservations.morphReservation',
             ]);
-            $orders = $user->products->flatMap->reservations
-                ->merge($user->providerServices->flatMap->reservations)
-                ->where('morphReservation.status', $status)
-                ->sortByDesc('morphReservation.created_at');
-            return $this->returnJSON(OrderResource::collection($orders), 'Data retrieved successfully');
+            $orders = $user->orders;
+
+            // Filter by status if the "status" parameter is provided
+            if ($status !== null) {
+                $orders = $orders->where('morphReservation.status', $status);
+            }
+
+            $orders = $orders->sortByDesc('morphReservation.created_at');
+
+            return $this->returnJSON(ReservationResource::collection($orders), 'Data retrieved successfully');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -44,11 +48,11 @@ class OrderController extends Controller
     {
         try {
             $this->authorize('manage-reservations', $reservation);
-            $orders = $reservation->reservationable;
+            $reservation->load('rejectionReason');
             // if ($orders instanceof ServiceReservation) {
             //     $orders->load('service.availabilities');
             // }
-            return $this->returnJSON(new OrderResource($orders), 'Data retrieved successfully');
+            return $this->returnJSON(new ReservationResource($reservation), 'Data retrieved successfully');
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

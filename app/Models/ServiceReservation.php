@@ -22,7 +22,7 @@ class ServiceReservation extends Model
     public static function isAvailable($date, $time)
     {
         return !ServiceReservation::whereDate('appointment_date', Carbon::parse($date))
-            ->where('appointment_time', $time)
+            ->whereTime('appointment_time', $time)
             ->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)
             ->exists();
     }
