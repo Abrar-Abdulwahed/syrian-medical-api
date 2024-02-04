@@ -7,8 +7,11 @@ return [
     'valid_code'     => 'Verification code is valid!',
     'expired_code' => 'Expired verification code, try again!',
     'user_not_found' => 'User not found',
+    'went_wrong'    => 'Something went wrong, try again!',
+    'successfully_saved_review' => 'Your data saved successfully, review your email!',
     'successfully_login' => 'You have logged in successfully',
     'successfully_logout' => 'You have logged out successfully',
     'successfully_password_changed' => 'You have changed your password successfully',
     'successfully_password_reset' => 'You have reset your password successfully',
+    'successfully_email_verified' => 'Your Email verified successfully',
 ];

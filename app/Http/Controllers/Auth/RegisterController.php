@@ -28,7 +28,7 @@ class RegisterController extends Controller
         try {
             $user = $this->userService->createUser($request->validated(), UserType::PATIENT->value, $request->ip(), true);
             event(new Registered($user));
-            return $this->returnSuccess('Your data saved successfully, review your email');
+            return $this->returnSuccess(__('message.successfully_saved_review'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -46,7 +46,7 @@ class RegisterController extends Controller
             event(new Registered($user));
             Admin::findOrFail(1)->notify(new NewApplicantNotificationMail($user->id));
             DB::commit();
-            return $this->returnSuccess('Your data saved successfully, review your email');
+            return $this->returnSuccess(__('message.successfully_saved_review'));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
@@ -63,7 +63,7 @@ class RegisterController extends Controller
 
             $toVerify = DB::table('email_verify_codes')->where('email', $user->email)->first();
             if (!$toVerify)
-                return $this->returnWrong('Something went wrong', 422);
+                return $this->returnWrong(__('message.went_wrong'), 422);
 
             if ($request->verification_code !== $toVerify->code)
                 return $this->returnWrong(__('message.invalid_code'), 400);
@@ -73,7 +73,7 @@ class RegisterController extends Controller
 
             // verify user
             $user->forceFill(['email_verified_at' => now()])->save();
-            return $this->returnSuccess('Your Email verified successfully');
+            return $this->returnSuccess(__('message.successfully_email_verified'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

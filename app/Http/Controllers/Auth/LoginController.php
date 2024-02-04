@@ -36,7 +36,7 @@ class LoginController extends Controller
 
             if ($result instanceof Admin) {
                 $token = $result->createToken('auth', ['*'], now()->addWeek())->plainTextToken;
-                return $this->returnJSON($token, 'You have logged in successfully');
+                return $this->returnJSON($token, __('message.successfully_login'));
             }
 
             return $this->returnWrong($result, 401);
