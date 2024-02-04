@@ -14,6 +14,7 @@ class ServiceController extends BaseAdminController
 {
     public function __construct(protected ServiceService $serviceService)
     {
+        parent::__construct();
     }
 
     public function store(ServiceStoreRequest $request)

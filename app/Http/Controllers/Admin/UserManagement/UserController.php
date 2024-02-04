@@ -17,6 +17,7 @@ class UserController extends BaseAdminController
     use FileTrait, PaginateResponseTrait;
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
+        parent::__construct();
         $this->middleware('permission:block_user')->only('activation');
     }
 
@@ -41,7 +42,7 @@ class UserController extends BaseAdminController
     {
         try {
             $user = User::findOrFail($id);
-            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
+            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), __('message.user_retrieved'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

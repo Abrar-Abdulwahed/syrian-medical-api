@@ -22,4 +22,5 @@ return [
     'no_changes' => 'No changes were made',
     'completed_edits' => 'You\'ve completed your edits.',
     'wait_for_admin_updates_review' => 'Wait for the administrator to approve your edits',
+    'user_retrieved' => 'User Data retrieved successfully!',
 ];

@@ -14,6 +14,7 @@ class SupervisorController extends BaseAdminController
 {
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
+        parent::__construct();
         $this->middleware('permission:add_supervisor')->only('store');
     }
 
@@ -33,7 +34,7 @@ class SupervisorController extends BaseAdminController
 
     public function show(Admin $supervisor)
     {
-        return $this->returnJSON(new AdminResource($supervisor), 'User data retrieved successfully');
+        return $this->returnJSON(new AdminResource($supervisor), __('message.user_retrieved'));
     }
 
     public function update(SupervisorUpdateRequest $request, Admin $supervisor)

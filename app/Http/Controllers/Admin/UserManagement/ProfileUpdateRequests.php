@@ -15,6 +15,7 @@ class ProfileUpdateRequests extends BaseAdminController
     use PaginateResponseTrait;
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('permission:accept_registration_request')->except('index');
     }
 

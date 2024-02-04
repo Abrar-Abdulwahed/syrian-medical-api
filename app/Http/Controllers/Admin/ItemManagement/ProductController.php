@@ -13,6 +13,7 @@ class ProductController extends BaseAdminController
 {
     public function __construct(protected ProductService $productService)
     {
+        parent::__construct();
     }
 
     public function store(ProductStoreRequest $request)

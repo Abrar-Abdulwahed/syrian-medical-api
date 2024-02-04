@@ -11,6 +11,7 @@ class ReviewController extends BaseAdminController
 {
     public function __construct(protected ReviewService $reviewService)
     {
+        parent::__construct();
         $this->middleware('bind.items.type')->only('show');
     }
 

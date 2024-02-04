@@ -12,6 +12,7 @@ class PowerController extends BaseAdminController
 {
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('permission:attach_detach_permission')->only('store');
     }
 
