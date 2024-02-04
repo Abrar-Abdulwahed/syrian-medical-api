@@ -21,7 +21,7 @@ class PaymentMethodController extends Controller
         $formattedPaymentMethods = collect($paymentMethods)->map(function ($paymentMethod, $cardType) {
             return array_merge(['card_type' => $cardType], $paymentMethod);
         })->values();
-        return $this->returnJSON(PaymentMethodResource::collection($formattedPaymentMethods));
+        return $this->returnJSON(PaymentMethodResource::collection($formattedPaymentMethods), __('message.data_retrieved', ['item' => __('message.payment_methods')]));
     }
 
     public function store(PaymentMethodStoreRequest $request)
@@ -42,6 +42,6 @@ class PaymentMethodController extends Controller
         $request->user()->profile()->update([
             'payment_methods' => $cardsCollection->collapse()
         ]);
-        return $this->returnSuccess('Payment method added successfully');
+        return $this->returnSuccess(__('message.data_added', ['item' => __('message.payment_method')]));
     }
 }

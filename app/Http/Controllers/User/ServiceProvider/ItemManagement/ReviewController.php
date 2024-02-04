@@ -27,16 +27,16 @@ class ReviewController extends Controller
 
         if ($type === OfferingType::SERVICE->value) {
             $services = $user->services()->get();
-            return $this->returnJSON(ProviderServiceListResource::collection($services), 'Data retrieved successfully');
+            return $this->returnJSON(ProviderServiceListResource::collection($services), __('message.data_retrieved', ['item' => __('message.services')]));
         } else if ($type === OfferingType::PRODUCT->value) {
             $products = $user->products;
-            return $this->returnJSON(ProductListResource::collection($products), 'Data retrieved successfully');
+            return $this->returnJSON(ProductListResource::collection($products), __('message.data_retrieved', ['item' => __('message.products')]));
         }
 
         $services = $user->services()->get();
         $products = $user->products()->get();
         $result =   ProductListResource::collection($products)->merge(ProviderServiceListResource::collection($services));
-        return $this->returnJSON($result, 'Data retrieved successfully');
+        return $this->returnJSON($result, __('message.data_retrieved', ['item' => __('message.products_services')]));
     }
 
     public function show(Request $request)

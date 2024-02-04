@@ -23,7 +23,7 @@ class BaseProfileController extends Controller
     {
         try {
             $user = $request->user();
-            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), __('message.user_retrieved'));
+            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), __('message.data_retrieved'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

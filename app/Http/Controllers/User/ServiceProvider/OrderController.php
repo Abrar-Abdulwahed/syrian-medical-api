@@ -38,7 +38,7 @@ class OrderController extends Controller
 
             $orders = $orders->sortByDesc('morphReservation.created_at');
 
-            return $this->returnJSON(ReservationResource::collection($orders), 'Data retrieved successfully');
+            return $this->returnJSON(ReservationResource::collection($orders), __('message.data_retrieved'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -52,7 +52,7 @@ class OrderController extends Controller
             // if ($orders instanceof ServiceReservation) {
             //     $orders->load('service.availabilities');
             // }
-            return $this->returnJSON(new ReservationResource($reservation), 'Data retrieved successfully');
+            return $this->returnJSON(new ReservationResource($reservation), __('message.data_retrieved'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

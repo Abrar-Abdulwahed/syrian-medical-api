@@ -22,5 +22,21 @@ return [
     'no_changes' => 'ليس هناك أي تعديلات أجريتها',
     'completed_edits' => 'لقد أكملت التعديلات على ملفك الشخصي',
     'wait_for_admin_updates_review' => 'انتظر موافقة المشرف على التعديلات التي أجريتها.',
-    'user_retrieved' => 'تم استرداد بيانات المستخدم بنجاح!'
+
+    //Global
+    'data_retrieved' => 'تم استرداد بيانات :item بنجاح!',
+    'data_added' => 'تم إضافة :item بنجاح!',
+
+    // Variables
+    'user' => 'مستخدم',
+    'user' => 'مستخدمين',
+    'patient' => 'مريض',
+    'provider' => 'مزود خدمة',
+    'payment_method' => 'طريقة الدفع',
+    'payment_methods' => 'طرق الدفع',
+    'product' => 'المنتج',
+    'service' => 'الخدمة',
+    'products' => 'المنتجات',
+    'services' => 'الخدمات',
+    'products_services' => 'المنتجات والخدمات',
 ];

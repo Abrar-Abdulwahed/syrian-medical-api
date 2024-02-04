@@ -37,6 +37,6 @@ class SalesController extends BaseAdminController
         return $this->returnJSON([
             'sales' => SalesListResource::collection($sales),
             'total_price' => $totalPrice,
-        ], 'Data retrieved successfully');
+        ], __('message.data_retrieved'));
     }
 }

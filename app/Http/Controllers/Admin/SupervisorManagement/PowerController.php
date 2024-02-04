@@ -27,7 +27,7 @@ class PowerController extends BaseAdminController
         $permissionResource->map(function ($i) use ($supervisor) {
             $i->hasPermission = $supervisor->hasPermission($i->name);
         });
-        return $this->returnJSON($permissionResource, 'Data retrieved successfully');
+        return $this->returnJSON($permissionResource, __('message.data_retrieved'));
     }
 
     public function store(AssignPermissionRequest $request, $id)
