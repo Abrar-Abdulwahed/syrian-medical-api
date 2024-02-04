@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\User\Patient;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\PatientAccountRequest;
+use App\Http\Requests\Auth\PatientAccountUpdateRequest;
 use App\Http\Controllers\User\BaseProfileController;
 
 class ProfileController extends BaseProfileController
 {
-    public function updateDetails(PatientAccountRequest $request)
+    public function updateDetails(PatientAccountUpdateRequest $request)
     {
         try {
             $user = $request->user();

@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\User\ServiceProvider;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\BaseProfileController;
-use App\Http\Requests\Auth\ServiceProviderAccountRequest;
+use App\Http\Requests\Auth\ServiceProviderAccountUpdateRequest;
 
 class ProfileController extends BaseProfileController
 {
 
-    public function updateDetails(ServiceProviderAccountRequest $request)
+    public function updateDetails(ServiceProviderAccountUpdateRequest $request)
     {
         try {
             $user = $request->user();

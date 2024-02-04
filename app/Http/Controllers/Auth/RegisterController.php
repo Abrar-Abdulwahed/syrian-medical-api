@@ -59,14 +59,14 @@ class RegisterController extends Controller
             $user = User::where('ip', $request->ip())->first();
 
             if (!$user)
-                return $this->returnWrong('User not found', 404);
+                return $this->returnWrong(__('message.user_not_found'), 404);
 
             $toVerify = DB::table('email_verify_codes')->where('email', $user->email)->first();
             if (!$toVerify)
                 return $this->returnWrong('Something went wrong', 422);
 
             if ($request->verification_code !== $toVerify->code)
-                return $this->returnWrong('Invalid or Incorrect  Code. Try Again!', 400);
+                return $this->returnWrong(__('message.invalid_code'), 400);
 
             // delete the code record
             DB::table('email_verify_codes')->where('email', $user->email)->delete();

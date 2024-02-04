@@ -66,10 +66,10 @@ class LoginController extends Controller
         );
 
         if (!$executed) {
-            return $this->returnWrong('You may wait ' . ceil(RateLimiter::availableIn($key) / 60) . ' minutes before re-send new code', 422);
+            return $this->returnWrong(__('message.resend_throttle', ['minute' => ceil(RateLimiter::availableIn($key) / 60)]), 422);
         } else {
             Cache::put($user->ip, $request->remember_me, 120); // 2 minutes
-            return $this->returnSuccess('code sent to your email');
+            return $this->returnSuccess(__('message.code_sent'));
         }
     }
 
@@ -77,19 +77,19 @@ class LoginController extends Controller
     {
         try {
             // $user = User::where('ip', '$request->ip()')->first();
-            $user = User::find(4);
+            $user = User::find(10);
             // $user = User::first();
             if (!$user)
-                return $this->returnWrong('User not found', 404);
+                return $this->returnWrong(__('message.user_not_found'), 404);
             if ($user->verification_code !== $request->verification_code) {
                 $user->forceFill(['login_attempts' => $user->login_attempts + 1])->save();
 
                 if ($user->login_attempts > 3) {
                     $this->reset2FA($user);
-                    return $this->returnWrong('Verification code expired', 422);
+                    return $this->returnWrong(__('message.expired_code'), 422);
                 }
 
-                return $this->returnWrong('Invalid verification code', 422);
+                return $this->returnWrong(__('message.invalid_code'), 422);
             }
             //Reset 2FA on success verification
             $this->reset2FA($user);
@@ -100,7 +100,7 @@ class LoginController extends Controller
             } else {
                 $token = $user->createToken('auth', ['*'], now()->addWeek())->plainTextToken;
             }
-            return $this->returnJSON($token, 'You have logged in successfully');
+            return $this->returnJSON($token, __('message.successfully_login'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -117,6 +117,6 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return $this->returnSuccess('logged out successfully', 'success', 201);
+        return $this->returnSuccess(__('message.successfully_logout'), 'success', 201);
     }
 }
