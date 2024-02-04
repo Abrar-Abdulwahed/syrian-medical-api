@@ -39,5 +39,7 @@ return [
     'products' => 'products',
     'services' => 'services',
     'products_services' => 'products and services',
+    'order' => 'order',
+    'orders' => 'orders',
 
 ];

@@ -11,12 +11,12 @@ class OrderController extends BaseAdminController
     public function index()
     {
         $orders = Reservation::get();
-        return $this->returnJSON(ReservationResource::collection($orders), __('message.data_retrieved'));
+        return $this->returnJSON(ReservationResource::collection($orders), __('message.data_retrieved', ['item' => __('message.orders')]));
     }
 
     public function show(Reservation $reservation)
     {
         $reservation->load('rejectionReason');
-        return $this->returnJSON(new ReservationResource($reservation), __('message.data_retrieved'));
+        return $this->returnJSON(new ReservationResource($reservation), __('message.data_retrieved', ['item' => __('message.order')]));
     }
 }

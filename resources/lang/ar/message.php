@@ -28,8 +28,8 @@ return [
     'data_added' => 'تم إضافة :item بنجاح!',
 
     // Variables
-    'user' => 'مستخدم',
-    'user' => 'مستخدمين',
+    'user' => 'المستخدم',
+    'users' => 'المستخدمين',
     'patient' => 'مريض',
     'provider' => 'مزود خدمة',
     'payment_method' => 'طريقة الدفع',
@@ -39,4 +39,6 @@ return [
     'products' => 'المنتجات',
     'services' => 'الخدمات',
     'products_services' => 'المنتجات والخدمات',
+    'order' => 'الطلب',
+    'orders' => 'الطلبات',
 ];

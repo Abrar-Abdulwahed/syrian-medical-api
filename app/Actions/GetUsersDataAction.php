@@ -15,6 +15,6 @@ class GetUsersDataAction
         $pageSize = $request->per_page ?? 10;
         $users = $query->with($withRelations)->paginate($pageSize);
         [$meta, $links] = $this->paginateResponse($users);
-        return $this->returnAllDataJSON(UserResource::collection($users), $meta, $links, __('message.data_retrieved'));
+        return $this->returnAllDataJSON(UserResource::collection($users), $meta, $links, __('message.data_retrieved', ['item' => __('message.users')]));
     }
 }
