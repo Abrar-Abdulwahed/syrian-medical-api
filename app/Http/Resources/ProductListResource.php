@@ -20,7 +20,7 @@ class ProductListResource extends JsonResource
             'title'       => getLocalizedValue($this, 'title'),
             'description' => getLocalizedValue($this, 'description'),
             'thumbnail'   => $this->thumbnail,
-            'type'        => OfferingType::PRODUCT->value,
+            'type'        => getLocalizedEnumValue(OfferingType::PRODUCT->value),
             'link'        => url()->current() . '/' . OfferingType::PRODUCT->value . '/' . $this->id,
             'discount'    => $this->discount,
             'price'       => $this->price,

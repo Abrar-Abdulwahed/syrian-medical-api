@@ -19,7 +19,7 @@ class ServiceReviewResource extends JsonResource
         $service = $this->resource->service;
         $attributes =  [
             'id'                => $this->id,
-            'type'              => OfferingType::SERVICE->value,
+            'type'              => getLocalizedEnumValue(OfferingType::SERVICE->value),
             'title'             => getLocalizedValue($service, 'title'),
             'description'       => getLocalizedValue($this, 'description'),
             'thumbnail'         => $service->thumbnail,

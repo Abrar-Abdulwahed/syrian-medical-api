@@ -19,7 +19,7 @@ enum OfferingType: string
         foreach (self::cases() as $case) {
             $localizedValues[$case->value] = [
                 'en' => __("enums.offering_type.{$case->value}"),
-                'ar' => __("enums.offering_type_ar.{$case->value}"),
+                'ar' => __("enums.offering_type.{$case->value}"),
             ];
         }
 
