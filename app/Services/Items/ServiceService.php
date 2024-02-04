@@ -25,7 +25,7 @@ class ServiceService
             $times = $data['times'];
             $this->saveAvailability($dates, $times, $service);
             DB::commit();
-            return $this->returnSuccess('Service has been added successfully');
+            return $this->returnSuccess(__('message.data_added', ['item' => __('message.service')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
@@ -48,7 +48,7 @@ class ServiceService
             $times = $data['times'];
             $this->saveAvailability($dates, $times, $providerService);
             DB::commit();
-            return $this->returnSuccess('Service has been updated successfully');
+            return $this->returnSuccess(__('message.data_updated', ['item' => __('message.service')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());

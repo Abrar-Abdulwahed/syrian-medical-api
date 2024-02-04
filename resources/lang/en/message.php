@@ -26,6 +26,7 @@ return [
     //Global
     'data_retrieved' => ':item data retrieved successfully!',
     'data_added' => ':item added successfully!',
+    'data_updated' => ':item updated successfully!',
 
     // Variables
     'user' => 'user',

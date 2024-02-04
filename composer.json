@@ -29,7 +29,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/generateRandomNumber.php"
+            "app/Helpers/generateRandomNumber.php",
+            "app/Helpers/LanguageHelper.php"
         ]
     },
     "autoload-dev": {

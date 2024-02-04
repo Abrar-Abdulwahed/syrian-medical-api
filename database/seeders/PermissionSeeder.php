@@ -16,23 +16,28 @@ class PermissionSeeder extends Seeder
         $permissions = [
             [
                 'name' => 'attach_detach_permission',
-                'description' => 'Allowing attach or detach permissions to/from supervisor'
+                'description_en' => 'Allowing attach or detach permissions to/from supervisor',
+                'description_ar' => 'السماح بإرفاق أو فصل الأذونات من/إلى المشرف'
             ],
             [
                 'name' => 'accept_registration_request',
-                'description' => 'Allowing acceptance of registration requests'
+                'description_en' => 'Allowing acceptance of registration requests',
+                'description_ar' => 'السماح بقبول طلبات التسجيل'
             ],
             [
                 'name' => 'add_supervisor',
-                'description' => 'Allow adding new supervisors'
+                'description_en' => 'Allow adding new supervisors',
+                'description_ar' => 'السماح بإضافة مشرفين جدد'
             ],
             [
                 'name' => 'modify_user_data',
-                'description' => 'Allow modification of user data'
+                'description_en' => 'Allow modification of user data',
+                'description_ar' => 'السماح بتعديل بيانات المستخدم'
             ],
             [
                 'name' => 'block_user',
-                'description' => 'Allow blocking users'
+                'description_en' => 'Allow blocking users',
+                'description_ar' => 'السماح بحذف المستخدمين'
             ],
         ];
 

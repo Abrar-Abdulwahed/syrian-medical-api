@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('service_provider_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name_en');
+            $table->string('name_ar');
             $table->timestamp('created_at')->nullable();
         });
     }

@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('service_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('provider_id')->constrained('users')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->text('description');
+            $table->text('description_en');
+            $table->text('description_ar');
             $table->decimal('price', 10, 2);
             $table->decimal('discount', 5, 2)->default(0)->nullable();
             $table->timestamps();

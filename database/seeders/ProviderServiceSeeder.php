@@ -27,7 +27,8 @@ class ProviderServiceSeeder extends Seeder
                 ProviderService::create([
                     'service_id' => $serviceId,
                     'provider_id' => $providerId,
-                    'description' => fake()->sentence,
+                    'description_en' => fake()->sentence . '_en',
+                    'description_ar' => fake()->sentence . '_ar',
                     'price' => fake()->randomFloat(2, 0, 1000),
                     'discount' => fake()->randomFloat(2, 0, 50),
                 ]);

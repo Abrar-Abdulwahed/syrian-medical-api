@@ -22,10 +22,13 @@ class ProductUpdateRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'title'     => 'required|string',
+            'title_en'     => 'required|string',
+            'title_ar'     => 'required|string',
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
             'thumbnail' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:100',
-            'price'    => 'required|numeric',
-            'discount' => 'sometimes|numeric',
+            'price'    => 'required|numeric|gt:0',
+            'discount' => 'sometimes|numeric|gte:0',
         ];
     }
 

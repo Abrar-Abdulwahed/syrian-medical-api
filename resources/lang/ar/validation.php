@@ -140,6 +140,13 @@ return [
     'uppercase'            => 'يجب أن يحتوي الحقل :attribute على حروف كبيرة.',
     'url'                  => 'صيغة رابط حقل :attribute غير صحيحة.',
     'uuid'                 => 'حقل :attribute يجب أن يكون بصيغة UUID سليمة.',
+
+    // customize validation
+    'custom' =>
+    [
+        'outdated_date' => 'التاريخ الذي اخترته منقضياً',
+    ],
+
     'attributes'           => [
         'rejection_reason'         => 'سبب الرفض',
         'location'                 => 'الموقع الجغرافي',
@@ -201,4 +208,8 @@ return [
         'created_at'               => 'تاريخ الإنشاء',
         'deleted_at'               => 'تاريخ الحذف',
     ],
+
+    // 'values' => [
+    'dates.'  => ['today' => 'اليوم',]
+    // ],
 ];

@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Admin;
-use App\Models\Service;
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
 use App\Http\Resources\AvailabilityResource;
@@ -22,9 +20,9 @@ class ServiceReviewResource extends JsonResource
         $attributes =  [
             'id'                => $this->id,
             'type'              => OfferingType::SERVICE->value,
-            'title'             => $service->title,
+            'title'             => getLocalizedValue($service, 'title'),
+            'description'       => getLocalizedValue($this, 'description'),
             'thumbnail'         => $service->thumbnail,
-            'description'       => $this->description,
             'availabilities'    => AvailabilityResource::collection($this->whenLoaded('availabilities')),
             'discount'          => $this->discount,
             'price'             => $this->price,

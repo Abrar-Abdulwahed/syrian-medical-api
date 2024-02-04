@@ -23,9 +23,10 @@ return [
     'completed_edits' => 'لقد أكملت التعديلات على ملفك الشخصي',
     'wait_for_admin_updates_review' => 'انتظر موافقة المشرف على التعديلات التي أجريتها.',
 
-    //Global
+    //CRUD
     'data_retrieved' => 'تم استرداد بيانات :item بنجاح!',
     'data_added' => 'تم إضافة :item بنجاح!',
+    'data_updated' => 'تم تعديل بيانات :item بنجاح',
 
     // Variables
     'user' => 'المستخدم',

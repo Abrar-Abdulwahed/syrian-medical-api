@@ -24,7 +24,7 @@ class ProductService
                 $product->update(['thumbnail' => $fileName]);
             }
             DB::commit();
-            return $this->returnSuccess('Product added successfully');
+            return $this->returnSuccess(__('message.data_added', ['item' => __('message.product')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
@@ -43,7 +43,7 @@ class ProductService
             $data['thumbnail'] = $fileName;
         }
         $product->update($data);
-        return $this->returnSuccess('Product data updated successfully');
+        return $this->returnSuccess(__('message.data_updated', ['item' => __('message.product')]));
     }
 
     public function destroy(Product $product)

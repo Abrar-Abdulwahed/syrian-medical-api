@@ -18,7 +18,8 @@ class ProductReviewResource extends JsonResource
     {
         $attributes = [
             'id'                => $this->id,
-            'title'             => $this->title,
+            'title'             => getLocalizedValue($this, 'title'),
+            'description'       => getLocalizedValue($this, 'description'),
             'thumbnail'         => $this->thumbnail,
             'type'              => OfferingType::PRODUCT->value,
             'discount'          => $this->discount,

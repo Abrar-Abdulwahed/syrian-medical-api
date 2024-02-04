@@ -17,7 +17,8 @@ class ProductListResource extends JsonResource
     {
         return [
             'id'          => $this->id,
-            'title'        => $this->title,
+            'title'       => getLocalizedValue($this, 'title'),
+            'description' => getLocalizedValue($this, 'description'),
             'thumbnail'   => $this->thumbnail,
             'type'        => OfferingType::PRODUCT->value,
             'link'        => url()->current() . '/' . OfferingType::PRODUCT->value . '/' . $this->id,
