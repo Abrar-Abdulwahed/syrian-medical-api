@@ -1,6 +1,7 @@
 <?php
 
 return [
+    //Auth
     'code_sent'     => 'تم إرسال الرمز إلى بريدك الالكتروني',
     'resend_throttle' => 'ربما عليك الانتظار :minute دقيقة ليتم إعادة إرسال كود لك مرة أخرى!',
     'invalid_code'  => 'عذراًالرمز غير صحيح، حاول مجدداً!',
@@ -14,4 +15,11 @@ return [
     'successfully_password_changed' => 'تم تغيير كلمة المرور بنجاح',
     'successfully_password_reset' => 'تم تعيين كلمة المرور بنجاح',
     'successfully_email_verified' => 'تم التحقق من بريدك الإلكتروني بنجاح',
+
+    //Profile
+    'location_saved' => 'تم تعديل موقعك الجغرافي بنجاح',
+    'picture_saved' => 'تم تعديل صورتك الشخصية بنجاح',
+    'no_changes' => 'ليس هناك أي تعديلات أجريتها',
+    'completed_edits' => 'لقد أكملت التعديلات على ملفك الشخصي',
+    'wait_for_admin_updates_review' => 'انتظر موافقة المشرف على التعديلات التي أجريتها.'
 ];

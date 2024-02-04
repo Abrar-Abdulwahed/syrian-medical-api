@@ -36,13 +36,13 @@ class ProfileController extends BaseProfileController
                     : null,
             ])->filter();
             if ($changes->isEmpty()) {
-                return $this->returnSuccess('No changes were made');
+                return $this->returnSuccess(__('message.no_changes'));
             }
             $user->pendingUpdateProfileRequest()->updateOrCreate(
                 ['user_id' => $user->id],
                 ['changes' => $changes->toJson()]
             );
-            return $this->returnSuccess('Wait for the administrator to approve your edits');
+            return $this->returnSuccess(__('message.wait_for_admin_updates_review'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

@@ -77,7 +77,7 @@ class LoginController extends Controller
     {
         try {
             // $user = User::where('ip', '$request->ip()')->first();
-            $user = User::find(10);
+            $user = User::find(4);
             // $user = User::first();
             if (!$user)
                 return $this->returnWrong(__('message.user_not_found'), 404);

@@ -26,11 +26,11 @@ class ProfileController extends BaseProfileController
                     : null,
             ])->filter();
             if ($changes->isEmpty()) {
-                return $this->returnSuccess('No changes were made');
+                return $this->returnSuccess(__('message.no_changes'));
             }
             $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
             $request->user()->update($userChanges);
-            return $this->returnSuccess('Your data has been updated successfully');
+            return $this->returnSuccess(__('message.completed_edits'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

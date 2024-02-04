@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // Auth
     'code_sent'     => 'code sent to your email',
     'resend_throttle' => 'You may wait :minute minutes before re-send new code',
     'invalid_code'   => 'Invalid or Incorrect  Code. Try Again!',
@@ -14,4 +15,11 @@ return [
     'successfully_password_changed' => 'You have changed your password successfully',
     'successfully_password_reset' => 'You have reset your password successfully',
     'successfully_email_verified' => 'Your Email verified successfully',
+
+    //Profile
+    'location_saved' => 'Your location updated successfully',
+    'picture_saved' => 'Your picture updated successfully',
+    'no_changes' => 'No changes were made',
+    'completed_edits' => 'You\'ve completed your edits.',
+    'wait_for_admin_updates_review' => 'Wait for the administrator to approve your edits',
 ];
