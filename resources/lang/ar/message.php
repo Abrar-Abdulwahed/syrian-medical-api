@@ -42,4 +42,8 @@ return [
     'products_services' => 'المنتجات والخدمات',
     'order' => 'الطلب',
     'orders' => 'الطلبات',
+    'supervisor' => 'المشرف',
+    'supervisors' => 'المشرفين',
+    'permissions' => 'الصلاحيات',
+    'sales' => 'المبيعات',
 ];

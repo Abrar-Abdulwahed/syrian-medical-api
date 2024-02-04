@@ -17,7 +17,7 @@ class PermissionResource extends JsonResource
     {
         return [
             'id'            => $this->id,
-            'description'   => $this->resource->description,
+            'description'   => getLocalizedValue($this->resource, 'description'),
             'hasPermission' => $this->hasPermission,
         ];
     }

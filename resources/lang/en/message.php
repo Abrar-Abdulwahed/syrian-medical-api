@@ -42,5 +42,8 @@ return [
     'products_services' => 'products and services',
     'order' => 'order',
     'orders' => 'orders',
-
+    'supervisor' => 'supervisor',
+    'supervisors' => 'supervisors',
+    'permissions' => 'permissions',
+    'sales' => 'sales',
 ];

@@ -23,7 +23,7 @@ class SupervisorController extends BaseAdminController
         $pageSize = $request->per_page ?? 10;
         $supervisors = Admin::supervisors()->paginate($pageSize);
         [$meta, $links] = $this->paginateResponse($supervisors);
-        return $this->returnAllDataJSON(AdminResource::collection($supervisors), $meta, $links, __('message.data_retrieved'));
+        return $this->returnAllDataJSON(AdminResource::collection($supervisors), $meta, $links, __('message.data_retrieved', ['item' => __('message.supervisors')]));
     }
 
     public function store(SupervisorStoreRequest $request)
@@ -34,7 +34,7 @@ class SupervisorController extends BaseAdminController
 
     public function show(Admin $supervisor)
     {
-        return $this->returnJSON(new AdminResource($supervisor), __('message.data_retrieved'));
+        return $this->returnJSON(new AdminResource($supervisor),  __('message.data_retrieved', ['item' => __('message.supervisor')]));
     }
 
     public function update(SupervisorUpdateRequest $request, Admin $supervisor)
