@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Permission extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description_en', 'description_ar'];
 
     public function admins(): BelongsToMany
     {

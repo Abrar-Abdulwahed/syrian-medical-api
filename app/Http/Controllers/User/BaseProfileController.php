@@ -21,9 +21,9 @@ class BaseProfileController extends Controller
 
     public function showDetails(Request $request)
     {
-        try{
+        try {
             $user = $request->user();
-            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), 'User Data retrieved!');
+            return $this->returnJSON(new UserResource($user->loadMissing(['patientProfile', 'serviceProviderProfile'])), __('message.data_retrieved', ['item' => __('message.user')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -31,11 +31,11 @@ class BaseProfileController extends Controller
 
     public function updatePicture(PictureStoreRequest $request)
     {
-        try{
+        try {
             $user = $request->user();
             $fileName = $this->uploadFile($request->file('picture'), $user->attachment_path, $user->picture);
-            $user->update(['picture'=> $fileName]);
-            return $this->returnSuccess('Your picture updated successfully');
+            $user->update(['picture' => $fileName]);
+            return $this->returnSuccess(__('message.picture_saved'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -43,12 +43,12 @@ class BaseProfileController extends Controller
 
     public function updateLocation(LocationStoreRequest $request)
     {
-        try{
+        try {
             $request->user()->profile()->update([
-                    'latitude'  => $request->latitude,
-                    'longitude' => $request->longitude,
+                'latitude'  => $request->latitude,
+                'longitude' => $request->longitude,
             ]);
-            return $this->returnSuccess('Your location updated successfully');
+            return $this->returnSuccess(__('message.location_saved'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

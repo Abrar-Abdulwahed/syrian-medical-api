@@ -14,6 +14,7 @@ class SupervisorController extends BaseAdminController
 {
     public function __construct(protected GetUsersDataAction $getUsersAction)
     {
+        parent::__construct();
         $this->middleware('permission:add_supervisor')->only('store');
     }
 
@@ -22,7 +23,7 @@ class SupervisorController extends BaseAdminController
         $pageSize = $request->per_page ?? 10;
         $supervisors = Admin::supervisors()->paginate($pageSize);
         [$meta, $links] = $this->paginateResponse($supervisors);
-        return $this->returnAllDataJSON(AdminResource::collection($supervisors), $meta, $links, 'Data retrieved successfully');
+        return $this->returnAllDataJSON(AdminResource::collection($supervisors), $meta, $links, __('message.data_retrieved', ['item' => __('message.supervisors')]));
     }
 
     public function store(SupervisorStoreRequest $request)
@@ -33,7 +34,7 @@ class SupervisorController extends BaseAdminController
 
     public function show(Admin $supervisor)
     {
-        return $this->returnJSON(new AdminResource($supervisor), 'User data retrieved successfully');
+        return $this->returnJSON(new AdminResource($supervisor),  __('message.data_retrieved', ['item' => __('message.supervisor')]));
     }
 
     public function update(SupervisorUpdateRequest $request, Admin $supervisor)

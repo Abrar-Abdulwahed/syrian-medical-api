@@ -23,11 +23,11 @@ class PatientAccountRequest extends BaseRequest
     {
         $userId = $this->user()?->id;
         return [
-            'firstname'     => 'sometimes|required|string|between:2,12',
-            'lastname'      => 'sometimes|required|string|between:2,12',
-            'username'      => 'sometimes|required|string|between:2,24',
-            'email'         => 'sometimes|required|email:rfc|max:100|unique:users,email,'.$userId,
-            'password'      => ['sometimes', 'required', $this->passwordRules(), 'max:25', 'confirmed'],
+            'firstname'     => 'required|string|between:2,12',
+            'lastname'      => 'required|string|between:2,12',
+            'username'      => 'required|string|between:2,24',
+            'email'         => 'required|email:rfc|max:100|unique:users,email,' . $userId,
+            'password'      => ['required', $this->passwordRules(), 'max:25', 'confirmed'],
         ];
     }
 }

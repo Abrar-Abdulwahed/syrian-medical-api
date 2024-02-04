@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\User\Patient;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\PatientAccountRequest;
+use App\Http\Requests\Auth\PatientAccountUpdateRequest;
 use App\Http\Controllers\User\BaseProfileController;
 
 class ProfileController extends BaseProfileController
 {
-    public function updateDetails(PatientAccountRequest $request)
+    public function updateDetails(PatientAccountUpdateRequest $request)
     {
         try {
             $user = $request->user();
@@ -28,11 +26,11 @@ class ProfileController extends BaseProfileController
                     : null,
             ])->filter();
             if ($changes->isEmpty()) {
-                return $this->returnSuccess('No changes were made');
+                return $this->returnSuccess(__('message.no_changes'));
             }
             $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
             $request->user()->update($userChanges);
-            return $this->returnSuccess('Your data has been updated successfully');
+            return $this->returnSuccess(__('message.completed_edits'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

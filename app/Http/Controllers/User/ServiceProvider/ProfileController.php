@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\User\ServiceProvider;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\User\BaseProfileController;
-use App\Http\Requests\Auth\ServiceProviderAccountRequest;
+use App\Http\Requests\Auth\ServiceProviderAccountUpdateRequest;
 
 class ProfileController extends BaseProfileController
 {
 
-    public function updateDetails(ServiceProviderAccountRequest $request)
+    public function updateDetails(ServiceProviderAccountUpdateRequest $request)
     {
         try {
             $user = $request->user();
@@ -38,13 +36,13 @@ class ProfileController extends BaseProfileController
                     : null,
             ])->filter();
             if ($changes->isEmpty()) {
-                return $this->returnSuccess('No changes were made');
+                return $this->returnSuccess(__('message.no_changes'));
             }
             $user->pendingUpdateProfileRequest()->updateOrCreate(
                 ['user_id' => $user->id],
                 ['changes' => $changes->toJson()]
             );
-            return $this->returnSuccess('Wait for the administrator to approve your edits');
+            return $this->returnSuccess(__('message.wait_for_admin_updates_review'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

@@ -47,11 +47,12 @@ class ServiceStoreRequest extends BaseRequest
                     $query->where('type', UserType::SERVICE_PROVIDER->value);
                 }),
             ],
-            'service_id'    => $serviceIdRules,
-            'description'   => 'nullable|string',
-            'price'         => 'required|numeric',
-            'discount'      => 'sometimes|numeric',
-            'dates'         => 'required|array',
+            'service_id'     => $serviceIdRules,
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
+            'price'          => 'required|numeric|gt:0',
+            'discount'       => 'sometimes|numeric|gte:0',
+            'dates'          => 'required|array',
         ];
         if ($this->has('dates'))
             foreach ($this->input('dates') as $index => $date) {

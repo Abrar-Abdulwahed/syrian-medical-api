@@ -23,7 +23,7 @@ class FutureDateTimeRule implements ValidationRule
     {
         $selectedTime = Carbon::createFromFormat('Y-m-d H:i:s', $this->date . ' ' . $value);
         if ($selectedTime->lessThan(now())) {
-            $fail('The selected time is outdated');
+            $fail(__('validation.custom.outdated_date'));
         }
     }
 }

@@ -24,7 +24,7 @@ class ChangePasswordController extends Controller
                 'password'  => $request->new_password
             ]);
             $user->notify(new ChangePasswordNotification);
-            return $this->returnSuccess('Password Changed Successfully');
+            return $this->returnSuccess(__('message.successfully_password_changed'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

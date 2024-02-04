@@ -22,7 +22,10 @@ class ProductFactory extends Factory
 
         return [
             'provider_id' => fake()->randomElement($providerIds),
-            'title' => fake()->word,
+            'title_en' => fake()->word . '_en',
+            'title_ar' => fake()->word . '_ar',
+            'description_en' => fake()->sentence . '_en',
+            'description_ar' => fake()->sentence . '_ar',
             'thumbnail' => fake()->imageUrl(),
             'price' => fake()->randomFloat(2, 0, 1000),
             'discount' => fake()->randomFloat(2, 0, 50),

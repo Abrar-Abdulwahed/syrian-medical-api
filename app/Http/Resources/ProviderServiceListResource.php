@@ -17,11 +17,11 @@ class ProviderServiceListResource extends JsonResource
     {
         return [
             'id'             => $this->id,
-            'title'          => $this->title,
+            'title'          => getLocalizedValue($this, 'title'),
+            'description'    => getLocalizedValue($this->pivot, 'description'),
             'thumbnail'      => $this->thumbnail,
-            'type'           => OfferingType::SERVICE->value,
+            'type'           => getLocalizedEnumValue(OfferingType::SERVICE->value),
             'link'           => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
-            'description'    => $this->pivot->description,
             'price'          => $this->pivot->price,
             'final_price'    => $this->when($this->pivot->final_price, $this->pivot->final_price),
         ];

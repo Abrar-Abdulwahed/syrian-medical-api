@@ -26,7 +26,7 @@ class ForgotPasswordController extends Controller
             );
 
             return $status === Password::RESET_LINK_SENT
-                ? $this->returnSuccess('We have emailed you a code to enter.')
+                ? $this->returnSuccess(__('message.code_sent'))
                 : $this->returnWrong(__($status));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
@@ -38,13 +38,13 @@ class ForgotPasswordController extends Controller
         try {
             $user = User::where('ip', $request->ip())->first();
             if (!$user)
-                return $this->returnWrong('User not found', 404);
+                return $this->returnWrong(__('message.user_not_found'), 404);
             $passwordReset = DB::table('password_resets')->where(['code' => $request->verification_code, 'email' => $user->email])->first();
 
             if (!$passwordReset || now()->subHours(2)->gt($passwordReset->created_at)) {
-                return $this->returnWrong('Invalid or Expired  Code. Try Again!', 400);
+                return $this->returnWrong(__('message.invalid_code'), 400);
             }
-            return $this->returnSuccess('Verification code is valid!');
+            return $this->returnSuccess(__('message.valid_code'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -56,11 +56,11 @@ class ForgotPasswordController extends Controller
         try {
             $user = User::where('ip', $request->ip())->first();
             if (!$user)
-                return $this->returnWrong('User not found', 404);
+                return $this->returnWrong(__('message.user_not_found'), 404);
             $user->update(['password' => $request->password]);
             DB::table('password_resets')->where('email', $user->email)->delete();
             DB::commit();
-            return $this->returnSuccess('Password reset successfully');
+            return $this->returnSuccess(__('message.successfully_password_reset'));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());

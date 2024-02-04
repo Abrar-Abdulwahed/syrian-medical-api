@@ -20,11 +20,11 @@ class ServiceListResource extends JsonResource
 
         return [
             'id'          => $this->id,
-            'title'       => $service->title,
+            'title'       => getLocalizedValue($service, 'title'),
+            'description' => getLocalizedValue($this, 'description'),
             'thumbnail'   => $service->thumbnail,
-            'type'        => OfferingType::SERVICE->value,
+            'type'        => getLocalizedEnumValue(OfferingType::SERVICE->value),
             'link'        => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
-            'description' => $this->description,
             'price'       => $this->price,
             'final_price' => $this->when($this->final_price, $this->final_price),
         ];

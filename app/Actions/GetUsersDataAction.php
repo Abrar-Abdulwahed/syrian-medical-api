@@ -10,10 +10,11 @@ use App\Http\Traits\PaginateResponseTrait;
 class GetUsersDataAction
 {
     use ApiResponseTrait, PaginateResponseTrait;
-    public function getData(Request $request, array $withRelations, $query){
+    public function getData(Request $request, array $withRelations, $query)
+    {
         $pageSize = $request->per_page ?? 10;
         $users = $query->with($withRelations)->paginate($pageSize);
         [$meta, $links] = $this->paginateResponse($users);
-        return $this->returnAllDataJSON(UserResource::collection($users), $meta, $links, 'Data retrieved successfully');
+        return $this->returnAllDataJSON(UserResource::collection($users), $meta, $links, __('message.data_retrieved', ['item' => __('message.users')]));
     }
 }

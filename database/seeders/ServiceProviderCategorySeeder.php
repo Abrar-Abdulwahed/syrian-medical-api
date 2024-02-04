@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Enums\ServiceProviderCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class ServiceProviderCategorySeeder extends Seeder
@@ -14,9 +13,17 @@ class ServiceProviderCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (ServiceProviderCategory::cases() as $item) {
+        $categories = [
+            ['name_en' => 'doctor', 'name_ar' => 'دكتور'],
+            ['name_en' => 'pharmacy', 'name_ar' => 'صيدلية'],
+            ['name_en' => 'laboratory', 'name_ar' => 'مختبر'],
+            ['name_en' => 'clinic', 'name_ar' => 'عيادة'],
+        ];
+
+        foreach ($categories as $item) {
             DB::table('service_provider_categories')->insert([
-                'name' => $item->value,
+                'name_en' => $item['name_en'],
+                'name_ar' => $item['name_ar'],
                 'created_at' => now(),
             ]);
         }

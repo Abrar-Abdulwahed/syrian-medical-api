@@ -23,7 +23,7 @@ class ReviewService
         $products = Product::with('provider')->get();
         $services = ProviderService::get();
         $result =   ProductListResource::collection($products)->merge(ServiceListResource::collection($services));
-        return $this->returnJSON($result, 'Data retrieved successfully');
+        return $this->returnJSON($result, __('message.data_retrieved', ['item' => __('message.products_services')]));
     }
 
     public function getItemByType(Request $request)
@@ -45,9 +45,9 @@ class ReviewService
         }
         if ($item instanceof ProviderService) {
             $item->load('availabilities');
-            return $this->returnJSON(new ServiceReviewResource($item), 'Data retrieved successfully');
+            return $this->returnJSON(new ServiceReviewResource($item), __('message.data_retrieved', ['item' => __('message.service')]));
         } else if ($item instanceof Product) {
-            return $this->returnJSON(new ProductReviewResource($item), 'Data retrieved successfully');
+            return $this->returnJSON(new ProductReviewResource($item), __('message.data_retrieved', ['item' => __('message.product')]));
         }
     }
 
@@ -55,10 +55,10 @@ class ReviewService
     {
         if ($type === OfferingType::SERVICE->value) {
             $services = ProviderService::get();
-            return $this->returnJSON(ServiceListResource::collection($services), 'Data retrieved successfully');
+            return $this->returnJSON(ServiceListResource::collection($services), __('message.data_retrieved', ['item' => __('message.services')]));
         } else if ($type === OfferingType::PRODUCT->value) {
             $products = Product::with('provider')->get();
-            return $this->returnJSON(ProductListResource::collection($products), 'Data retrieved successfully');
+            return $this->returnJSON(ProductListResource::collection($products), __('message.data_retrieved', ['item' => __('message.products')]));
         }
     }
 }
