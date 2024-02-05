@@ -34,6 +34,6 @@ class PowerController extends BaseAdminController
     {
         $user = Admin::findOrFail($id);
         $user->permissions()->sync($request->validated()['permissions']);
-        return $this->returnSuccess('Permissions of this user saved successfully');
+        return $this->returnSuccess(__('message.data_added', ['item' => __('message.permission')]));
     }
 }

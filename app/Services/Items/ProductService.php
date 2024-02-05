@@ -35,7 +35,7 @@ class ProductService
     {
         // Check if this service is under reservation
         if ($product->reservations()->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)->exists()) {
-            return $this->returnWrong('This product is under reservation, you cant edit it!');
+            return $this->returnWrong(__('message.under_reservation', ['item' => __('message.product')]));
         }
 
         if (isset($data['thumbnail'])) {
@@ -52,12 +52,12 @@ class ProductService
         try {
             // Check if this service is under reservation
             if ($product->reservations()->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)->exists()) {
-                return $this->returnWrong('This product is under reservation, you cant delete it!');
+                return $this->returnWrong(__('message.under_reservation', ['item' => __('message.product')]));
             }
             $product->delete();
             $this->removeDirectory($product->attachment_path);
             DB::commit();
-            return $this->returnSuccess('Product has been deleted successfully');
+            return $this->returnSuccess(__('message.data_deleted', ['item' => __('message.product')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());

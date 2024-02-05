@@ -39,7 +39,7 @@ class ServiceService
         try {
             // Check if this service is under reservation
             if ($providerService->reservations()->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)->exists()) {
-                return $this->returnWrong('This service is under reservation, you cant edit it!');
+                return $this->returnWrong(__('message.under_reservation', ['item' => __('message.service')]));
             }
 
             $providerServiceData = collect($data)->except(['dates', 'times'])->toArray();
@@ -59,10 +59,10 @@ class ServiceService
     {
         // Check if this service is under reservation
         if ($providerService->reservations()->whereRelation('morphReservation', 'status', OrderStatus::PENDING->value)->exists()) {
-            return $this->returnWrong('This service is under reservation, you cant delete it!');
+            return $this->returnWrong(__('message.under_reservation', ['item' => __('message.service')]));
         }
         $user->services()->detach($providerService->service_id);
-        return $this->returnSuccess('Service has been deleted successfully');
+        return $this->returnSuccess(__('message.data_deleted', ['item' => __('message.service')]));
     }
 
     public function saveAvailability($dates, $times, $providerService)

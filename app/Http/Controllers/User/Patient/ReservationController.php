@@ -47,7 +47,7 @@ class ReservationController extends Controller
             // Ensure if date, time are available
             if ($item instanceof ProviderService && !ServiceReservation::isAvailable($request->appointment_date, $request->appointment_time)) {
                 DB::rollBack();
-                return $this->returnWrong('This time is not available right now!');
+                return $this->returnWrong(__('message.time_not_available'));
             }
 
             // otherwise
@@ -72,7 +72,7 @@ class ReservationController extends Controller
             $reservation->forceFill(['price' => $price, 'patient_id' => $request->user()->id, 'provider_id' => $item->provider->id])->save();
             $item->provider->notify(new ReservationNotification(true, $reservation));
             DB::commit();
-            return $this->returnSuccess('You\'ve completed your Order');
+            return $this->returnSuccess(__('message.completed', ['item' => __('message.order')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
@@ -98,6 +98,6 @@ class ReservationController extends Controller
             $typeReservation->delete();
         }
         $reservation->delete(); // morph reservation
-        return $this->returnSuccess('You\'ve canceled your reservation');
+        return $this->returnSuccess(__('message.canceled', ['item' => __('message.reservation')]));
     }
 }

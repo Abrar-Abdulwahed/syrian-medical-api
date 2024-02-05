@@ -27,7 +27,7 @@ class ProfileUpdateRequests extends BaseAdminController
             $pendingChanges = PendingUpdateProfileRequest::paginate($pageSize);
 
             if ($pendingChanges->isEmpty()) {
-                return $this->returnSuccess('No pending changes found', 200);
+                return $this->returnSuccess(__('message.no_found', ['item' => __('message.pending_requests')]), 200);
             }
 
             $changes = $pendingChanges->map(function ($pendingChange) {
@@ -62,7 +62,7 @@ class ProfileUpdateRequests extends BaseAdminController
             $pending->delete();
             $pending->user->notify(new AdminReviewProfileChangeNotification(true));
             DB::commit();
-            return $this->returnSuccess('Change accepted and user profile updated successfully');
+            return $this->returnSuccess(__('message.accepted', ['item' => __('message.user_changes')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());
@@ -76,7 +76,7 @@ class ProfileUpdateRequests extends BaseAdminController
             $pending->delete();
             $pending->user->notify(new AdminReviewProfileChangeNotification(false));
             DB::commit();
-            return $this->returnSuccess('User\'s changes rejected successfully');
+            return $this->returnSuccess(__('message.rejected', ['item' => __('message.user_changes')]));
         } catch (\Exception $e) {
             DB::rollBack();
             return $this->returnWrong($e->getMessage());

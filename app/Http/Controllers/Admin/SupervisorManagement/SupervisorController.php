@@ -29,7 +29,7 @@ class SupervisorController extends BaseAdminController
     public function store(SupervisorStoreRequest $request)
     {
         Admin::create($request->validated());
-        return $this->returnSuccess('Supervisor added successfully');
+        return $this->returnSuccess(__('message.data_added', ['item' => __('message.supervisor')]));
     }
 
     public function show(Admin $supervisor)
@@ -40,20 +40,20 @@ class SupervisorController extends BaseAdminController
     public function update(SupervisorUpdateRequest $request, Admin $supervisor)
     {
         $supervisor->update($request->validated());
-        return $this->returnSuccess('Supervisor data updated successfully');
+        return $this->returnSuccess(__('message.data_updated', ['item' => __('message.supervisor')]));
     }
 
     public function destroy(Admin $supervisor)
     {
         $supervisor->delete();
-        return $this->returnSuccess('Supervisor has been deleted successfully');
+        return $this->returnSuccess(__('message.data_deleted', ['item' => __('message.supervisor')]));
     }
 
     public function activate(Request $request, Admin $supervisor)
     {
         try {
             $supervisor->forceFill(['activated' => 1])->save();
-            return $this->returnSuccess('This supervisor has been activated!');
+            return $this->returnSuccess(__('message.activated', ['item' => __('message.supervisor')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -63,7 +63,7 @@ class SupervisorController extends BaseAdminController
     {
         try {
             $supervisor->forceFill(['activated' => 0])->save();
-            return $this->returnSuccess('This supervisor has been deactivated!');
+            return $this->returnSuccess(__('message.deactivated', ['item' => __('message.supervisor')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

@@ -26,7 +26,7 @@ class ProfileController extends BaseProfileController
                     : null,
             ])->filter();
             if ($changes->isEmpty()) {
-                return $this->returnSuccess(__('message.no_changes'));
+                return $this->returnSuccess(__('message.no_found', ['item' => __('message.changes')]));
             }
             $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
             $request->user()->update($userChanges);
