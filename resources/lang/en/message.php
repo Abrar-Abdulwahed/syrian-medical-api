@@ -15,18 +15,30 @@ return [
     'successfully_password_changed' => 'You have changed your password successfully',
     'successfully_password_reset' => 'You have reset your password successfully',
     'successfully_email_verified' => 'Your Email verified successfully',
+    'cant_proceed' => 'You can NOT go forward, you\'re not activated',
 
     //Profile
     'location_saved' => 'Your location updated successfully',
     'picture_saved' => 'Your picture updated successfully',
-    'no_changes' => 'No changes were made',
     'completed_edits' => 'You\'ve completed your edits.',
     'wait_for_admin_updates_review' => 'Wait for the administrator to approve your edits',
+
+    //Reservation
+    'time_not_available' => 'This time is not available right now!',
+    'under_reservation'  => 'This :item is under reservation, you cant delete or update it!',
 
     //Global
     'data_retrieved' => ':item data retrieved successfully!',
     'data_added' => ':item added successfully!',
     'data_updated' => ':item updated successfully!',
+    'data_deleted' => ':item deleted successfully!',
+    'activated'    => ':item activated successfully',
+    'deactivated'  => ':item deactivated successfully',
+    'accepted'     => ':item accepted successfully',
+    'canceled'     => ':item canceled successfully',
+    'rejected'     => ':item rejected successfully',
+    'completed'    => ':item completed successfully',
+    'no_found' => 'There is no :item',
 
     // Variables
     'user' => 'user',
@@ -45,5 +57,10 @@ return [
     'supervisor' => 'supervisor',
     'supervisors' => 'supervisors',
     'permissions' => 'permissions',
+    'permission' => 'permission',
     'sales' => 'sales',
+    'pending_requests' => 'pending requests',
+    'changes' => 'changes were made!',
+    'reservation' => 'reservation',
+    'user_changes' => 'User\'s changes!',
 ];

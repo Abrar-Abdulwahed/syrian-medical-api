@@ -36,7 +36,7 @@ class ProfileController extends BaseProfileController
                     : null,
             ])->filter();
             if ($changes->isEmpty()) {
-                return $this->returnSuccess(__('message.no_changes'));
+                return $this->returnSuccess(__('message.no_found', ['item' => __('message.changes')]));
             }
             $user->pendingUpdateProfileRequest()->updateOrCreate(
                 ['user_id' => $user->id],

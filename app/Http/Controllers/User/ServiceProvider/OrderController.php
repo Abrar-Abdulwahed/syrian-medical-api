@@ -66,7 +66,7 @@ class OrderController extends Controller
             $reservation->forceFill(['status' => OrderStatus::ACCEPTED->value])->save();
 
             $reservation->patient->notify(new ProviderReviewOrderNotification(true, $reservation));
-            return $this->returnSuccess('You Mark this order as accepted');
+            return $this->returnSuccess(__('message.accepted', ['item' => __('message.order')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -80,7 +80,7 @@ class OrderController extends Controller
             $reservation->forceFill(['status' => OrderStatus::CANCELED->value])->save();
             $reservation->rejectionReason()->updateOrCreate(['rejection_reason' => $request->rejection_reason]);
             $reservation->patient->notify(new ProviderReviewOrderNotification(false, $reservation));
-            return $this->returnSuccess('You Mark this order as canceled');
+            return $this->returnSuccess(__('message.canceled', ['item' => __('message.order')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

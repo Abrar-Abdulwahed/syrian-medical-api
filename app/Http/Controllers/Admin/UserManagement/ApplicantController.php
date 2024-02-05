@@ -34,7 +34,7 @@ class ApplicantController extends BaseAdminController
 
             // Notify service provider
             $user->notify(new AdminReviewNotificationMail(true));
-            return $this->returnSuccess('Service Provider has been activated!');
+            return $this->returnSuccess(__('message.activated', ['item' => __('message.provider')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -48,7 +48,7 @@ class ApplicantController extends BaseAdminController
             $this->removeDirectory($user->attachment_path);
             // Notify service provider
             $user->notify(new AdminReviewNotificationMail(false));
-            return $this->returnSuccess('Service Provider has been deleted from database!');
+            return $this->returnSuccess(__('message.data_deleted'), ['item' => __('message.provider')]);
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

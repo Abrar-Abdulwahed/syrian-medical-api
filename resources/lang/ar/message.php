@@ -15,18 +15,30 @@ return [
     'successfully_password_changed' => 'تم تغيير كلمة المرور بنجاح',
     'successfully_password_reset' => 'تم تعيين كلمة المرور بنجاح',
     'successfully_email_verified' => 'تم التحقق من بريدك الإلكتروني بنجاح',
+    'cant_proceed' => 'لا تستطيع المضي قدماً، لأن حسابك ليس مفعلاً',
 
     //Profile
     'location_saved' => 'تم تعديل موقعك الجغرافي بنجاح',
     'picture_saved' => 'تم تعديل صورتك الشخصية بنجاح',
-    'no_changes' => 'ليس هناك أي تعديلات أجريتها',
     'completed_edits' => 'لقد أكملت التعديلات على ملفك الشخصي',
     'wait_for_admin_updates_review' => 'انتظر موافقة المشرف على التعديلات التي أجريتها.',
 
-    //CRUD
+    //Reservation
+    'time_not_available' => 'هذا الوقت ليس متاحاً الآن!',
+    'under_reservation'  => 'هذا :item محجوز في الوقت الحالي، لا تستطيع حذفه أو تعديله',
+
+    // Global
     'data_retrieved' => 'تم استرداد بيانات :item بنجاح!',
     'data_added' => 'تم إضافة :item بنجاح!',
     'data_updated' => 'تم تعديل بيانات :item بنجاح',
+    'data_deleted' => 'تم حذف بيانات :item بنجاح',
+    'activated'    => 'تم تفعيل هذا :item بنجاح',
+    'deactivated'  => 'تم إلغاء تفعيل هذا :item بنجاح',
+    'accepted'     => 'تم قبول :item بنجاح!',
+    'canceled'     => 'تم إلغاء :item بنجاح!',
+    'rejected'     => 'تم رفض :item بنجاح!',
+    'completed'    => 'تم إكمال :item بنجاح!',
+    'no_found' => 'ليس هناك أي :item',
 
     // Variables
     'user' => 'المستخدم',
@@ -45,5 +57,10 @@ return [
     'supervisor' => 'المشرف',
     'supervisors' => 'المشرفين',
     'permissions' => 'الصلاحيات',
+    'permission' => 'الصلاحية',
     'sales' => 'المبيعات',
+    'pending_requests' => 'طلبات تعديل معلقة',
+    'changes' => 'تغييرات أجريتها',
+    'reservation' => 'الحجز',
+    'user_changes' => 'تغييرات المستخدم',
 ];
