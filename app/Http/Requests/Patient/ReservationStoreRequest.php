@@ -56,7 +56,7 @@ class ReservationStoreRequest extends BaseRequest
                     if (!$availability) {
                         $validator->errors()->add(
                             'appointment_date',
-                            'This date is not determined by the service provider for this service!'
+                            __('message.undefined_date')
                         );
                     } else {
                         // validateAppointmentTime

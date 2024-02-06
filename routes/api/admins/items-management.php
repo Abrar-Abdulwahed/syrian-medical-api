@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ItemManagement\{
     ServiceController
 };
 use App\Http\Controllers\Admin\{
+    HomeController,
     OrderController,
     SalesController
 };
@@ -37,3 +38,6 @@ Route::name('admin')->apiResource('admin/reservations', OrderController::class)-
 
 /*********** Sales Management ***********/
 Route::name('admin')->get('admin/sales', SalesController::class);
+
+/*********** Home ***********/
+Route::name('admin')->get('admin/', HomeController::class);

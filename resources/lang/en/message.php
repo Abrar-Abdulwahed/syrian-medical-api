@@ -26,6 +26,7 @@ return [
     //Reservation
     'time_not_available' => 'This time is not available right now!',
     'under_reservation'  => 'This :item is under reservation, you cant delete or update it!',
+    'undefined_date' => 'This date is not determined by the service provider for this service!',
 
     //Global
     'data_retrieved' => ':item data retrieved successfully!',
