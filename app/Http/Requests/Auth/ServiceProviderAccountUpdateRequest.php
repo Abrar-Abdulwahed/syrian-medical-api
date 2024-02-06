@@ -23,13 +23,10 @@ class ServiceProviderAccountUpdateRequest extends BaseRequest
     {
         $userId = $this->user()?->id;
         return [
-            'firstname'     => 'sometimes|required|string|between:2,12',
-            'lastname'      => 'sometimes|required|string|between:2,12',
-            'username'      => 'sometimes|required|string|between:2,24',
-            'email'         => 'sometimes|required|email:rfc,dns|max:100|unique:users,email,' . $userId,
-            'password'      => ['sometimes', 'required', $this->passwordRules(), 'max:25', 'confirmed'],
-            'bank_name'     => 'sometimes|required|string|max:100',
-            'iban_number'   => 'sometimes|required|alpha_dash|max:34',
+            'username'      => 'required|string|between:2,24',
+            'email'         => 'required|email:rfc|max:100|unique:users,email,' . $userId,
+            'bank_name'     => 'required|string|max:100',
+            'iban_number'   => 'required|alpha_dash|max:34',
             'swift_code'    => [
                 'sometimes',
                 'required',

@@ -12,24 +12,17 @@ class ProfileController extends BaseProfileController
         try {
             $user = $request->user();
             $names = explode(' ', $request->username);
-            $firstName = $names[0] ?? null;
-            $lastName = $names[1] ?? null;
-            $changes = collect([
-                'firstname' => $firstName && $firstName !== $user->firstname
-                    ? $firstName
-                    : null,
-                'lastname' => $lastName && $lastName !== $user->lastname
-                    ? $lastName
-                    : null,
-                'email' => $request->email !== $user->email
-                    ? $request->email
-                    : null,
-            ])->filter();
-            if ($changes->isEmpty()) {
+            $firstName = $names[0] ?? $user->firstname;
+            $lastName = $names[1] ?? $user->lastname;
+            $user->fill([
+                'firstname' => $firstName,
+                'lastname' => $lastName,
+                'email' => $request->email,
+            ]);
+            if ($user->isClean()) {
                 return $this->returnSuccess(__('message.no_found', ['item' => __('message.changes')]));
             }
-            $userChanges = collect($changes)->only(['firstname', 'lastname', 'email'])->all();
-            $request->user()->update($userChanges);
+            $user->save();
             return $this->returnSuccess(__('message.completed_edits'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
