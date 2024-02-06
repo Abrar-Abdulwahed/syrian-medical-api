@@ -2,11 +2,64 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
+use App\Models\User;
+use App\Enums\UserType;
+use App\Enums\OrderStatus;
+use App\Models\Reservation;
 use App\Http\Controllers\Admin\BaseAdminController;
 
 class HomeController extends BaseAdminController
 {
     public function __invoke()
     {
+        $savingsData = $this->populateSavingsDataByDayAndType();
+        $statistics = $this->statistics();
+        $data = ['savingsData' => $savingsData, 'statistics' => $statistics];
+        return $this->returnJSON($data);
+    }
+
+    private function populateSavingsDataByDayAndType()
+    {
+        $startDate = now()->startOfMonth();
+        $endDate = now()->endOfMonth();
+
+        // Query to get the savings for each day among the month
+        $savingsData = Reservation::whereIn('status', [OrderStatus::PAID, OrderStatus::DELIVERED])
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get(['created_at', 'price', 'reservationable_type']);
+
+        $groupedData = [];
+
+        $daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        $types = ['Service', 'Product'];
+
+        // Set initial values to 0 for each day and type
+        $groupedData = array_fill_keys($daysOfWeek, array_fill_keys($types, 0));
+
+        foreach ($savingsData as $item) {
+            $day = $item->created_at->format('D');
+            $type = $item->reservationable_type === 'ServiceReservation' ? 'Service' : 'Product';
+
+            $groupedData[$day][$type] += $item->price;
+        }
+
+        return $groupedData;
+    }
+
+    private function statistics()
+    {
+        $application_visitors = User::count();
+        $new_customers = User::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+        $total_orders = Reservation::count();
+
+        $statistics = [
+            ['label' => __('others.new_customers'), 'value' => $new_customers],
+            ['label' => __('others.application_visitors'), 'value' => $application_visitors],
+            ['label' => __('others.total_orders'), 'value' => $total_orders],
+        ];
+        return $statistics;
     }
 }

@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('sanctum:prune-expired')->everyMinute();
         $schedule->command('reservations:cancel-outdated')->daily();
+        $schedule->command('reservations:prune-rejected-orders')->daily();
     }
 
     /**

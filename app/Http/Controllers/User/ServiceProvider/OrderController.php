@@ -25,18 +25,14 @@ class OrderController extends Controller
         $orders = [];
         $status = $request->query('status');
         try {
-            $user->load([
-                'products.reservations.morphReservation',
-                'providerServices.reservations.morphReservation',
-            ]);
             $orders = $user->orders;
 
             // Filter by status if the "status" parameter is provided
             if ($status !== null) {
-                $orders = $orders->where('morphReservation.status', $status);
+                $orders = $orders->where('status', $status);
             }
 
-            $orders = $orders->sortByDesc('morphReservation.created_at');
+            $orders = $orders->sortByDesc('created_at');
 
             return $this->returnJSON(ReservationResource::collection($orders), __('message.data_retrieved', ['item' => __('message.orders')]));
         } catch (\Exception $e) {
