@@ -20,13 +20,13 @@ class ProfileController extends BaseProfileController
                 'lastname' => $lastName,
                 'email' => $request->email,
             ]);
-            if ($user->isServiceProvider()) {
-                $user->serviceProviderProfile->fill([
-                    'bank_name' => $request->bank_name,
-                    'iban_number' => $request->iban_number,
-                    'swift_code' => $request->swift_code,
-                ]);
-            }
+
+            $user->serviceProviderProfile->fill([
+                'bank_name' => $request->bank_name,
+                'iban_number' => $request->iban_number,
+                'swift_code' => $request->swift_code,
+            ]);
+
             if ($user->isClean() && $user->serviceProviderProfile->isClean()) {
                 return $this->returnSuccess(__('message.no_found', ['item' => __('message.changes')]));
             }
