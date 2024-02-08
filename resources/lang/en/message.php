@@ -64,4 +64,5 @@ return [
     'changes' => 'changes were made!',
     'reservation' => 'reservation',
     'user_changes' => 'User\'s changes!',
+    'items' => 'Items',
 ];

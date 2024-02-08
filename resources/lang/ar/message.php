@@ -64,4 +64,5 @@ return [
     'changes' => 'تغييرات أجريتها',
     'reservation' => 'الحجز',
     'user_changes' => 'تغييرات المستخدم',
+    'items' => 'العناصر',
 ];

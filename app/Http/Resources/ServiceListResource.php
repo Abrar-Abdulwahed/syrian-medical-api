@@ -17,11 +17,12 @@ class ServiceListResource extends JsonResource
     public function toArray(Request $request): array
     {
         $service = Service::find($this->service_id);
-
+        $locale = app()->getLocale();
         return [
             'id'          => $this->id,
-            'title'       => getLocalizedValue($service, 'title'),
-            'description' => getLocalizedValue($this, 'description'),
+            'title'       => $service->{"title_" . $locale},
+            'description' => $this->{"description_" . $locale},
+            'category'    => $service->category->{"name_" . $locale},
             'thumbnail'   => $service->thumbnail,
             'type'        => getLocalizedEnumValue(OfferingType::SERVICE->value),
             'link'        => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,

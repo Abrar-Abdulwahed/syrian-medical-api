@@ -55,4 +55,13 @@ class ProviderService extends Pivot
                 ->orWhere('description_en', 'LIKE', "%{$searchTerm}%");
         });
     }
+
+    public function scopeCategory($query, $category)
+    {
+        $query->where(function ($query) use ($category) {
+            $query->whereHas('service', function ($query) use ($category) {
+                $query->where('category_id', $category);
+            });
+        });
+    }
 }
