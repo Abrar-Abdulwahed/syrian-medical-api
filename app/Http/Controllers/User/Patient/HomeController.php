@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User\Patient;
 
+use App\Actions\SearchAction;
 use App\Models\Product;
 use App\Models\Category;
 use App\Enums\OfferingType;
@@ -17,7 +18,7 @@ use App\Http\Resources\DoctorSpecializationListResource;
 
 class HomeController extends BaseUserController
 {
-    public function __construct(protected ReviewService $offerings)
+    public function __construct(protected ReviewService $offerings, protected SearchAction $searchAction)
     {
         parent::__construct();
         $this->middleware('bind.items.type')->only('show');
@@ -73,12 +74,7 @@ class HomeController extends BaseUserController
         }
 
         // filter by search
-        $searchTerm = $request->query('search');
-        $query->when($searchTerm, function ($query) use ($searchTerm) {
-            $query->where(function ($query) use ($searchTerm) {
-                $query->search($searchTerm);
-            });
-        });
+        $query = $this->searchAction->searchAction($query, $request->query('search'));
 
         return $query->get();
     }

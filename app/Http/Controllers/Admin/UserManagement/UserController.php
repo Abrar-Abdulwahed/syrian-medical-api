@@ -7,6 +7,7 @@ use App\Enums\UserType;
 use Illuminate\Http\Request;
 use App\Http\Traits\FileTrait;
 use App\Actions\GetUsersDataAction;
+use App\Actions\SearchAction;
 use App\Http\Resources\UserResource;
 use App\Http\Traits\PaginateResponseTrait;
 use App\Http\Controllers\Admin\BaseAdminController;
@@ -15,7 +16,7 @@ use App\Http\Requests\Admin\UserActivationRequest;
 class UserController extends BaseAdminController
 {
     use FileTrait, PaginateResponseTrait;
-    public function __construct(protected GetUsersDataAction $getUsersAction)
+    public function __construct(protected GetUsersDataAction $getUsersAction, protected SearchAction $searchAction)
     {
         parent::__construct();
         $this->middleware('permission:block_user')->only('activation');
@@ -23,19 +24,10 @@ class UserController extends BaseAdminController
 
     public function index(Request $request)
     {
-        $type = $request->query('type');
         $query = User::query();
-
-        if ($type === UserType::PATIENT->value) {
-            $query = $query->where('type', $type);
-            return $this->getUsersAction->getData($request, ['patientProfile'], $query);
-        } else if ($type === UserType::SERVICE_PROVIDER->value) {
-            $query = $query->where('type', $type);
-            return $this->getUsersAction->getData($request, ['serviceProviderProfile'], $query);
-        }
-
-        // users in general
-        return $this->getUsersAction->getData($request, ['patientProfile', 'serviceProviderProfile'], $query);
+        // filter by search
+        $query = $this->searchAction->searchAction($query, $request->query('search'));
+        return $this->getUsersAction->getData($request, [], $query);
     }
 
     public function show($id)

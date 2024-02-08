@@ -21,4 +21,10 @@ return [
         "completed" => 'مكتملة',
         "canceled" => 'ملغية',
     ],
+
+    'user_type' =>
+    [
+        'patient' => 'مريض',
+        'service-provider' => 'مقدم خدمة',
+    ]
 ];

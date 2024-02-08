@@ -21,4 +21,10 @@ return [
         "completed" => 'Completed',
         "canceled" => 'Refused',
     ],
+
+    'user_type' =>
+    [
+        'patient' => 'Patient',
+        'service-provider' => 'Service Provider',
+    ]
 ];
