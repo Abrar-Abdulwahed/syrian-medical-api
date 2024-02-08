@@ -21,16 +21,34 @@ class HomeController extends BaseUserController
 
     public function index(Request $request)
     {
-        // show all items or filter by type
         $type = $request->query('type');
+        $services = [];
+        $products = [];
+
         if ($type === OfferingType::SERVICE->value) {
-            $services = ProviderService::get();
-            return $this->returnJSON(ServiceListResource::collection($services), __('message.data_retrieved', ['item' => __('message.services')]));
+            $services = $this->getItemsByType(ProviderService::class, $request);
         } else if ($type === OfferingType::PRODUCT->value) {
-            $products = Product::whereRelation('provider', 'activated', 1)->get();
-            return $this->returnJSON(ProductListResource::collection($products), __('message.data_retrieved', ['item' => __('message.products')]));
+            $products = $this->getItemsByType(Product::class, $request);
+        } else {
+            $services = $this->getItemsByType(ProviderService::class, $request);
+            $products = $this->getItemsByType(Product::class, $request);
         }
-        return $type ? $this->offerings->getItemsByType($type) : $this->offerings->getAllItems();
+        $result =  ProductListResource::collection($products)->merge(ServiceListResource::collection($services));
+        return $this->returnJSON($result, __('message.data_retrieved', ['item' => __('message.products_services')]));
+    }
+
+    public function getItemsByType($model, $request)
+    {
+        // show items whose provider are activated
+        $query = $model::query();
+        $searchTerm = $request->query('search');
+        $query->whereRelation('provider', 'activated', 1);
+        $query->when($searchTerm, function ($query) use ($searchTerm) {
+            $query->where(function ($query) use ($searchTerm) {
+                $query->search($searchTerm);
+            });
+        });
+        return $query->get();
     }
 
     public function show(Request $request)
