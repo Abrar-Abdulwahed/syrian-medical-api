@@ -12,7 +12,6 @@ use App\Services\Items\ReviewService;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ServiceListResource;
 use App\Http\Resources\CategoryListResource;
-use Database\Seeders\DoctorSpecializationSeeder;
 use App\Http\Controllers\User\BaseUserController;
 use App\Http\Resources\DoctorSpecializationListResource;
 
@@ -61,20 +60,26 @@ class HomeController extends BaseUserController
         $query = $model::query();
         $query->whereRelation('provider', 'activated', 1);
 
-        // filter by search, category
+        if ($model === ProviderService::class) {
+            $query->with('service');
+
+            // filter category
+            $category = $request->query('category');
+            $query->when($category, function ($query) use ($category) {
+                $query->where(function ($query) use ($category) {
+                    $query->category($category);
+                });
+            });
+        }
+
+        // filter by search
         $searchTerm = $request->query('search');
-        $category = $request->query('category');
         $query->when($searchTerm, function ($query) use ($searchTerm) {
             $query->where(function ($query) use ($searchTerm) {
                 $query->search($searchTerm);
             });
         });
 
-        $query->when($category, function ($query) use ($category) {
-            $query->where(function ($query) use ($category) {
-                $query->category($category);
-            });
-        });
         return $query->get();
     }
 

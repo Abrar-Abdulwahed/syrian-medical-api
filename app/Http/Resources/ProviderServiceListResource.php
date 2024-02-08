@@ -15,10 +15,11 @@ class ProviderServiceListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
         return [
             'id'             => $this->id,
-            'title'          => getLocalizedValue($this, 'title'),
-            'description'    => getLocalizedValue($this->pivot, 'description'),
+            'title'          => $this->{"title_" . $locale},
+            'description'    => $this->pivot->{"description_" . $locale},
             'thumbnail'      => $this->thumbnail,
             'type'           => getLocalizedEnumValue(OfferingType::SERVICE->value),
             'link'           => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
