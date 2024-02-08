@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\OfferingType;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Enums\UserType;
@@ -15,7 +16,7 @@ class HomeController extends BaseAdminController
     {
         $savingsData = $this->populateSavingsDataByDayAndType();
         $statistics = $this->statistics();
-        $data = ['savingsData' => $savingsData, 'statistics' => $statistics];
+        $data = ['totalSavings' => $savingsData['totalPrice'], 'savingsData' => $savingsData['details'], 'statistics' => $statistics];
         return $this->returnJSON($data);
     }
 
@@ -32,19 +33,23 @@ class HomeController extends BaseAdminController
         $groupedData = [];
 
         $daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        $types = ['Service', 'Product'];
+        $types = [OfferingType::SERVICE->value, OfferingType::PRODUCT->value];
+        $totalSavings = 0;
 
         // Set initial values to 0 for each day and type
         $groupedData = array_fill_keys($daysOfWeek, array_fill_keys($types, 0));
 
         foreach ($savingsData as $item) {
             $day = $item->created_at->format('D');
-            $type = $item->reservationable_type === 'ServiceReservation' ? 'Service' : 'Product';
-
+            $type = $item->reservationable_type === 'ServiceReservation' ? OfferingType::SERVICE->value : OfferingType::PRODUCT->value;
+            $totalSavings += $item->price;
             $groupedData[$day][$type] += $item->price;
         }
 
-        return $groupedData;
+        return [
+            'totalPrice' => $totalSavings,
+            'details'   => $groupedData,
+        ];
     }
 
     private function statistics()

@@ -26,7 +26,7 @@ class ReservationController extends BaseUserController
     public function index(Request $request)
     {
         $user = $request->user()->load('reservations.reservationable');
-        return $this->returnJSON(ReservationResource::collection($user->reservations));
+        return $this->returnJSON(ReservationResource::collection($user->reservations), __('message.data_retrieved', ['item' => __('message.orders')]));
     }
 
     public function show(Reservation $reservation)
