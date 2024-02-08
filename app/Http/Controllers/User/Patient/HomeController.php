@@ -4,13 +4,13 @@ namespace App\Http\Controllers\User\Patient;
 
 use Illuminate\Http\Request;
 use App\Services\Items\ReviewService;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 
-class HomeController extends Controller
+class HomeController extends BaseUserController
 {
     public function __construct(protected ReviewService $offerings)
     {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        parent::__construct();
         $this->middleware('bind.items.type')->only('show');
     }
 

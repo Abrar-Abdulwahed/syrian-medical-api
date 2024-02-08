@@ -22,7 +22,7 @@ class CancelOutdatedReservations extends Command
      */
     public function handle()
     {
-        Reservation::where('status', 'pending')
+        Reservation::where('status', OrderStatus::PENDING->value)
             ->whereDate('date', '<', Carbon::now())
             ->update(['status' => OrderStatus::CANCELED->value]);
     }

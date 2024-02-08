@@ -5,17 +5,16 @@ namespace App\Http\Controllers\User\ServiceProvider\ItemManagement;
 
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
-use App\Models\ProviderService;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 use App\Services\Items\ReviewService;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProviderServiceListResource;
 
-class ReviewController extends Controller
+class ReviewController extends BaseUserController
 {
     public function __construct(protected ReviewService $reviewService)
     {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        parent::__construct();
         $this->middleware('bind.items.type')->only('show');
     }
 

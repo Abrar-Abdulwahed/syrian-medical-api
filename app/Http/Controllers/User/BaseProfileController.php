@@ -2,23 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Traits\FileTrait;
-use Illuminate\Support\Collection;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\Profile\PictureStoreRequest;
 use App\Http\Requests\Profile\LocationStoreRequest;
+use App\Http\Controllers\User\BaseUserController;
 
-class BaseProfileController extends Controller
+class BaseProfileController extends BaseUserController
 {
-    use FileTrait;
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
-    }
-
     public function showDetails(Request $request)
     {
         try {

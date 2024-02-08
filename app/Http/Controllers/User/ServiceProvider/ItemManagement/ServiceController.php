@@ -4,16 +4,16 @@ namespace App\Http\Controllers\User\ServiceProvider\ItemManagement;
 
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 use App\Services\Items\ServiceService;
 use App\Http\Requests\ServiceProvider\ServiceStoreRequest;
 use App\Http\Requests\ServiceProvider\ServiceUpdateRequest;
 
-class ServiceController extends Controller
+class ServiceController extends BaseUserController
 {
     public function __construct(protected ServiceService $serviceService)
     {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        parent::__construct();
     }
 
     public function store(ServiceStoreRequest $request)

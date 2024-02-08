@@ -8,17 +8,17 @@ use App\Models\ProviderService;
 use App\Models\ProductReservation;
 use App\Models\ServiceReservation;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 use App\Http\Requests\Patient\ReservationDestroyRequest;
 use App\Http\Resources\ReservationResource;
 use App\Notifications\ReservationNotification;
 use App\Http\Requests\Patient\ReservationStoreRequest;
 
-class ReservationController extends Controller
+class ReservationController extends BaseUserController
 {
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        parent::__construct();
         $this->middleware('bind.items.type')->only('store');
         $this->authorizeResource(Reservation::class, 'reservation');
     }

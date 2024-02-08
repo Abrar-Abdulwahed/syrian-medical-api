@@ -5,17 +5,17 @@ namespace App\Http\Controllers\User\ServiceProvider;
 use App\Enums\OrderStatus;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 use App\Http\Resources\ReservationResource;
 use App\Notifications\ProviderReviewOrderNotification;
 use App\Http\Requests\ServiceProvider\OrderAcceptRequest;
 use App\Http\Requests\ServiceProvider\OrderRejectRequest;
 
-class OrderController extends Controller
+class OrderController extends BaseUserController
 {
     public function __construct()
     {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        parent::__construct();
         $this->middleware('bind.reservation.type')->only('accept');
     }
 
