@@ -24,17 +24,17 @@ class Reservation extends Model
         'payment_method'  => 'json',
     ];
 
-    function getStatusLabel($status)
+    function getStatusLabel($status, $locale)
     {
-        $labels = [
-            OrderStatus::PENDING->value   => 'pending',
-            OrderStatus::ACCEPTED->value  => 'accepted',
-            OrderStatus::PAID->value      => 'not delivered',
-            OrderStatus::DELIVERED->value => 'delivered',
-            OrderStatus::CANCELED->value  => 'refused',
-        ];
-
-        return $labels[$status] ?? '';
+        // match expression => PHP 8.x
+        $status_label = match ($status) {
+            OrderStatus::PENDING->value   => getLocalizedEnumValue(OrderStatus::PENDING, $locale),
+            OrderStatus::ACCEPTED->value  => getLocalizedEnumValue(OrderStatus::ACCEPTED, $locale),
+            OrderStatus::PAID->value      => getLocalizedEnumValue(OrderStatus::PAID, $locale),
+            OrderStatus::DELIVERED->value => getLocalizedEnumValue(OrderStatus::DELIVERED, $locale),
+            OrderStatus::CANCELED->value  => getLocalizedEnumValue(OrderStatus::CANCELED, $locale),
+        };
+        return $status_label;
     }
 
     public function reservationable(): MorphTo

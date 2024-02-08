@@ -15,9 +15,10 @@ class PermissionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
         return [
             'id'            => $this->id,
-            'description'   => getLocalizedValue($this->resource, 'description'),
+            'description'   => $this->resource->{"description_" . $locale},
             'hasPermission' => $this->hasPermission,
         ];
     }

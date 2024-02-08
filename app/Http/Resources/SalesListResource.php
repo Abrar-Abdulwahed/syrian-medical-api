@@ -20,6 +20,7 @@ class SalesListResource extends JsonResource
         // ADMIN
         $reservation = $this->reservationable;
         $item = null;
+        $locale = app()->getLocale();
         if ($reservation && $reservation instanceof ProductReservation) {
             $item = new ProductReviewResource($reservation->product);
         } else if ($reservation && $reservation instanceof ServiceReservation) {
@@ -29,7 +30,7 @@ class SalesListResource extends JsonResource
         return [
             'order_id' => $item->id,
             'title'    => $item->title ?? $item->service->title,
-            'status'   => $this->getStatusLabel($this->status),
+            'status'   => $this->getStatusLabel($this->status, $locale),
             'paid_at'  => $this->updated_at->format('Y-m-d H:i:s'),
             'price'    => $this->price,
         ];

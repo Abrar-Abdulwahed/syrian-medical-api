@@ -16,12 +16,13 @@ class ProductReviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
         $attributes = [
             'id'                => $this->id,
-            'title'             => getLocalizedValue($this, 'title'),
-            'description'       => getLocalizedValue($this, 'description'),
+            'title'             => $this->{"title_" . $locale},
+            'description'       => $this->{"description_" . $locale},
             'thumbnail'         => $this->thumbnail,
-            'type'              => getLocalizedEnumValue(OfferingType::PRODUCT->value),
+            'type'              => getLocalizedEnumValue(OfferingType::PRODUCT, $locale),
             'discount'          => $this->discount,
             'price'             => $this->price,
             'final_price'       => $this->when($this->final_price, $this->final_price),

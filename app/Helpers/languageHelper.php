@@ -2,14 +2,7 @@
 
 use App\Enums\OfferingType;
 
-function getLocalizedValue($value, $locale)
+function getLocalizedEnumValue($enum, $lang)
 {
-    return app()->isLocale('ar') ? $value->{$locale . '_ar'} : $value->{$locale . '_en'};
-}
-
-function getLocalizedEnumValue($enumValue)
-{
-    $acceptedLanguage = app()->getLocale();
-
-    return OfferingType::localizedValues()[$enumValue][$acceptedLanguage] ?? $enumValue;
+    return $enum::localizedValues()[$enum->value][$lang] ?? $enum->value;
 }

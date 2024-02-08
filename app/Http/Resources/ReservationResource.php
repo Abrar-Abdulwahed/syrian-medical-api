@@ -21,6 +21,7 @@ class ReservationResource extends JsonResource
     {
         $reservation = $this->reservationable;
         $item = null;
+        $locale = app()->getLocale();
         if ($reservation && $reservation instanceof ProductReservation) {
             $item = new ProductReviewResource($reservation->product);
         } else if ($reservation && $reservation instanceof ServiceReservation) {
@@ -33,7 +34,7 @@ class ReservationResource extends JsonResource
             'quantity' => $this->when($reservation instanceof ProductReservation, $this->reservationable?->quantity),
             'location' => $this->location,
             'payment_method' => json_decode($this->payment_method),
-            'status'      => $this->getStatusLabel($this->status),
+            'status'   => $this->getStatusLabel($this->status, $locale),
             'rejection_reason' => $this->when(
                 $this->relationLoaded('rejectionReason') && $this->status === OrderStatus::CANCELED->value,
                 function () {

@@ -21,7 +21,7 @@ class ProviderServiceListResource extends JsonResource
             'title'          => $this->{"title_" . $locale},
             'description'    => $this->pivot->{"description_" . $locale},
             'thumbnail'      => $this->thumbnail,
-            'type'           => getLocalizedEnumValue(OfferingType::SERVICE->value),
+            'type'           => getLocalizedEnumValue(OfferingType::SERVICE, $locale),
             'link'           => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
             'price'          => $this->pivot->price,
             'final_price'    => $this->when($this->pivot->final_price, $this->pivot->final_price),

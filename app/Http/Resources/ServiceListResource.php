@@ -23,7 +23,7 @@ class ServiceListResource extends JsonResource
             'title'       => $service->{"title_" . $locale},
             'description' => $this->{"description_" . $locale},
             'thumbnail'   => $service->thumbnail,
-            'type'        => getLocalizedEnumValue(OfferingType::SERVICE->value),
+            'type'        => getLocalizedEnumValue(OfferingType::SERVICE, $locale),
             'link'        => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
             'price'       => $this->price,
             'final_price' => $this->when($this->final_price, $this->final_price),

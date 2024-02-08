@@ -10,5 +10,15 @@ return [
     [
         'product' => 'product',
         'service' => 'service',
-    ]
+    ],
+
+    'order_status' =>
+    [
+        "pending" => 'Pending',
+        "accepted" => 'Accepted',
+        "paid" =>  'Not Delivered',
+        "delivered" => 'Delivered',
+        "completed" => 'Completed',
+        "canceled" => 'Refused',
+    ],
 ];
