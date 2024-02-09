@@ -31,10 +31,11 @@ class ReservationDestroyRequest extends BaseRequest
         return [
             function (Validator $validator) {
                 $instance = $this->reservation;
+                $locale = app()->getLocale();
                 if ($instance->status !== OrderStatus::PENDING->value) {
                     $validator->errors()->add(
                         'status',
-                        'You can\'t cancel this reservation, because it\'s ' . $instance->getStatusLabel($instance->status) . ' by provider!'
+                        __('message.cant_cancel_order') . $instance->getStatusLabel($instance->status, $locale) . ' by provider!'
                     );
                 }
             }

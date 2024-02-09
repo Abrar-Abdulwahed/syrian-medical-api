@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Item;
 
 use App\Enums\OfferingType;
-use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,14 +15,14 @@ class ServiceListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $service = Service::find($this->service_id);
-
+        $service = $this->service;
+        $locale = app()->getLocale();
         return [
             'id'          => $this->id,
-            'title'       => getLocalizedValue($service, 'title'),
-            'description' => getLocalizedValue($this, 'description'),
+            'title'       => $service->{"title_" . $locale},
+            'description' => $this->{"description_" . $locale},
             'thumbnail'   => $service->thumbnail,
-            'type'        => getLocalizedEnumValue(OfferingType::SERVICE->value),
+            'type'        => getLocalizedEnumValue(OfferingType::SERVICE, $locale),
             'link'        => url()->current() . '/' . OfferingType::SERVICE->value . '/' . $this->id,
             'price'       => $this->price,
             'final_price' => $this->when($this->final_price, $this->final_price),

@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class ServiceProviderCategorySeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -21,7 +21,7 @@ class ServiceProviderCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $item) {
-            DB::table('service_provider_categories')->insert([
+            DB::table('categories')->insert([
                 'name_en' => $item['name_en'],
                 'name_ar' => $item['name_ar'],
                 'created_at' => now(),

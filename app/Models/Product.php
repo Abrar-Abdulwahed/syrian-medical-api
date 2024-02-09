@@ -51,4 +51,15 @@ class Product extends Model
 
         return null;
     }
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        $query->where(function ($query) use ($searchTerm) {
+            $query
+                ->where('title_ar', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('title_en', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('description_ar', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('description_en', 'LIKE', "%{$searchTerm}%");
+        });
+    }
 }

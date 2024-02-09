@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             UserSeeder::class,
             DoctorSpecializationSeeder::class,
-            ServiceProviderCategorySeeder::class,
+            CategorySeeder::class,
             ServiceSeeder::class,
             ProductSeeder::class,
             ProviderServiceSeeder::class,

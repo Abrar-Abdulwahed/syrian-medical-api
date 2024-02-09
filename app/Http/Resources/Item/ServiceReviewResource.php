@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Item;
 
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
@@ -17,11 +17,12 @@ class ServiceReviewResource extends JsonResource
     public function toArray(Request $request): array
     {
         $service = $this->resource->service;
+        $locale = app()->getLocale();
         $attributes =  [
             'id'                => $this->id,
-            'type'              => getLocalizedEnumValue(OfferingType::SERVICE->value),
-            'title'             => getLocalizedValue($service, 'title'),
-            'description'       => getLocalizedValue($this, 'description'),
+            'type'              => getLocalizedEnumValue(OfferingType::SERVICE, $locale),
+            'title'             => $service->{"title_" . $locale},
+            'description'       => $this->{"description_" . $locale},
             'thumbnail'         => $service->thumbnail,
             'availabilities'    => AvailabilityResource::collection($this->whenLoaded('availabilities')),
             'discount'          => $this->discount,

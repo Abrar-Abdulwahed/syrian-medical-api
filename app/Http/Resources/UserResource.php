@@ -16,12 +16,13 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
         $attributes = [
             "username" => $this->fullName,
-            // "ip" => $this->ip,
+            "link"  => route('admin.show.user', $this->id),
             "email" =>  $this->email,
             "picture" => $this->picture,
-            "type" => $this->type,
+            "type" => $this->getTypeLabel($this->type, $locale),
             "activated"  =>  $this->activated,
             "joined_at" => $this->created_at->format('Y-m-d H:i:s'),
         ];
@@ -36,6 +37,9 @@ class UserResource extends JsonResource
 
         return array_merge($attributes, [
             'profile' =>  $profile,
+            'total_orders'      => $this->whenHas('total_orders_count'),
+            'completed_orders'  => $this->whenHas('completed_orders_count'),
+            'refused_orders'    => $this->whenHas('canceled_orders_count'),
         ]);
     }
 }

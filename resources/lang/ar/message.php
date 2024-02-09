@@ -27,6 +27,7 @@ return [
     'time_not_available' => 'هذا الوقت ليس متاحاً الآن!',
     'under_reservation'  => 'هذا :item محجوز في الوقت الحالي، لا تستطيع حذفه أو تعديله',
     'undefined_date' => 'هذا التاريخ لم يحدده مزود الخدمة لحجز الخدمة!',
+    'cant_cancel_order' => 'لا تستطيع إلغاء هذا الطلب لأنه ',
 
     // Global
     'data_retrieved' => 'تم استرداد بيانات :item بنجاح!',
@@ -64,4 +65,7 @@ return [
     'changes' => 'تغييرات أجريتها',
     'reservation' => 'الحجز',
     'user_changes' => 'تغييرات المستخدم',
+    'items' => 'العناصر',
+    'registration_requests' => 'طلبات التسجيل',
+    'registration_request' => 'طلب التسجيل هذا',
 ];

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Enums\UserType;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         $providerIds = User::where('type', UserType::SERVICE_PROVIDER)->pluck('id')->toArray();
-
+        $categoriesId = Category::pluck('id')->toArray();
         return [
             'provider_id' => fake()->randomElement($providerIds),
             'title_en' => fake()->word . '_en',

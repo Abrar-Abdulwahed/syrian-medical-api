@@ -71,6 +71,16 @@ class User extends Authenticatable implements MustVerifyEmail
         );
     }
 
+    function getTypeLabel($type, $locale)
+    {
+        // match expression => PHP 8.x
+        $type_label = match ($type) {
+            UserType::PATIENT->value   => getLocalizedEnumValue(UserType::PATIENT, $locale),
+            UserType::SERVICE_PROVIDER->value  => getLocalizedEnumValue(UserType::SERVICE_PROVIDER, $locale),
+        };
+        return $type_label;
+    }
+
     // Relations
     public function serviceProviderProfile()
     {
@@ -135,8 +145,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type === UserType::SERVICE_PROVIDER->value;
     }
 
-    // Events
-    // protected $dispatchesEvents = [
-    //     'created' => RegisterEvent::class,
-    // ];
+    public function scopeSearch($query, $searchTerm)
+    {
+        $query->where(function ($query) use ($searchTerm) {
+            $query
+                ->where('firstname', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('lastname', 'LIKE', "%{$searchTerm}%");
+        });
+    }
 }

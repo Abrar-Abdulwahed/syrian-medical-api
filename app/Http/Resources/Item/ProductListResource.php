@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Item;
 
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
@@ -15,12 +15,13 @@ class ProductListResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
         return [
             'id'          => $this->id,
-            'title'       => getLocalizedValue($this, 'title'),
-            'description' => getLocalizedValue($this, 'description'),
+            'title'       => $this->{"title_" . $locale},
+            'description' => $this->{"description_" . $locale},
             'thumbnail'   => $this->thumbnail,
-            'type'        => getLocalizedEnumValue(OfferingType::PRODUCT->value),
+            'type'        => getLocalizedEnumValue(OfferingType::PRODUCT, $locale),
             'link'        => url()->current() . '/' . OfferingType::PRODUCT->value . '/' . $this->id,
             'discount'    => $this->discount,
             'price'       => $this->price,

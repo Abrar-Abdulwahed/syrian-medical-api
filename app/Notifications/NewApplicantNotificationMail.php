@@ -15,7 +15,9 @@ class NewApplicantNotificationMail extends Notification
      * Create a new notification instance.
      */
 
-    public function __construct(public $id){}
+    public function __construct(public $id)
+    {
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -33,9 +35,9 @@ class NewApplicantNotificationMail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('New Applicant')
-                    ->line('A new applicant arrived to your site, review it by click the button below:')
-                    ->action('Review the applicant', route('admin.show.user', $this->id));
+            ->subject('New Applicant')
+            ->line('A new applicant arrived to your site, review it by click the button below:')
+            ->action('Review the applicant', route('admin.show.applicant', $this->id));
     }
 
     /**

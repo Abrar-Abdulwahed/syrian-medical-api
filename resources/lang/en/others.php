@@ -10,5 +10,21 @@ return [
     [
         'product' => 'product',
         'service' => 'service',
+    ],
+
+    'order_status' =>
+    [
+        "pending" => 'Pending',
+        "accepted" => 'Accepted',
+        "paid" =>  'Not Delivered',
+        "delivered" => 'Delivered',
+        "completed" => 'Completed',
+        "canceled" => 'Refused',
+    ],
+
+    'user_type' =>
+    [
+        'patient' => 'Patient',
+        'service-provider' => 'Service Provider',
     ]
 ];

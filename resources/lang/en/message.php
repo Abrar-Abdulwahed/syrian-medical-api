@@ -27,6 +27,7 @@ return [
     'time_not_available' => 'This time is not available right now!',
     'under_reservation'  => 'This :item is under reservation, you cant delete or update it!',
     'undefined_date' => 'This date is not determined by the service provider for this service!',
+    'cant_cancel_order' => 'You can\'t cancel this reservation, because it\'s ',
 
     //Global
     'data_retrieved' => ':item data retrieved successfully!',
@@ -64,4 +65,7 @@ return [
     'changes' => 'changes were made!',
     'reservation' => 'reservation',
     'user_changes' => 'User\'s changes!',
+    'items' => 'Items',
+    'registration_requests' => 'Registration Requests',
+    'registration_request' => 'This registration Request',
 ];

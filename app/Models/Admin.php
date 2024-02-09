@@ -49,4 +49,11 @@ class Admin extends Authenticatable implements Authorizable
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    public function scopeSearch($query, $searchTerm)
+    {
+        $query->where(function ($query) use ($searchTerm) {
+            $query->where('username', 'LIKE', "%{$searchTerm}%");
+        });
+    }
 }

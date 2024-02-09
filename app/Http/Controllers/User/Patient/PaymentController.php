@@ -4,19 +4,14 @@ namespace App\Http\Controllers\User\Patient;
 
 use App\Models\Admin;
 use App\Enums\OrderStatus;
+use App\Http\Controllers\User\BaseUserController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Notifications\PatientPayNotification;
 use Stripe\{Stripe, Charge, StripeClient, Token};
 use App\Notifications\PaymentNotForPendingOrdersNotification;
 
-class PaymentController extends Controller
+class PaymentController extends BaseUserController
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
-    }
-
     public function __invoke(Request $request)
     {
         $user = $request->user();

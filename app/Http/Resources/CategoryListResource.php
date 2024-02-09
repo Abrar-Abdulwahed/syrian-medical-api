@@ -3,10 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PermissionResource extends JsonResource
+class CategoryListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +16,8 @@ class PermissionResource extends JsonResource
     {
         $locale = app()->getLocale();
         return [
-            'id'            => $this->id,
-            'description'   => $this->resource->{"description_" . $locale},
-            'hasPermission' => $this->hasPermission,
+            'id' => $this->id,
+            'name' => $this->{"name_" . $locale}
         ];
     }
 }

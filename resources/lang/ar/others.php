@@ -10,5 +10,21 @@ return [
     [
         'product' => 'منتج',
         'service' => 'خدمة',
+    ],
+
+    'order_status' =>
+    [
+        "pending" => 'معلقة',
+        "accepted" => 'موافق عليها',
+        "paid" =>  'غير مستلمة',
+        "delivered" => 'مستلمة',
+        "completed" => 'مكتملة',
+        "canceled" => 'ملغية',
+    ],
+
+    'user_type' =>
+    [
+        'patient' => 'مريض',
+        'service-provider' => 'مقدم خدمة',
     ]
 ];

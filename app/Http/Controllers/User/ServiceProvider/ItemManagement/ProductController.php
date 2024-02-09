@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\User\ServiceProvider\ItemManagement;
 
 use App\Models\Product;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 use App\Services\Items\ProductService;
 use App\Http\Requests\ServiceProvider\ProductStoreRequest;
 use App\Http\Requests\ServiceProvider\ProductUpdateRequest;
 
-class ProductController extends Controller
+class ProductController extends BaseUserController
 {
     public function __construct(protected ProductService $productService)
     {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
+        parent::__construct();
         $this->authorizeResource(Product::class, 'product');
     }
 

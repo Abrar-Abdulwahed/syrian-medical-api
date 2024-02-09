@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,17 +25,23 @@ class Reservation extends Model
         'payment_method'  => 'json',
     ];
 
-    function getStatusLabel($status)
-    {
-        $labels = [
-            OrderStatus::PENDING->value   => 'pending',
-            OrderStatus::ACCEPTED->value  => 'accepted',
-            OrderStatus::PAID->value      => 'not delivered',
-            OrderStatus::DELIVERED->value => 'delivered',
-            OrderStatus::CANCELED->value  => 'refused',
-        ];
+    const COMPLETED_STATUSES = [
+        OrderStatus::ACCEPTED,
+        OrderStatus::PAID,
+        OrderStatus::DELIVERED
+    ];
 
-        return $labels[$status] ?? '';
+    function getStatusLabel($status, $locale)
+    {
+        // match expression => PHP 8.x
+        $status_label = match ($status) {
+            OrderStatus::PENDING->value   => getLocalizedEnumValue(OrderStatus::PENDING, $locale),
+            OrderStatus::ACCEPTED->value  => getLocalizedEnumValue(OrderStatus::ACCEPTED, $locale),
+            OrderStatus::PAID->value      => getLocalizedEnumValue(OrderStatus::PAID, $locale),
+            OrderStatus::DELIVERED->value => getLocalizedEnumValue(OrderStatus::DELIVERED, $locale),
+            OrderStatus::CANCELED->value  => getLocalizedEnumValue(OrderStatus::CANCELED, $locale),
+        };
+        return $status_label;
     }
 
     public function reservationable(): MorphTo
@@ -55,5 +62,14 @@ class Reservation extends Model
     public function rejectionReason(): HasOne
     {
         return $this->hasOne(RejectionReason::class);
+    }
+
+    // search by mm/dd/yyyy
+    public function scopeSearch($query, $searchTerm)
+    {
+        $searchDateFormatted = Carbon::createFromFormat('m/d/Y', $searchTerm)->format('Y-m-d');
+        $query->where(function ($query) use ($searchDateFormatted) {
+            $query->whereDate('updated_at', $searchDateFormatted);
+        });
     }
 }

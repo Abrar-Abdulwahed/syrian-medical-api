@@ -4,17 +4,12 @@ namespace App\Http\Controllers\User;
 
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\User\BaseUserController;
 use App\Http\Resources\PaymentMethodResource;
 use App\Http\Requests\Profile\PaymentMethodStoreRequest;
 
-class PaymentMethodController extends Controller
+class PaymentMethodController extends BaseUserController
 {
-    public function __construct()
-    {
-        $this->middleware(['auth:sanctum', 'verified', 'activated']);
-    }
-
     public function index(Request $request)
     {
         $paymentMethods = $request->user()->profile()->first()->payment_methods;
