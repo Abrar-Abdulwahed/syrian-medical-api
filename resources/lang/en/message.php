@@ -66,4 +66,6 @@ return [
     'reservation' => 'reservation',
     'user_changes' => 'User\'s changes!',
     'items' => 'Items',
+    'registration_requests' => 'Registration Requests',
+    'registration_request' => 'This registration Request',
 ];

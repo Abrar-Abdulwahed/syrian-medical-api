@@ -66,4 +66,6 @@ return [
     'reservation' => 'الحجز',
     'user_changes' => 'تغييرات المستخدم',
     'items' => 'العناصر',
+    'registration_requests' => 'طلبات التسجيل',
+    'registration_request' => 'طلب التسجيل هذا',
 ];

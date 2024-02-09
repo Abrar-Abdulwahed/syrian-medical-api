@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\UserManagement\{
 Route::prefix('admin/users')->group(function () {
     Route::controller(ApplicantController::class)->prefix('applicants')->group(function () {
         Route::get('/', 'index');
+        Route::get('/{user}', 'show')->name('admin.show.applicant');
         Route::put('{id}/accept', 'accept');
         Route::delete('{id}/refuse', 'refuse');
     });
@@ -37,7 +38,7 @@ Route::prefix('admin/users')->group(function () {
     });
 
     Route::controller(UserController::class)->group(function () {
-        Route::get('/', 'index'); // all users, + fetch by type(patient, service-provider)
+        Route::get('/', 'index');
         Route::get('{id}', 'show')->name('admin.show.user');
         Route::put('{id}/activation', 'activation');
     });

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\SupervisorManagement;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use App\Actions\GetUsersDataAction;
+use App\Actions\SearchAction;
 use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Resources\AdminResource;
 use App\Http\Requests\Admin\SupervisorStoreRequest;
@@ -12,7 +12,7 @@ use App\Http\Requests\Admin\SupervisorUpdateRequest;
 
 class SupervisorController extends BaseAdminController
 {
-    public function __construct(protected GetUsersDataAction $getUsersAction)
+    public function __construct(protected SearchAction $searchAction)
     {
         parent::__construct();
         $this->middleware('permission:add_supervisor')->only('store');
@@ -20,10 +20,10 @@ class SupervisorController extends BaseAdminController
 
     public function index(Request $request)
     {
-        $pageSize = $request->per_page ?? 10;
-        $supervisors = Admin::supervisors()->paginate($pageSize);
-        [$meta, $links] = $this->paginateResponse($supervisors);
-        return $this->returnAllDataJSON(AdminResource::collection($supervisors), $meta, $links, __('message.data_retrieved', ['item' => __('message.supervisors')]));
+        $query = Admin::supervisors();
+        // filter by search
+        $query = $this->searchAction->searchAction($query, $request->query('search'));
+        return $this->returnJSON(AdminResource::collection($query->get()), __('message.data_retrieved', ['item' => __('message.supervisors')]));
     }
 
     public function store(SupervisorStoreRequest $request)

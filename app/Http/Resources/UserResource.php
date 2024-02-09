@@ -19,7 +19,7 @@ class UserResource extends JsonResource
         $locale = app()->getLocale();
         $attributes = [
             "username" => $this->fullName,
-            // "ip" => $this->ip,
+            "link"  => route('admin.show.user', $this->id),
             "email" =>  $this->email,
             "picture" => $this->picture,
             "type" => $this->getTypeLabel($this->type, $locale),
@@ -36,7 +36,10 @@ class UserResource extends JsonResource
         }
 
         return array_merge($attributes, [
-            'profile' =>  $this->whenLoaded('profile'),
+            'profile' =>  $profile,
+            'total_orders'      => $this->whenHas('total_orders_count'),
+            'completed_orders'  => $this->whenHas('completed_orders_count'),
+            'refused_orders'    => $this->whenHas('canceled_orders_count'),
         ]);
     }
 }

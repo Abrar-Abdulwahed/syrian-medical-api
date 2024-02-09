@@ -23,8 +23,6 @@ class AdminResource extends JsonResource
             "joined_at"  => $this->created_at->format('Y-m-d H:i:s'),
         ];
 
-        return array_merge($attributes, [
-            'permissions' =>  null,
-        ]);
+        return $attributes;
     }
 }

@@ -27,8 +27,8 @@ class HomeController extends BaseAdminController
 
         // Query to get the savings for each day among the month
         $savingsData = Reservation::whereIn('status', [OrderStatus::PAID, OrderStatus::DELIVERED])
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->get(['created_at', 'price', 'reservationable_type']);
+            ->whereBetween('updated_at', [$startDate, $endDate])
+            ->get(['updated_at', 'price', 'reservationable_type']);
 
         $groupedData = [];
 
@@ -40,7 +40,7 @@ class HomeController extends BaseAdminController
         $groupedData = array_fill_keys($daysOfWeek, array_fill_keys($types, 0));
 
         foreach ($savingsData as $item) {
-            $day = $item->created_at->format('D');
+            $day = $item->updated_at->format('D');
             $type = $item->reservationable_type === 'ServiceReservation' ? OfferingType::SERVICE->value : OfferingType::PRODUCT->value;
             $totalSavings += $item->price;
             $groupedData[$day][$type] += $item->price;

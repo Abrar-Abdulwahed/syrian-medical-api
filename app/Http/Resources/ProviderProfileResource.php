@@ -17,8 +17,8 @@ class ProviderProfileResource extends JsonResource
         $attributes =  $this->resource->getAttributes();
 
         return array_merge($attributes, [
-            'services_count' => $this->user->services()->count(),
-            'products_count' => $this->user->products()->count(),
+            'services_count' => $this->user?->services()->count(),
+            'products_count' => $this->user?->products()->count(),
         ]);
     }
 }

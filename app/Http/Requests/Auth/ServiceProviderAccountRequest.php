@@ -25,7 +25,6 @@ class ServiceProviderAccountRequest extends BaseRequest
         return [
             'firstname'     => 'required|string|between:2,12',
             'lastname'      => 'required|string|between:2,12',
-            'username'      => 'required|string|between:2,24',
             'email'         => 'required|email:rfc,dns|max:100|unique:users,email,' . $userId,
             'password'      => ['sometimes', 'required', $this->passwordRules(), 'max:25', 'confirmed'],
             'bank_name'     => 'required|string|max:100',

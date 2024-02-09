@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Item;
 
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
-use App\Http\Resources\AvailabilityResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServiceReviewResource extends JsonResource
+class ProductReviewResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,15 +15,13 @@ class ServiceReviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $service = $this->resource->service;
         $locale = app()->getLocale();
-        $attributes =  [
+        $attributes = [
             'id'                => $this->id,
-            'type'              => getLocalizedEnumValue(OfferingType::SERVICE, $locale),
-            'title'             => $service->{"title_" . $locale},
+            'title'             => $this->{"title_" . $locale},
             'description'       => $this->{"description_" . $locale},
-            'thumbnail'         => $service->thumbnail,
-            'availabilities'    => AvailabilityResource::collection($this->whenLoaded('availabilities')),
+            'thumbnail'         => $this->thumbnail,
+            'type'              => getLocalizedEnumValue(OfferingType::PRODUCT, $locale),
             'discount'          => $this->discount,
             'price'             => $this->price,
             'final_price'       => $this->when($this->final_price, $this->final_price),

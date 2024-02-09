@@ -2,13 +2,13 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Product;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Request;
-use App\Models\ProviderService;
 use App\Models\ProductReservation;
 use App\Models\ServiceReservation;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Item\ProductReviewResource;
+use App\Http\Resources\Item\ServiceReviewResource;
 
 class ReservationResource extends JsonResource
 {

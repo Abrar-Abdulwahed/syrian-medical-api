@@ -2,19 +2,25 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\SearchAction;
 use App\Models\Product;
 use App\Enums\OrderStatus;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Models\ProviderService;
 use App\Http\Resources\SalesListResource;
 use App\Http\Controllers\Admin\BaseAdminController;
 
 class SalesController extends BaseAdminController
 {
+    public function __construct(protected SearchAction $searchAction)
+    {
+        parent::__construct();
+    }
+
     public function __invoke(Request $request)
     {
         $query = Reservation::whereIn('status', [OrderStatus::PAID->value, OrderStatus::DELIVERED]);
+
         // Filter by month if the "month" parameter is provided
         if ($request->has('month')) {
             $month = $request->month;
@@ -32,11 +38,16 @@ class SalesController extends BaseAdminController
             $query->where('provider_id', $request->provider_id);
         }
 
+        // Filter by search if the "search" parameter is provided
+        if ($request->has('search')) {
+            $query = $this->searchAction->searchAction($query, $request->query('search'));
+        }
+
         $sales = $query->get();
         $totalPrice = $query->sum('price');
         return $this->returnJSON([
             'sales' => SalesListResource::collection($sales),
-            'total_price' => $totalPrice,
+            'subtotal_price' => $totalPrice,
         ], __('message.data_retrieved', ['item' => __('message.sales')]));
     }
 }

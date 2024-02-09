@@ -5,25 +5,38 @@ namespace App\Services\Items;
 use App\Models\Admin;
 use App\Models\Product;
 use App\Enums\OrderStatus;
-use App\Enums\OfferingType;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
+use App\Actions\SearchAction;
 use App\Models\ProviderService;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Resources\ProductListResource;
-use App\Http\Resources\ServiceListResource;
-use App\Http\Resources\ProductReviewResource;
-use App\Http\Resources\ServiceReviewResource;
+use App\Http\Resources\Item\ProductReviewResource;
+use App\Http\Resources\Item\ServiceReviewResource;
 
 class ReviewService
 {
     use ApiResponseTrait;
-    public function getAllItems()
+    public function __construct(protected SearchAction $searchAction)
     {
-        $products = Product::with('provider')->get();
-        $services = ProviderService::get();
-        $result =   ProductListResource::collection($products)->merge(ServiceListResource::collection($services));
-        return $this->returnJSON($result, __('message.data_retrieved', ['item' => __('message.products_services')]));
+    }
+    public function filterItems($model, $query, $request)
+    {
+        if ($model === ProviderService::class) {
+            $query->with('service');
+
+            // filter category
+            $category = $request->query('category');
+            $query->when($category, function ($query) use ($category) {
+                $query->where(function ($query) use ($category) {
+                    $query->category($category);
+                });
+            });
+        }
+
+        // filter by search
+        $query = $this->searchAction->searchAction($query, $request->query('search'));
+        return $query->get();
     }
 
     public function getItemByType(Request $request)
@@ -36,10 +49,14 @@ class ReviewService
             $item->loadCount([
                 'reservations as total_orders_count',
                 'reservations as completed_orders_count' => function (Builder $query) {
-                    $query->whereRelation('morphReservation', 'status', OrderStatus::ACCEPTED->value);
+                    $query->whereHas('morphReservation', function ($query) {
+                        $query->whereIn('status', Reservation::COMPLETED_STATUSES);
+                    });
                 },
                 'reservations as canceled_orders_count' => function (Builder $query) {
-                    $query->whereRelation('morphReservation', 'status', OrderStatus::CANCELED->value);
+                    $query->whereHas('morphReservation', function ($query) {
+                        $query->where('status', OrderStatus::CANCELED->value);
+                    });
                 },
             ]);
         }
@@ -48,17 +65,6 @@ class ReviewService
             return $this->returnJSON(new ServiceReviewResource($item), __('message.data_retrieved', ['item' => __('message.service')]));
         } else if ($item instanceof Product) {
             return $this->returnJSON(new ProductReviewResource($item), __('message.data_retrieved', ['item' => __('message.product')]));
-        }
-    }
-
-    public function getItemsByType(string $type)
-    {
-        if ($type === OfferingType::SERVICE->value) {
-            $services = ProviderService::get();
-            return $this->returnJSON(ServiceListResource::collection($services), __('message.data_retrieved', ['item' => __('message.services')]));
-        } else if ($type === OfferingType::PRODUCT->value) {
-            $products = Product::with('provider')->get();
-            return $this->returnJSON(ProductListResource::collection($products), __('message.data_retrieved', ['item' => __('message.products')]));
         }
     }
 }

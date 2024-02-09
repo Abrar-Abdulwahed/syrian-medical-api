@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,6 +23,12 @@ class Reservation extends Model
     protected $casts = [
         'location'        => 'json',
         'payment_method'  => 'json',
+    ];
+
+    const COMPLETED_STATUSES = [
+        OrderStatus::ACCEPTED,
+        OrderStatus::PAID,
+        OrderStatus::DELIVERED
     ];
 
     function getStatusLabel($status, $locale)
@@ -55,5 +62,14 @@ class Reservation extends Model
     public function rejectionReason(): HasOne
     {
         return $this->hasOne(RejectionReason::class);
+    }
+
+    // search by mm/dd/yyyy
+    public function scopeSearch($query, $searchTerm)
+    {
+        $searchDateFormatted = Carbon::createFromFormat('m/d/Y', $searchTerm)->format('Y-m-d');
+        $query->where(function ($query) use ($searchDateFormatted) {
+            $query->whereDate('updated_at', $searchDateFormatted);
+        });
     }
 }
