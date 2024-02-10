@@ -21,9 +21,9 @@ use App\Http\Controllers\Auth\{
 */
 
 Route::controller(RegisterController::class)->prefix('register')->group(function () {
-        Route::post('email/verify', 'EmailVerify')->name('verification.verify');
-        Route::post('patient', 'storePatient');
-        Route::post('service-provider', 'storeServiceProvider');
+    Route::post('email/verify', 'EmailVerify')->name('verification.verify');
+    Route::post('patient', 'storePatient');
+    Route::post('service-provider', 'storeServiceProvider');
 });
 Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'login');
@@ -36,4 +36,3 @@ Route::controller(ForgotPasswordController::class)->group(function () {
     Route::post('reset-password', 'resetPassword');
 });
 Route::post('change-password', [ChangePasswordController::class, 'changePassword']);
-

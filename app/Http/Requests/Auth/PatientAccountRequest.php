@@ -25,7 +25,6 @@ class PatientAccountRequest extends BaseRequest
         return [
             'firstname'     => 'required|string|between:2,12',
             'lastname'      => 'required|string|between:2,12',
-            'username'      => 'required|string|between:2,24',
             'email'         => 'required|email:rfc|max:100|unique:users,email,' . $userId,
             'password'      => ['required', $this->passwordRules(), 'max:25', 'confirmed'],
         ];
