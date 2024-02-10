@@ -33,6 +33,7 @@ Route::prefix('admin')->group(function () {
 
     Route::controller(ProfileUpdateRequests::class)->prefix('users/profile-update-requests')->group(function () {
         Route::get('/', 'index');
+        Route::get('/{pending}', 'show')->name('admin.show.pending.update.request');
         Route::put('{pending}/accept', 'accept');
         Route::delete('{pending}/refuse', 'refuse');
     });

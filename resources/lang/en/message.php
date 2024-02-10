@@ -22,6 +22,7 @@ return [
     'picture_saved' => 'Your picture updated successfully',
     'completed_edits' => 'You\'ve completed your edits.',
     'wait_for_admin_updates_review' => 'Wait for the administrator to approve your edits',
+    'user_not_activated' => 'This user account is not activated',
 
     //Reservation
     'time_not_available' => 'This time is not available right now!',

@@ -22,6 +22,7 @@ return [
     'picture_saved' => 'تم تعديل صورتك الشخصية بنجاح',
     'completed_edits' => 'لقد أكملت التعديلات على ملفك الشخصي',
     'wait_for_admin_updates_review' => 'انتظر موافقة المشرف على التعديلات التي أجريتها.',
+    'user_not_activated' => 'حساب هذا المستخدم غير مفعل',
 
     //Reservation
     'time_not_available' => 'هذا الوقت ليس متاحاً الآن!',
