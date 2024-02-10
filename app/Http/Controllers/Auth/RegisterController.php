@@ -27,6 +27,7 @@ class RegisterController extends Controller
     {
         try {
             $user = $this->userService->createUser($request->validated(), UserType::PATIENT->value, $request->ip(), true);
+            $this->userService->createProfile($user, []);
             event(new Registered($user));
             return $this->returnSuccess(__('message.successfully_saved_review'));
         } catch (\Exception $e) {
@@ -42,7 +43,7 @@ class RegisterController extends Controller
             if ($request->hasFile('evidence'))
                 $fileName = $this->uploadFile($request->file('evidence'), $user->attachment_path);
 
-            $this->userService->createProfile($user, $request->only('bank_name', 'iban_number', 'swift_code'), $fileName);
+            $this->userService->createProfile($user, array_merge($request->only('bank_name', 'iban_number', 'swift_code'), ['evidence' => $fileName]));
             event(new Registered($user));
             Admin::findOrFail(1)->notify(new NewApplicantNotificationMail($user->id));
             DB::commit();
@@ -56,12 +57,13 @@ class RegisterController extends Controller
     public function EmailVerify(VerificationRequest $request)
     {
         try {
-            $user = User::where('ip', $request->ip())->first();
-
+            // $user = User::where('ip', $request->ip())->first();
+            $user = User::find(58);
             if (!$user)
                 return $this->returnWrong(__('message.user_not_found'), 404);
 
             $toVerify = DB::table('email_verify_codes')->where('email', $user->email)->first();
+
             if (!$toVerify)
                 return $this->returnWrong(__('message.went_wrong'), 422);
 

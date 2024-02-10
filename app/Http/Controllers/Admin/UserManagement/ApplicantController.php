@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Actions\SearchAction;
 use App\Http\Resources\Applicant\ApplicantListResource;
 use App\Http\Requests\Admin\UserActivationRequest;
-use App\Notifications\AdminReviewNotificationMail;
+use App\Notifications\AdminReviewNotification;
 use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Resources\Applicant\ApplicantReviewResource;
 
@@ -35,7 +35,7 @@ class ApplicantController extends BaseAdminController
             $user->forceFill(['activated' => 1])->save();
 
             // Notify service provider
-            $user->notify(new AdminReviewNotificationMail(true));
+            $user->notify(new AdminReviewNotification(true));
             return $this->returnSuccess(__('message.activated', ['item' => __('message.registration_request')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
@@ -49,8 +49,8 @@ class ApplicantController extends BaseAdminController
             $user->delete();
             $this->removeDirectory($user->attachment_path);
             // Notify service provider
-            $user->notify(new AdminReviewNotificationMail(false));
-            return $this->returnSuccess(__('message.data_deleted'), ['item' => __('message.registration_request')]);
+            $user->notify(new AdminReviewNotification(false));
+            return $this->returnSuccess(__('message.data_deleted', ['item' => __('message.registration_request')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }

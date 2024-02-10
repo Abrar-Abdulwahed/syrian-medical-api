@@ -23,7 +23,7 @@ use App\Http\Controllers\Admin\UserManagement\{
 */
 
 /*********** USERS [PATIENT | SERVICE PROVIDER] ***********/
-Route::prefix('admin/users')->group(function () {
+Route::prefix('admin')->group(function () {
     Route::controller(ApplicantController::class)->prefix('applicants')->group(function () {
         Route::get('/', 'index');
         Route::get('/{user}', 'show')->name('admin.show.applicant');
@@ -31,13 +31,13 @@ Route::prefix('admin/users')->group(function () {
         Route::delete('{id}/refuse', 'refuse');
     });
 
-    Route::controller(ProfileUpdateRequests::class)->prefix('profile-update-requests')->group(function () {
+    Route::controller(ProfileUpdateRequests::class)->prefix('users/profile-update-requests')->group(function () {
         Route::get('/', 'index');
         Route::put('{pending}/accept', 'accept');
         Route::delete('{pending}/refuse', 'refuse');
     });
 
-    Route::controller(UserController::class)->group(function () {
+    Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::get('/', 'index');
         Route::get('{id}', 'show')->name('admin.show.user');
         Route::put('{id}/activation', 'activation');

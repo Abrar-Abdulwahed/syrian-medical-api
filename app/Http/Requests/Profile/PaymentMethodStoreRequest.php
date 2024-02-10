@@ -27,7 +27,7 @@ class PaymentMethodStoreRequest extends FormRequest
 
         if ($this->has('card_type')) {
             foreach ($this->card_type as $index => $cardType) {
-                $rules["card_type.$index"] = 'required|string|exists:payment_methods,name';
+                $rules["card_type.$index"] = 'required|string|exists:payment_methods,name_en';
                 $rules["cardholder_name.$index"] = "required_if:card_type.$index,$cardType|string";
                 $rules["card_number.$index"] = "required_if:card_type.$index,$cardType|string";
                 $rules["expiration_month.$index"] = "required_if:card_type.$index,$cardType|numeric";
