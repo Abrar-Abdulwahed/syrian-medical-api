@@ -41,7 +41,7 @@ Route::prefix('admin')->group(function () {
     Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::get('/', 'index');
         Route::get('{id}', 'show')->name('admin.show.user');
-        Route::put('{id}/activation', 'activation');
+        Route::patch('{id}/activation', 'activation');
     });
 });
 

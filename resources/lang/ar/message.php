@@ -50,7 +50,7 @@ return [
     'user' => 'المستخدم',
     'users' => 'المستخدمين',
     'patient' => 'مريض',
-    'provider' => 'مزود خدمة',
+    'provider' => 'مزود الخدمة',
     'payment_method' => 'طريقة الدفع',
     'payment_methods' => 'طرق الدفع',
     'product' => 'المنتج',
