@@ -36,14 +36,16 @@ class PaymentController extends BaseUserController
                 Stripe::setApiKey(env('STRIPE_SECRET'));
                 $stripe = new StripeClient(env('STRIPE_SECRET'));
                 try {
-                    // $token = Token::create([
-                    //     'card' => [
-                    //         'number'    => $cardNumber,
-                    //         'exp_month' => $expMonth,
-                    //         'exp_year'  => $expYear,
-                    //         'cvc'       => $cvv,
-                    //     ],
-                    // ]);
+                    if (app()->environment() === 'production')
+                        $token = Token::create([
+                            'card' => [
+                                'number'    => $cardNumber,
+                                'exp_month' => $expMonth,
+                                'exp_year'  => $expYear,
+                                'cvc'       => $cvv,
+                            ],
+                        ]);
+
                     //! 'source' => 'tok_visa' : is for test token recommended by new stripe version
                     $response = $stripe->charges->create([
                         'amount' => round($order->price),
@@ -51,7 +53,6 @@ class PaymentController extends BaseUserController
                         'source' => 'tok_visa', // $token->id
                         'description' => 'Test Payment',
                     ]);
-
                     $order->forceFill(['status' => OrderStatus::PAID->value])->save();
                     // Notify provider
                     $order->provider->notify(new PatientPayNotification($order));
