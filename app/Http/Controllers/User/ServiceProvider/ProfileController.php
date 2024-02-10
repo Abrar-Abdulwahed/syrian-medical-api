@@ -12,20 +12,18 @@ class ProfileController extends BaseProfileController
     {
         try {
             $user = $request->user();
-            $names = explode(' ', $request->username);
-            $firstName = $names[0] ?? $user->firstname;
-            $lastName = $names[1] ?? $user->lastname;
+            $names = array_pad(explode(' ', $request->username), 2, null);
+            [$firstName, $lastName] = $names;
+
             $user->fill([
-                'firstname' => $firstName,
-                'lastname' => $lastName,
+                'firstname' => $firstName ?? $user->firstname,
+                'lastname' => $lastName ?? $user->lastname,
                 'email' => $request->email,
             ]);
 
-            $user->serviceProviderProfile->fill([
-                'bank_name' => $request->bank_name,
-                'iban_number' => $request->iban_number,
-                'swift_code' => $request->swift_code,
-            ]);
+
+            $user->serviceProviderProfile->fill($request->safe()->only(['bank_name', 'iban_number', 'swift_code']));
+
 
             if ($user->isClean() && $user->serviceProviderProfile->isClean()) {
                 return $this->returnSuccess(__('message.no_found', ['item' => __('message.changes')]));

@@ -65,7 +65,7 @@ return [
     'permissions' => 'الصلاحيات',
     'permission' => 'الصلاحية',
     'sales' => 'المبيعات',
-    'pending_requests' => 'طلبات تعديل معلقة',
+    'pending_requests' => 'طلبات التعديل المعلقة',
     'changes' => 'تغييرات أجريتها',
     'reservation' => 'الحجز',
     'user_changes' => 'تغييرات المستخدم',
