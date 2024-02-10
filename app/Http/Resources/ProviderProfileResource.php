@@ -14,11 +14,15 @@ class ProviderProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $attributes =  $this->resource->getAttributes();
-
-        return array_merge($attributes, [
-            'services_count' => $this->user?->services()->count(),
-            'products_count' => $this->user?->products()->count(),
-        ]);
+        return  [
+            'bank_name' => $this->bank_name,
+            'iban_number' => $this->iban_number,
+            'swift_code' =>  $this->swift_code,
+            'evidence' => $this->evidence,
+            'location' => [
+                "latitude" => $this->latitude,
+                "longitude" => $this->longitude,
+            ],
+        ];
     }
 }

@@ -14,6 +14,7 @@ class ServiceController extends BaseUserController
     public function __construct(protected ServiceService $serviceService)
     {
         parent::__construct();
+        $this->authorizeResource(ProviderService::class, 'service');
     }
 
     public function store(ServiceStoreRequest $request)
@@ -23,13 +24,11 @@ class ServiceController extends BaseUserController
 
     public function update(ServiceUpdateRequest $request, ProviderService $providerService)
     {
-        $this->authorize('update', $providerService);
         return $this->serviceService->update($request->validated(), $providerService);
     }
 
     public function destroy(Request $request, ProviderService $providerService)
     {
-        $this->authorize('delete', $providerService);
         return $this->serviceService->destroy($request->user(), $providerService);
     }
 }

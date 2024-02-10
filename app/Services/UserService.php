@@ -13,8 +13,8 @@ class UserService
         return $user;
     }
 
-    public function createProfile(User $user, array $profileData, string $fileName): void
+    public function createProfile(User $user, array $profileData): void
     {
-        $user->serviceProviderProfile()->create(array_merge($profileData, ['evidence' => $fileName]));
+        $user->profile()->create($profileData);
     }
 }

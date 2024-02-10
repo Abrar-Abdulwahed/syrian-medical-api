@@ -57,7 +57,7 @@ class UserController extends BaseAdminController
         try {
             $user = User::findOrFail($id);
             $user->forceFill(['activated' => $request->activated])->save();
-            $msg = $request->activated ? 'Service Provider has been activated!' : 'Service Provider has been deactivated!';
+            $msg = $request->activated ? __('message.activated', ['item' => __('message.provider')]) : __('message.deactivated', ['item' => __('message.provider')]);
             return $this->returnSuccess($msg);
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());

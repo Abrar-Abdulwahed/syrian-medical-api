@@ -145,6 +145,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type === UserType::SERVICE_PROVIDER->value;
     }
 
+    public function isActivated()
+    {
+        return $this->activated === true;
+    }
+
     public function scopeSearch($query, $searchTerm)
     {
         $query->where(function ($query) use ($searchTerm) {

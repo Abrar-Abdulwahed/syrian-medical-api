@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Resources\PatientProfileResource;
 use App\Http\Resources\ProviderProfileResource;
@@ -19,7 +20,7 @@ class UserResource extends JsonResource
         $locale = app()->getLocale();
         $attributes = [
             "username" => $this->fullName,
-            "link"  => route('admin.show.user', $this->id),
+            "link"  => $this->when($request->user() instanceof Admin, route('admin.show.user', $this->id)),
             "email" =>  $this->email,
             "picture" => $this->picture,
             "type" => $this->getTypeLabel($this->type, $locale),

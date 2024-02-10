@@ -3,10 +3,9 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\UserResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PatientProfileResource extends JsonResource
+class PendingUpdateProfileRequestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +15,9 @@ class PatientProfileResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'location' => [
-                "latitude" => $this->latitude,
-                "longitude" => $this->longitude,
-            ],
+            'link' =>  route('admin.show.pending.update.request', $this->id),
+            'user_profile' => route('admin.show.user', [$this->user_id]),
+            'changes' => json_decode($this->changes, true),
         ];
     }
 }

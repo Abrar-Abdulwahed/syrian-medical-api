@@ -22,6 +22,7 @@ return [
     'picture_saved' => 'تم تعديل صورتك الشخصية بنجاح',
     'completed_edits' => 'لقد أكملت التعديلات على ملفك الشخصي',
     'wait_for_admin_updates_review' => 'انتظر موافقة المشرف على التعديلات التي أجريتها.',
+    'user_not_activated' => 'حساب هذا المستخدم غير مفعل',
 
     //Reservation
     'time_not_available' => 'هذا الوقت ليس متاحاً الآن!',
@@ -29,13 +30,16 @@ return [
     'undefined_date' => 'هذا التاريخ لم يحدده مزود الخدمة لحجز الخدمة!',
     'cant_cancel_order' => 'لا تستطيع إلغاء هذا الطلب لأنه ',
 
+    // Services and Products
+    'date_and_time_found' => 'يوجد لديك نفس هذا الموعد من قبل، يرجى تحري أوقات فريدة',
+
     // Global
     'data_retrieved' => 'تم استرداد بيانات :item بنجاح!',
     'data_added' => 'تم إضافة :item بنجاح!',
     'data_updated' => 'تم تعديل بيانات :item بنجاح',
     'data_deleted' => 'تم حذف بيانات :item بنجاح',
-    'activated'    => 'تم تفعيل هذا :item بنجاح',
-    'deactivated'  => 'تم إلغاء تفعيل هذا :item بنجاح',
+    'activated'    => 'تم تفعيل  :item بنجاح',
+    'deactivated'  => 'تم إلغاء تفعيل :item بنجاح',
     'accepted'     => 'تم قبول :item بنجاح!',
     'canceled'     => 'تم إلغاء :item بنجاح!',
     'rejected'     => 'تم رفض :item بنجاح!',
@@ -46,7 +50,7 @@ return [
     'user' => 'المستخدم',
     'users' => 'المستخدمين',
     'patient' => 'مريض',
-    'provider' => 'مزود خدمة',
+    'provider' => 'مزود الخدمة',
     'payment_method' => 'طريقة الدفع',
     'payment_methods' => 'طرق الدفع',
     'product' => 'المنتج',
