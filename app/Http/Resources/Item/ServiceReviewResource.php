@@ -4,7 +4,7 @@ namespace App\Http\Resources\Item;
 
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
-use App\Http\Resources\AvailabilityResource;
+use App\Http\Resources\Item\AvailabilityResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ServiceReviewResource extends JsonResource

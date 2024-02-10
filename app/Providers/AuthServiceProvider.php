@@ -30,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage-reservations', [OrderPolicy::class, 'manageReservations']);
 
         // customize email verification
-        VerifyEmail::toMailUsing(function (object $notifiable) {
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
             $code = generateRandomNumber(8);
             DB::table('email_verify_codes')->updateOrInsert([
                 'email' => $notifiable->email,
@@ -40,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
             return (new MailMessage)
                 ->subject('Verify Email Address')
                 ->line('This is your code: ' . $code)
+                ->action('Verify Email Address', $url)
                 ->line('If you did not create an account, no further action is required');
         });
 

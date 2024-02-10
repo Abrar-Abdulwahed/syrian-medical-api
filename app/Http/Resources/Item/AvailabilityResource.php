@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Item;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,24 +18,29 @@ class AvailabilityResource extends JsonResource
     {
         $isDateInPast = Carbon::parse($this->date)->isPast();
         $times = json_decode($this->times);
-        if ($isDateInPast)
+
+        if ($isDateInPast) {
             return [
-                'date'           => $this->date,
+                'date' => $this->date,
                 'isDateAvailable' => false,
-                'times'          => $times,
+                'times' => $times,
             ];
-        else {
+        } else {
+            sort($times);
+
             $transformedTimes = collect($times)->map(function ($time) {
                 return [
-                    'time'       => $time,
+                    'time' => $time,
                     'isAvailable' => ServiceReservation::isAvailable($this->date, $time),
                 ];
-            });
-            $isDateAvailable = $transformedTimes->contains('isAvailable', true);
+            })->toArray();
+
+            $isDateAvailable = in_array(true, array_column($transformedTimes, 'isAvailable'));
+
             return [
-                'date'  => $this->date,
+                'date' => $this->date,
                 'isDateAvailable' => $isDateAvailable,
-                'times' => $transformedTimes->toArray(),
+                'times' => $transformedTimes,
             ];
         }
     }

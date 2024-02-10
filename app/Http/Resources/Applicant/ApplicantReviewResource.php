@@ -16,11 +16,11 @@ class ApplicantReviewResource extends JsonResource
     {
         $attributes = [
             "username" => $this->fullName,
+            "email" =>  $this->email,
             'bank_name' => $this->serviceProviderProfile->bank_name,
             'iban_number' => $this->serviceProviderProfile->iban_number,
             'swift_code' => $this->serviceProviderProfile->swift_code,
             'evidence' => $this->serviceProviderProfile->evidence,
-            "joined_at" => $this->created_at->format('Y-m-d H:i:s'),
         ];
         return $attributes;
     }

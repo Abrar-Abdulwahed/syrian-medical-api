@@ -22,12 +22,16 @@ return [
     'picture_saved' => 'Your picture updated successfully',
     'completed_edits' => 'You\'ve completed your edits.',
     'wait_for_admin_updates_review' => 'Wait for the administrator to approve your edits',
+    'user_not_activated' => 'This user account is not activated',
 
     //Reservation
     'time_not_available' => 'This time is not available right now!',
     'under_reservation'  => 'This :item is under reservation, you cant delete or update it!',
     'undefined_date' => 'This date is not determined by the service provider for this service!',
     'cant_cancel_order' => 'You can\'t cancel this reservation, because it\'s ',
+
+    // Services and Products
+    'date_and_time_found' => 'You have this date and time before, please check unique time or another day!',
 
     //Global
     'data_retrieved' => ':item data retrieved successfully!',
