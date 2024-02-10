@@ -26,7 +26,7 @@ class ProfileUpdateRequests extends BaseAdminController
             if ($pendingChanges->isEmpty()) {
                 return $this->returnSuccess(__('message.no_found', ['item' => __('message.pending_requests')]), 200);
             }
-            return $this->returnJSON(PendingUpdateProfileRequestResource::collection($pendingChanges), 'Pending changes retrieved successfully');
+            return $this->returnJSON(PendingUpdateProfileRequestResource::collection($pendingChanges), __('message.data_retrieved', ['item' => __('message.pending_requests')]));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());
         }
@@ -34,7 +34,7 @@ class ProfileUpdateRequests extends BaseAdminController
 
     public function show(PendingUpdateProfileRequest $pending)
     {
-        return $this->returnJSON(new PendingUpdateProfileRequestResource($pending), 'Pending changes retrieved successfully');
+        return $this->returnJSON(new PendingUpdateProfileRequestResource($pending),  __('message.data_retrieved', ['item' => __('message.pending_requests')]));
     }
 
     public function accept(PendingUpdateProfileRequest $pending)

@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Enums\OrderStatus;
 use Carbon\Carbon;
+use App\Enums\OrderStatus;
 use App\Models\Reservation;
 use Illuminate\Console\Command;
+use App\Models\ServiceReservation;
 
 class CancelOutdatedReservations extends Command
 {
@@ -15,7 +16,7 @@ class CancelOutdatedReservations extends Command
      * @var string
      */
     protected $signature = 'reservations:cancel-outdated';
-    protected $description = 'Cancel pending outdated reservations';
+    protected $description = 'Cancel pending outdated appointments';
 
     /**
      * Execute the console command.
@@ -23,7 +24,10 @@ class CancelOutdatedReservations extends Command
     public function handle()
     {
         Reservation::where('status', OrderStatus::PENDING->value)
-            ->whereDate('date', '<', Carbon::now())
+            ->where('reservationable_type', ServiceReservation::class)
+            ->whereDoesntHave('reservationable.service_availabilities', function ($query) {
+                $query->where('date', '>=', now());
+            })
             ->update(['status' => OrderStatus::CANCELED->value]);
     }
 }
