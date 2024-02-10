@@ -45,7 +45,7 @@ class ServiceUpdateRequest extends BaseRequest
             'description_ar' => 'required|string',
             'price'          => 'required|numeric|gt:0',
             'discount'       => 'sometimes|numeric|gte:0',
-            'dates'          => 'required|array',
+            'dates'          => 'sometimes|required|array',
         ];
         if ($this->has('dates'))
             foreach ($this->input('dates') as $index => $date) {

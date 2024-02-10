@@ -30,6 +30,9 @@ return [
     'undefined_date' => 'هذا التاريخ لم يحدده مزود الخدمة لحجز الخدمة!',
     'cant_cancel_order' => 'لا تستطيع إلغاء هذا الطلب لأنه ',
 
+    // Services and Products
+    'date_and_time_found' => 'يوجد لديك نفس هذا الموعد من قبل، يرجى تحري أوقات فريدة',
+
     // Global
     'data_retrieved' => 'تم استرداد بيانات :item بنجاح!',
     'data_added' => 'تم إضافة :item بنجاح!',

@@ -34,7 +34,7 @@ class UniqueServiceAvailabilityRule implements ValidationRule
                 return in_array($value, json_decode($availability->times, true));
             });
         if ($preExisting) {
-            $fail('You have this date and time before, please check unique time or another day!');
+            $fail(__('message.date_and_time_found'));
         }
     }
 }

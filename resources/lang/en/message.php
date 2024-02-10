@@ -30,6 +30,9 @@ return [
     'undefined_date' => 'This date is not determined by the service provider for this service!',
     'cant_cancel_order' => 'You can\'t cancel this reservation, because it\'s ',
 
+    // Services and Products
+    'date_and_time_found' => 'You have this date and time before, please check unique time or another day!',
+
     //Global
     'data_retrieved' => ':item data retrieved successfully!',
     'data_added' => ':item added successfully!',
