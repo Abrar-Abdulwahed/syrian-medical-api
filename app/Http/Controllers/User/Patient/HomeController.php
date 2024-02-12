@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers\User\Patient;
 
-use App\Actions\SearchAction;
 use App\Models\Product;
 use App\Models\Category;
 use App\Enums\OfferingType;
+use App\Filters\ItemFilter;
 use Illuminate\Http\Request;
 use App\Models\ProviderService;
 use Illuminate\Support\Facades\DB;
 use App\Services\Items\ReviewService;
+use App\Http\Resources\CategoryListResource;
 use App\Http\Resources\Item\ProductListResource;
 use App\Http\Resources\Item\ServiceListResource;
-use App\Http\Resources\CategoryListResource;
 use App\Http\Controllers\User\BaseUserController;
 use App\Http\Resources\DoctorSpecializationListResource;
 
 class HomeController extends BaseUserController
 {
-    public function __construct(protected ReviewService $reviewService, protected SearchAction $searchAction)
+    public function __construct(protected ReviewService $reviewService)
     {
         parent::__construct();
         $this->middleware('bind.items.type')->only('show');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, ItemFilter $filters)
     {
         $type = $request->query('type'); // service or product
         $services = [];
@@ -32,12 +32,10 @@ class HomeController extends BaseUserController
 
         // filter by type, show items whose owner are activated only
         if ($type === null || $type === OfferingType::SERVICE->value) {
-            $query = ProviderService::query()->whereRelation('provider', 'activated', 1);
-            $services = $this->reviewService->filterItems(ProviderService::class, $query, $request);
+            $services = ProviderService::query()->whereRelation('provider', 'activated', 1)->with('service')->filter($filters)->get();
         }
-        if ($type === null || $type === OfferingType::PRODUCT->value) {
-            $query = Product::query()->whereRelation('provider', 'activated', 1);
-            $products = $this->reviewService->filterItems(Product::class, $query, $request);
+        if (($type === null || $type === OfferingType::PRODUCT->value) && !$request->query('category')) {
+            $products = Product::query()->whereRelation('provider', 'activated', 1)->filter($filters)->get();
         }
         $items =  ProductListResource::collection($products)->merge(ServiceListResource::collection($services));
 

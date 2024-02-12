@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Admin\UserManagement;
 
 use App\Models\User;
 use App\Enums\UserType;
-use Illuminate\Http\Request;
-use App\Actions\SearchAction;
+use App\Filters\UserFilter;
 use App\Http\Resources\Applicant\ApplicantListResource;
 use App\Http\Requests\Admin\UserActivationRequest;
 use App\Notifications\AdminReviewNotification;
@@ -14,18 +13,16 @@ use App\Http\Resources\Applicant\ApplicantReviewResource;
 
 class ApplicantController extends BaseAdminController
 {
-    public function __construct(protected SearchAction $searchAction)
+    public function __construct()
     {
         parent::__construct();
         $this->middleware('permission:accept_registration_request')->except('index');
     }
 
-    public function index(Request $request)
+    public function index(UserFilter $filters)
     {
-        $query = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0]);
-        // filter by search
-        $query = $this->searchAction->searchAction($query, $request->query('search'));
-        return $this->returnJSON(ApplicantListResource::collection($query->get()), __('message.data_retrieved', ['item' => __('message.registration_requests')]));
+        $users = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0])->filter($filters)->get();
+        return $this->returnJSON(ApplicantListResource::collection($users), __('message.data_retrieved', ['item' => __('message.registration_requests')]));
     }
 
     public function accept(UserActivationRequest $request, $id)

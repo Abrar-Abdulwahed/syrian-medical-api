@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Enums\OrderStatus;
+use App\Filters\ApplyFilter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -64,12 +65,8 @@ class Reservation extends Model
         return $this->hasOne(RejectionReason::class);
     }
 
-    // search by mm/dd/yyyy
-    public function scopeSearch($query, $searchTerm)
+    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
     {
-        $searchDateFormatted = Carbon::createFromFormat('m/d/Y', $searchTerm)->format('Y-m-d');
-        $query->where(function ($query) use ($searchDateFormatted) {
-            $query->whereDate('updated_at', $searchDateFormatted);
-        });
+        return $filters->apply($query);
     }
 }

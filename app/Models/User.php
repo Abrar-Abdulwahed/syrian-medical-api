@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Enums\UserType;
 use App\Models\Product;
 use App\Models\Service;
+use App\Filters\ApplyFilter;
 use App\Models\PatientProfile;
 use App\Models\ProviderProfile;
 use App\Models\ProviderService;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\PendingUpdateProfileRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -150,12 +152,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->activated === true;
     }
 
-    public function scopeSearch($query, $searchTerm)
+    public function ScopeFilter(Builder $query, ApplyFilter $filters)
     {
-        $query->where(function ($query) use ($searchTerm) {
-            $query
-                ->where('firstname', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('lastname', 'LIKE', "%{$searchTerm}%");
-        });
+        return $filters->apply($query);
     }
 }

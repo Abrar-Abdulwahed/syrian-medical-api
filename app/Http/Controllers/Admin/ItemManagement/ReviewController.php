@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\ItemManagement;
 use App\Models\Product;
 use App\Enums\OfferingType;
 use Illuminate\Http\Request;
-use App\Actions\SearchAction;
+use App\Filters\ItemFilter;
 use App\Models\ProviderService;
 use App\Services\Items\ReviewService;
 use App\Http\Resources\Item\ProductListResource;
@@ -14,13 +14,13 @@ use App\Http\Controllers\Admin\BaseAdminController;
 
 class ReviewController extends BaseAdminController
 {
-    public function __construct(protected ReviewService $reviewService, protected SearchAction $searchAction)
+    public function __construct(protected ReviewService $reviewService)
     {
         parent::__construct();
         $this->middleware('bind.items.type')->only('show');
     }
 
-    public function index(Request $request)
+    public function index(Request $request, ItemFilter $filters)
     {
         $type = $request->query('type');
         $services = [];
@@ -28,12 +28,10 @@ class ReviewController extends BaseAdminController
 
         // filter by type
         if ($type === null || $type === OfferingType::SERVICE->value) {
-            $query = ProviderService::query();
-            $services = $this->reviewService->filterItems(ProviderService::class, $query, $request);
+            $services = ProviderService::query()->filter($filters)->get();
         }
         if ($type === null || $type === OfferingType::PRODUCT->value) {
-            $query = Product::query();
-            $products = $this->reviewService->filterItems(Product::class, $query, $request);
+            $products = Product::query()->filter($filters)->get();
         }
 
         $result =   ProductListResource::collection($products)->merge(ServiceListResource::collection($services));

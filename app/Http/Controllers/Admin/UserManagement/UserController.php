@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Admin\UserManagement;
 
 use App\Models\User;
 use App\Enums\OrderStatus;
-use Illuminate\Http\Request;
-use App\Actions\SearchAction;
+use App\Filters\UserFilter;
 use App\Http\Traits\FileTrait;
 use App\Http\Resources\UserResource;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,18 +15,16 @@ use App\Http\Controllers\Admin\BaseAdminController;
 class UserController extends BaseAdminController
 {
     use FileTrait, PaginateResponseTrait;
-    public function __construct(protected SearchAction $searchAction)
+    public function __construct()
     {
         parent::__construct();
         $this->middleware('permission:block_user')->only('activation');
     }
 
-    public function index(Request $request)
+    public function index(UserFilter $filters)
     {
-        $query = User::query();
-        // filter by search
-        $query = $this->searchAction->searchAction($query, $request->query('search'));
-        return $this->returnJSON(UserResource::collection($query->get()), __('message.data_retrieved', ['item' => __('message.users')]));
+        $users = User::filter($filters)->get();
+        return $this->returnJSON(UserResource::collection($users), __('message.data_retrieved', ['item' => __('message.users')]));
     }
 
     public function show($id)

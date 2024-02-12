@@ -4,7 +4,6 @@ namespace App\Actions;
 
 use App\Models\User;
 use App\Models\Admin;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class Authenticator
