@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Enums\UserType;
 use App\Models\Product;
 use App\Models\Service;
-use App\Http\Traits\FilterTrait;
+use App\Http\Traits\FilterScopeTrait;
 use App\Models\PatientProfile;
 use App\Models\ProviderProfile;
 use App\Models\ProviderService;
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use FilterTrait, HasApiTokens, HasFactory, Notifiable;
+    use FilterScopeTrait, HasApiTokens, HasFactory, Notifiable;
     protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.

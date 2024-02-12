@@ -19,15 +19,15 @@ class ApplyFilter
     public function apply(Builder $query)
     {
         $this->query = $query;
-        foreach ($this->filters() as $name => $value) {
+        foreach ($this->parameters() as $name => $value) {
             if (method_exists($this, $name)) {
-                call_user_func_array([$this, $name], [$value]);
+                $this->$name($value);
             }
         }
         return $this->query;
     }
 
-    public function filters()
+    public function parameters()
     {
         return $this->request->all();
     }

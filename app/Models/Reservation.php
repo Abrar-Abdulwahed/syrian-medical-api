@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
-use App\Http\Traits\FilterTrait;
+use App\Http\Traits\FilterScopeTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Reservation extends Model
 {
-    use FilterTrait, HasFactory;
+    use FilterScopeTrait, HasFactory;
 
     protected $fillable = [
         'location',

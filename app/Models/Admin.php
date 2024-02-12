@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AdminRole;
-use App\Http\Traits\FilterTrait;
+use App\Http\Traits\FilterScopeTrait;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Admin extends Authenticatable implements Authorizable
 {
-    use FilterTrait, Notifiable, HasFactory, HasApiTokens;
+    use FilterScopeTrait, Notifiable, HasFactory, HasApiTokens;
     protected $guard_name = 'api';
     protected $fillable = [
         'username',

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Traits\FilterTrait;
+use App\Http\Traits\FilterScopeTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProviderService extends Pivot
 {
-    use FilterTrait, HasFactory;
+    use FilterScopeTrait, HasFactory;
 
     // Relationship
 
