@@ -20,7 +20,7 @@ class ReviewController extends BaseAdminController
         $this->middleware('bind.items.type')->only('show');
     }
 
-    public function index(Request $request, ItemFilter $parameters)
+    public function index(Request $request, ItemFilter $params)
     {
         $type = $request->query('type');
         $services = [];
@@ -28,10 +28,10 @@ class ReviewController extends BaseAdminController
 
         // filter by type
         if ($type === null || $type === OfferingType::SERVICE->value) {
-            $services = ProviderService::query()->filter($parameters)->get();
+            $services = ProviderService::query()->filter($params)->get();
         }
         if ($type === null || $type === OfferingType::PRODUCT->value) {
-            $products = Product::query()->filter($parameters)->get();
+            $products = Product::query()->filter($params)->get();
         }
 
         $result =   ProductListResource::collection($products)->merge(ServiceListResource::collection($services));

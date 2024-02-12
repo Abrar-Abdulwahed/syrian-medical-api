@@ -10,9 +10,9 @@ use App\Http\Controllers\Admin\BaseAdminController;
 
 class SalesController extends BaseAdminController
 {
-    public function __invoke(SalesFilter $parameters)
+    public function __invoke(SalesFilter $params)
     {
-        $query = Reservation::whereIn('status', [OrderStatus::PAID->value, OrderStatus::DELIVERED])->filter($parameters);
+        $query = Reservation::whereIn('status', [OrderStatus::PAID->value, OrderStatus::DELIVERED])->filter($params);
 
 
         $sales = $query->get();

@@ -19,9 +19,9 @@ class ApplicantController extends BaseAdminController
         $this->middleware('permission:accept_registration_request')->except('index');
     }
 
-    public function index(UserFilter $parameters)
+    public function index(UserFilter $params)
     {
-        $users = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0])->filter($parameters)->get();
+        $users = User::where(['type' => UserType::SERVICE_PROVIDER->value, 'activated' => 0])->filter($params)->get();
         return $this->returnJSON(ApplicantListResource::collection($users), __('message.data_retrieved', ['item' => __('message.registration_requests')]));
     }
 

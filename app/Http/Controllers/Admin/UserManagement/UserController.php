@@ -21,9 +21,9 @@ class UserController extends BaseAdminController
         $this->middleware('permission:block_user')->only('activation');
     }
 
-    public function index(UserFilter $parameters)
+    public function index(UserFilter $params)
     {
-        $users = User::filter($parameters)->get();
+        $users = User::filter($params)->get();
         return $this->returnJSON(UserResource::collection($users), __('message.data_retrieved', ['item' => __('message.users')]));
     }
 

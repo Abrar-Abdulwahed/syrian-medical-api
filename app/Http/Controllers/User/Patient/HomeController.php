@@ -24,7 +24,7 @@ class HomeController extends BaseUserController
         $this->middleware('bind.items.type')->only('show');
     }
 
-    public function index(Request $request, ItemFilter $parameters)
+    public function index(Request $request, ItemFilter $params)
     {
         $type = $request->query('type'); // service or product
         $services = [];
@@ -32,10 +32,10 @@ class HomeController extends BaseUserController
 
         // filter by type, show items whose owner are activated only
         if ($type === null || $type === OfferingType::SERVICE->value) {
-            $services = ProviderService::query()->whereRelation('provider', 'activated', 1)->with('service')->filter($parameters)->get();
+            $services = ProviderService::query()->whereRelation('provider', 'activated', 1)->with('service')->filter($params)->get();
         }
         if (($type === null || $type === OfferingType::PRODUCT->value) && !$request->query('category')) {
-            $products = Product::query()->whereRelation('provider', 'activated', 1)->filter($parameters)->get();
+            $products = Product::query()->whereRelation('provider', 'activated', 1)->filter($params)->get();
         }
         $items =  ProductListResource::collection($products)->merge(ServiceListResource::collection($services));
 
