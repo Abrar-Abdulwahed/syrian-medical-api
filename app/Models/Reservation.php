@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Enums\OrderStatus;
-use App\Filters\ApplyFilter;
+use App\Http\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Reservation extends Model
 {
-    use HasFactory;
+    use FilterTrait, HasFactory;
 
     protected $fillable = [
         'location',
@@ -63,10 +61,5 @@ class Reservation extends Model
     public function rejectionReason(): HasOne
     {
         return $this->hasOne(RejectionReason::class);
-    }
-
-    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
-    {
-        return $filters->apply($query);
     }
 }

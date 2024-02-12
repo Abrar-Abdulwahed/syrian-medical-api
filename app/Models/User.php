@@ -5,13 +5,12 @@ namespace App\Models;
 use App\Enums\UserType;
 use App\Models\Product;
 use App\Models\Service;
-use App\Filters\ApplyFilter;
+use App\Http\Traits\FilterTrait;
 use App\Models\PatientProfile;
 use App\Models\ProviderProfile;
 use App\Models\ProviderService;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\PendingUpdateProfileRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -22,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use FilterTrait, HasApiTokens, HasFactory, Notifiable;
     protected $guard_name = 'api';
     /**
      * The attributes that are mass assignable.
@@ -150,10 +149,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isActivated()
     {
         return $this->activated === true;
-    }
-
-    public function ScopeFilter(Builder $query, ApplyFilter $filters)
-    {
-        return $filters->apply($query);
     }
 }
