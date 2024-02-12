@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
-use App\Filters\ApplyFilter;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use App\Http\Traits\FilterTrait;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProviderService extends Pivot
 {
-    use HasFactory;
+    use FilterTrait, HasFactory;
 
     // Relationship
 
@@ -44,10 +41,5 @@ class ProviderService extends Pivot
             return $this->price - ($this->price * ($this->discount / 100));
 
         return null;
-    }
-
-    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
-    {
-        return $filters->apply($query);
     }
 }

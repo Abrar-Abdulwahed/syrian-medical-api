@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use App\Enums\AdminRole;
-use App\Filters\ApplyFilter;
+use App\Http\Traits\FilterTrait;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\Access\Authorizable;
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Admin extends Authenticatable implements Authorizable
 {
-    use Notifiable, HasFactory, HasApiTokens;
+    use FilterTrait, Notifiable, HasFactory, HasApiTokens;
     protected $guard_name = 'api';
     protected $fillable = [
         'username',
@@ -49,17 +48,5 @@ class Admin extends Authenticatable implements Authorizable
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class);
-    }
-
-    public function scopeSearch($query, $searchTerm)
-    {
-        $query->where(function ($query) use ($searchTerm) {
-            $query->where('username', 'LIKE', "%{$searchTerm}%");
-        });
-    }
-
-    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
-    {
-        return $filters->apply($query);
     }
 }
