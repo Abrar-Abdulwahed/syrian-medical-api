@@ -7,7 +7,6 @@ use App\Models\Product;
 use App\Enums\OrderStatus;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use App\Actions\SearchAction;
 use App\Models\ProviderService;
 use App\Http\Traits\ApiResponseTrait;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,28 +16,6 @@ use App\Http\Resources\Item\ServiceReviewResource;
 class ReviewService
 {
     use ApiResponseTrait;
-    public function __construct(protected SearchAction $searchAction)
-    {
-    }
-    public function filterItems($model, $query, $request)
-    {
-        if ($model === ProviderService::class) {
-            $query->with('service');
-
-            // filter category
-            $category = $request->query('category');
-            $query->when($category, function ($query) use ($category) {
-                $query->where(function ($query) use ($category) {
-                    $query->category($category);
-                });
-            });
-        }
-
-        // filter by search
-        $query = $this->searchAction->searchAction($query, $request->query('search'));
-        return $query->get();
-    }
-
     public function getItemByType(Request $request)
     {
         $user = $request->user();

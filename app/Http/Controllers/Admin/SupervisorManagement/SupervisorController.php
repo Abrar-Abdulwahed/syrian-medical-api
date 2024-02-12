@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin\SupervisorManagement;
 
+use App\Filters\SupervisorFilter;
 use App\Models\Admin;
 use Illuminate\Http\Request;
-use App\Actions\SearchAction;
 use App\Http\Controllers\Admin\BaseAdminController;
 use App\Http\Resources\AdminResource;
 use App\Http\Requests\Admin\SupervisorStoreRequest;
@@ -12,18 +12,16 @@ use App\Http\Requests\Admin\SupervisorUpdateRequest;
 
 class SupervisorController extends BaseAdminController
 {
-    public function __construct(protected SearchAction $searchAction)
+    public function __construct()
     {
         parent::__construct();
         $this->middleware('permission:add_supervisor')->only('store');
     }
 
-    public function index(Request $request)
+    public function index(SupervisorFilter $filters)
     {
-        $query = Admin::supervisors();
-        // filter by search
-        $query = $this->searchAction->searchAction($query, $request->query('search'));
-        return $this->returnJSON(AdminResource::collection($query->get()), __('message.data_retrieved', ['item' => __('message.supervisors')]));
+        $supervisors = Admin::supervisors()->filter($filters)->get();
+        return $this->returnJSON(AdminResource::collection($supervisors), __('message.data_retrieved', ['item' => __('message.supervisors')]));
     }
 
     public function store(SupervisorStoreRequest $request)

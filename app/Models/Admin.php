@@ -3,14 +3,15 @@
 namespace App\Models;
 
 use App\Enums\AdminRole;
+use App\Filters\ApplyFilter;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Admin extends Authenticatable implements Authorizable
 {
@@ -55,5 +56,10 @@ class Admin extends Authenticatable implements Authorizable
         $query->where(function ($query) use ($searchTerm) {
             $query->where('username', 'LIKE', "%{$searchTerm}%");
         });
+    }
+
+    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
+    {
+        return $filters->apply($query);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Filters\ApplyFilter;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -44,24 +46,8 @@ class ProviderService extends Pivot
         return null;
     }
 
-    public function scopeSearch($query, $searchTerm)
+    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
     {
-        $query->where(function ($query) use ($searchTerm) {
-            $query->whereHas('service', function ($query) use ($searchTerm) {
-                $query->where('title_ar', 'LIKE', "%{$searchTerm}%")
-                    ->orWhere('title_en', 'LIKE', "%{$searchTerm}%");
-            })
-                ->orWhere('description_ar', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('description_en', 'LIKE', "%{$searchTerm}%");
-        });
-    }
-
-    public function scopeCategory($query, $category)
-    {
-        $query->where(function ($query) use ($category) {
-            $query->whereHas('service', function ($query) use ($category) {
-                $query->where('category_id', $category);
-            });
-        });
+        return $filters->apply($query);
     }
 }

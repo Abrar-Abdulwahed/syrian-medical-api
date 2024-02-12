@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Filters\ApplyFilter;
 use App\Models\ProviderProfile;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -52,14 +54,8 @@ class Product extends Model
         return null;
     }
 
-    public function scopeSearch($query, $searchTerm)
+    public function ScopeFilter(Builder $query,  ApplyFilter $filters)
     {
-        $query->where(function ($query) use ($searchTerm) {
-            $query
-                ->where('title_ar', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('title_en', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('description_ar', 'LIKE', "%{$searchTerm}%")
-                ->orWhere('description_en', 'LIKE', "%{$searchTerm}%");
-        });
+        return $filters->apply($query);
     }
 }
