@@ -4,6 +4,7 @@ namespace App\Filters;
 
 use App\Models\ProviderService;
 
+// Filter ProviderServices || Products
 class ItemFilter extends ApplyFilter
 {
     public function category($value)

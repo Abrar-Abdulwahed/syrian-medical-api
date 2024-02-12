@@ -18,9 +18,9 @@ class SupervisorController extends BaseAdminController
         $this->middleware('permission:add_supervisor')->only('store');
     }
 
-    public function index(SupervisorFilter $filters)
+    public function index(SupervisorFilter $parameters)
     {
-        $supervisors = Admin::supervisors()->filter($filters)->get();
+        $supervisors = Admin::supervisors()->filter($parameters)->get();
         return $this->returnJSON(AdminResource::collection($supervisors), __('message.data_retrieved', ['item' => __('message.supervisors')]));
     }
 

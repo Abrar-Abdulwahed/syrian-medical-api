@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait FilterTrait
 {
-    public function ScopeFilter(Builder $builder, ApplyFilter $filters)
+    public function ScopeFilter(Builder $builder, ApplyFilter $parameters)
     {
-        return $filters->apply($builder);
+        return $parameters->apply($builder);
     }
 }
