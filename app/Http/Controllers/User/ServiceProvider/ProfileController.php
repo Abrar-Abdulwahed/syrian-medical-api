@@ -34,6 +34,7 @@ class ProfileController extends BaseProfileController
                     ->merge($user->serviceProviderProfile->getDirty())
                     ->toJson()]
             );
+            
             return $this->returnSuccess(__('message.wait_for_admin_updates_review'));
         } catch (\Exception $e) {
             return $this->returnWrong($e->getMessage());

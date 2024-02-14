@@ -9,9 +9,14 @@ use Illuminate\Http\Request;
 use App\Notifications\PatientPayNotification;
 use Stripe\{Stripe, Charge, StripeClient, Token};
 use App\Notifications\PaymentNotForPendingOrdersNotification;
+use App\Services\AdminService;
 
 class PaymentController extends BaseUserController
 {
+    public function __construct(protected AdminService $adminService)
+    {
+        parent::__construct();
+    }
     public function __invoke(Request $request)
     {
         $user = $request->user();
@@ -57,8 +62,10 @@ class PaymentController extends BaseUserController
                     // Notify provider
                     $order->provider->notify(new PatientPayNotification($order));
 
-                    // Notify admin
-                    Admin::find(1)->notify(new PatientPayNotification($order));
+                    // admin to send notify
+                    $admin = $this->adminService->getAdminForPurpose('payments');
+                    $admin->notify(new PatientPayNotification($order));
+
                     return $this->returnSuccess($response->status);
                 } catch (\Exception $e) {
                     return $this->returnWrong($e->getMessage());
