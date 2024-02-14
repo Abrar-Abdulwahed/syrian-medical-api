@@ -21,11 +21,10 @@ class ServiceProviderAccountRequest extends BaseRequest
      */
     public function rules(): array
     {
-        $userId = $this->user()?->id;
         return [
             'firstname'     => 'required|string|between:2,12',
             'lastname'      => 'required|string|between:2,12',
-            'email'         => 'required|email:rfc,dns|max:100|unique:users,email,' . $userId,
+            'email'         => 'required|email:rfc,dns|max:100|unique:users,email',
             'password'      => ['sometimes', 'required', $this->passwordRules(), 'max:25', 'confirmed'],
             'bank_name'     => 'required|string|max:100',
             'iban_number'   => 'required|alpha_dash|max:34',
