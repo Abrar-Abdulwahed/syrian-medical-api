@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Admin;
 use App\Enums\UserType;
 use App\Services\UserService;
+use App\Services\AdminService;
 use App\Http\Traits\FileTrait;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -14,11 +15,12 @@ use App\Http\Requests\Auth\VerificationRequest;
 use App\Http\Requests\Auth\PatientAccountRequest;
 use App\Notifications\NewApplicantNotificationMail;
 use App\Http\Requests\Auth\ServiceProviderAccountRequest;
+use Illuminate\Support\Facades\Cache;
 
 class RegisterController extends Controller
 {
     use FileTrait;
-    public function __construct(protected UserService $userService)
+    public function __construct(protected AdminService $adminService, protected UserService $userService)
     {
         $this->middleware('guest');
     }
@@ -45,7 +47,11 @@ class RegisterController extends Controller
 
             $this->userService->createProfile($user, array_merge($request->only('bank_name', 'iban_number', 'swift_code'), ['evidence' => $fileName]));
             event(new Registered($user));
-            Admin::findOrFail(1)->notify(new NewApplicantNotificationMail($user->id));
+
+            // admin to send notify
+            $admin = $this->adminService->getAdminForPurpose('users');
+            $admin->notify(new NewApplicantNotificationMail($user->id));
+
             DB::commit();
             return $this->returnSuccess(__('message.successfully_saved_review'));
         } catch (\Exception $e) {

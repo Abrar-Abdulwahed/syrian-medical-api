@@ -15,20 +15,29 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminInfo = [
-            'username'          => 'SuperAdmin',
-            'phone'             => '736565237',
-            'email'             => 'admin@admin.com',
-            'password'          => '12345678',
-            'role'              => AdminRole::SUPER_ADMIN->value,
-            'activated'         => 1,
-            'email_verified_at' => now(),
+        $admins = [
+            [   'username'          => 'SuperAdmin',
+                'phone'             => '736565237',
+                'email'             => 'admin@admin.com',
+                'password'          => '12345678',
+                'role'              => AdminRole::SUPER_ADMIN->value,
+                'activated'         => 1,
+                'email_verified_at' => now(),
+            ],
+            [   'username'          => 'Admin',
+                'phone'             => '736565237',
+                'email'             => 'admin@admin2.com',
+                'password'          => '12345678',
+                'role'              => AdminRole::SUPER_ADMIN->value,
+                'activated'         => 1,
+                'email_verified_at' => now(),
+            ],
         ];
-
-        $admin = Admin::create($adminInfo);
-
-        // Attach all existing permissions to the super admin
         $permissions = Permission::all();
-        $admin->permissions()->attach($permissions);
+        foreach ($admins as $key => $value) {
+            $admin = Admin::create($value);
+            // Attach all existing permissions to the super admin
+            $admin->permissions()->attach($permissions);
+        }
     }
 }
